@@ -22,15 +22,14 @@
 
 import UIKit
 
-// MARK: ViewController: UIViewController
+// MARK: TagsViewController: UIViewController -
 
-class ViewController: UIViewController {
+class TagsViewController: UIViewController {
 
-    // MARK: View Life Cycle
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
 }
-

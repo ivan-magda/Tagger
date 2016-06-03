@@ -8,12 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		7552DF8E1D013A740032ECFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DF8D1D013A740032ECFA /* AppDelegate.swift */; };
-		7552DF901D013A740032ECFA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DF8F1D013A740032ECFA /* ViewController.swift */; };
 		7552DF931D013A740032ECFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF911D013A740032ECFA /* Main.storyboard */; };
 		7552DF951D013A740032ECFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF941D013A740032ECFA /* Assets.xcassets */; };
 		7552DF981D013A740032ECFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF961D013A740032ECFA /* LaunchScreen.storyboard */; };
 		7552DFA31D013A750032ECFA /* TaggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFA21D013A750032ECFA /* TaggerTests.swift */; };
 		7552DFAE1D013A750032ECFA /* TaggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFAD1D013A750032ECFA /* TaggerUITests.swift */; };
+		7552DFC21D0159F00032ECFA /* DiscoverTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */; };
+		7552DFC41D015A5D0032ECFA /* PhotoTaggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC31D015A5D0032ECFA /* PhotoTaggerViewController.swift */; };
+		7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC51D015A840032ECFA /* TagsViewController.swift */; };
+		7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +39,6 @@
 /* Begin PBXFileReference section */
 		7552DF8A1D013A740032ECFA /* Tagger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tagger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7552DF8D1D013A740032ECFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7552DF8F1D013A740032ECFA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7552DF921D013A740032ECFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7552DF941D013A740032ECFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7552DF971D013A740032ECFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +49,10 @@
 		7552DFA91D013A750032ECFA /* TaggerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaggerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7552DFAD1D013A750032ECFA /* TaggerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggerUITests.swift; sourceTree = "<group>"; };
 		7552DFAF1D013A750032ECFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverTagsViewController.swift; sourceTree = "<group>"; };
+		7552DFC31D015A5D0032ECFA /* PhotoTaggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTaggerViewController.swift; sourceTree = "<group>"; };
+		7552DFC51D015A840032ECFA /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
+		7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +148,10 @@
 		7552DFBD1D013B2D0032ECFA /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7552DF8F1D013A740032ECFA /* ViewController.swift */,
+				7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */,
+				7552DFC31D015A5D0032ECFA /* PhotoTaggerViewController.swift */,
+				7552DFC51D015A840032ECFA /* TagsViewController.swift */,
+				7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -288,7 +297,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7552DF901D013A740032ECFA /* ViewController.swift in Sources */,
+				7552DFC21D0159F00032ECFA /* DiscoverTagsViewController.swift in Sources */,
+				7552DFC41D015A5D0032ECFA /* PhotoTaggerViewController.swift in Sources */,
+				7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */,
+				7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */,
 				7552DF8E1D013A740032ECFA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
