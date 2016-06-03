@@ -98,11 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				7552DF8D1D013A740032ECFA /* AppDelegate.swift */,
-				7552DF8F1D013A740032ECFA /* ViewController.swift */,
-				7552DF911D013A740032ECFA /* Main.storyboard */,
-				7552DF941D013A740032ECFA /* Assets.xcassets */,
-				7552DF961D013A740032ECFA /* LaunchScreen.storyboard */,
-				7552DF991D013A740032ECFA /* Info.plist */,
+				7552DFBC1D013B210032ECFA /* UI */,
+				7552DFBB1D013B0C0032ECFA /* SupportingFiles */,
 			);
 			path = Tagger;
 			sourceTree = "<group>";
@@ -123,6 +120,41 @@
 				7552DFAF1D013A750032ECFA /* Info.plist */,
 			);
 			path = TaggerUITests;
+			sourceTree = "<group>";
+		};
+		7552DFBB1D013B0C0032ECFA /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				7552DF991D013A740032ECFA /* Info.plist */,
+			);
+			name = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		7552DFBC1D013B210032ECFA /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				7552DFBD1D013B2D0032ECFA /* ViewControllers */,
+				7552DFBE1D013B3D0032ECFA /* Assets */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		7552DFBD1D013B2D0032ECFA /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7552DF8F1D013A740032ECFA /* ViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7552DFBE1D013B3D0032ECFA /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7552DF911D013A740032ECFA /* Main.storyboard */,
+				7552DF941D013A740032ECFA /* Assets.xcassets */,
+				7552DF961D013A740032ECFA /* LaunchScreen.storyboard */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -349,7 +381,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -388,7 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -400,6 +432,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Tagger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -411,6 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Tagger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
