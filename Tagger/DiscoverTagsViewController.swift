@@ -30,6 +30,15 @@ class DiscoverTagsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FlickrApiClient.sharedInstance.getWeekTagsHotList { (tags, error) in
+            guard error == nil else {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            print(tags)
+        }
     }
 
 }
