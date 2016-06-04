@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		754F1AFA1D024B9400410CA0 /* ApiClientResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AEF1D024B9400410CA0 /* ApiClientResult.swift */; };
+		754F1AFC1D024B9400410CA0 /* FlickrApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF11D024B9400410CA0 /* FlickrApiClient.swift */; };
+		754F1AFD1D024B9400410CA0 /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF21D024B9400410CA0 /* FlickrConstants.swift */; };
+		754F1AFE1D024B9400410CA0 /* GCDUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF31D024B9400410CA0 /* GCDUtils.swift */; };
+		754F1AFF1D024B9400410CA0 /* HttpApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF41D024B9400410CA0 /* HttpApiClient.swift */; };
+		754F1B001D024B9400410CA0 /* HttpMethodName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF51D024B9400410CA0 /* HttpMethodName.swift */; };
+		754F1B011D024B9400410CA0 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF61D024B9400410CA0 /* JSON.swift */; };
+		754F1B021D024B9400410CA0 /* JsonApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF71D024B9400410CA0 /* JsonApiClient.swift */; };
+		754F1B031D024B9400410CA0 /* JSONParselable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF81D024B9400410CA0 /* JSONParselable.swift */; };
+		754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF91D024B9400410CA0 /* UIUtils.swift */; };
+		754F1B0B1D024CEA00410CA0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1B0A1D024CEA00410CA0 /* Constants.swift */; };
+		754F1B0E1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1B0D1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift */; };
 		7552DF8E1D013A740032ECFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DF8D1D013A740032ECFA /* AppDelegate.swift */; };
 		7552DF931D013A740032ECFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF911D013A740032ECFA /* Main.storyboard */; };
 		7552DF951D013A740032ECFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF941D013A740032ECFA /* Assets.xcassets */; };
@@ -37,6 +49,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		754F1AEF1D024B9400410CA0 /* ApiClientResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClientResult.swift; sourceTree = "<group>"; };
+		754F1AF11D024B9400410CA0 /* FlickrApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrApiClient.swift; sourceTree = "<group>"; };
+		754F1AF21D024B9400410CA0 /* FlickrConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
+		754F1AF31D024B9400410CA0 /* GCDUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDUtils.swift; sourceTree = "<group>"; };
+		754F1AF41D024B9400410CA0 /* HttpApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpApiClient.swift; sourceTree = "<group>"; };
+		754F1AF51D024B9400410CA0 /* HttpMethodName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpMethodName.swift; sourceTree = "<group>"; };
+		754F1AF61D024B9400410CA0 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		754F1AF71D024B9400410CA0 /* JsonApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonApiClient.swift; sourceTree = "<group>"; };
+		754F1AF81D024B9400410CA0 /* JSONParselable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParselable.swift; sourceTree = "<group>"; };
+		754F1AF91D024B9400410CA0 /* UIUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
+		754F1B0A1D024CEA00410CA0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		754F1B0D1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlickrApiClient+ConvenienceEndpoints.swift"; sourceTree = "<group>"; };
 		7552DF8A1D013A740032ECFA /* Tagger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tagger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7552DF8D1D013A740032ECFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7552DF921D013A740032ECFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,6 +104,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		754F1B051D024BA300410CA0 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				754F1B061D024BD400410CA0 /* Clients */,
+				754F1AF51D024B9400410CA0 /* HttpMethodName.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		754F1B061D024BD400410CA0 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				754F1AF41D024B9400410CA0 /* HttpApiClient.swift */,
+				754F1AF71D024B9400410CA0 /* JsonApiClient.swift */,
+				754F1AEF1D024B9400410CA0 /* ApiClientResult.swift */,
+				754F1B071D024BDE00410CA0 /* Flickr */,
+			);
+			name = Clients;
+			sourceTree = "<group>";
+		};
+		754F1B071D024BDE00410CA0 /* Flickr */ = {
+			isa = PBXGroup;
+			children = (
+				754F1AF11D024B9400410CA0 /* FlickrApiClient.swift */,
+				754F1B0D1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift */,
+				754F1AF21D024B9400410CA0 /* FlickrConstants.swift */,
+			);
+			name = Flickr;
+			sourceTree = "<group>";
+		};
+		754F1B081D024BFA00410CA0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				754F1AF91D024B9400410CA0 /* UIUtils.swift */,
+				754F1AF31D024B9400410CA0 /* GCDUtils.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		754F1B091D024C2400410CA0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				754F1B0C1D02589100410CA0 /* JSON */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		754F1B0C1D02589100410CA0 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				754F1AF61D024B9400410CA0 /* JSON.swift */,
+				754F1AF81D024B9400410CA0 /* JSONParselable.swift */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
 		7552DF811D013A740032ECFA = {
 			isa = PBXGroup;
 			children = (
@@ -104,7 +184,11 @@
 			isa = PBXGroup;
 			children = (
 				7552DF8D1D013A740032ECFA /* AppDelegate.swift */,
+				754F1B0A1D024CEA00410CA0 /* Constants.swift */,
+				754F1B051D024BA300410CA0 /* API */,
+				754F1B091D024C2400410CA0 /* Model */,
 				7552DFBC1D013B210032ECFA /* UI */,
+				754F1B081D024BFA00410CA0 /* Utils */,
 				7552DFBB1D013B0C0032ECFA /* SupportingFiles */,
 			);
 			path = Tagger;
@@ -297,11 +381,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				754F1B0B1D024CEA00410CA0 /* Constants.swift in Sources */,
+				754F1B011D024B9400410CA0 /* JSON.swift in Sources */,
+				754F1B001D024B9400410CA0 /* HttpMethodName.swift in Sources */,
+				754F1AFD1D024B9400410CA0 /* FlickrConstants.swift in Sources */,
+				754F1AFE1D024B9400410CA0 /* GCDUtils.swift in Sources */,
+				754F1AFA1D024B9400410CA0 /* ApiClientResult.swift in Sources */,
 				7552DFC21D0159F00032ECFA /* DiscoverTagsViewController.swift in Sources */,
+				754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */,
 				7552DFC41D015A5D0032ECFA /* PhotoTaggerViewController.swift in Sources */,
+				754F1AFF1D024B9400410CA0 /* HttpApiClient.swift in Sources */,
+				754F1AFC1D024B9400410CA0 /* FlickrApiClient.swift in Sources */,
 				7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */,
+				754F1B031D024B9400410CA0 /* JSONParselable.swift in Sources */,
 				7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */,
 				7552DF8E1D013A740032ECFA /* AppDelegate.swift in Sources */,
+				754F1B021D024B9400410CA0 /* JsonApiClient.swift in Sources */,
+				754F1B0E1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +624,7 @@
 				7552DFB41D013A750032ECFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7552DFB51D013A750032ECFA /* Build configuration list for PBXNativeTarget "TaggerTests" */ = {
 			isa = XCConfigurationList;
@@ -536,6 +633,7 @@
 				7552DFB71D013A750032ECFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7552DFB81D013A750032ECFA /* Build configuration list for PBXNativeTarget "TaggerUITests" */ = {
 			isa = XCConfigurationList;
@@ -544,6 +642,7 @@
 				7552DFBA1D013A750032ECFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

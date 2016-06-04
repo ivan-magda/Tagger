@@ -20,25 +20,13 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import Foundation
 
-// MARK: DiscoverTagsViewController: UIViewController -
+// MARK: API Constants
 
-class DiscoverTagsViewController: UIViewController {
+let FlickrApplicationKey = "REPLACE_WITH_YOUR_KEY"
+let FlickrApplicationSecret = "REPLACE_WITH_YOUR_KEY"
 
-    // MARK: - View Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        FlickrApiClient.sharedInstance.getWeekTagsHotList { (tags, error) in
-            guard error == nil else {
-                print(error?.localizedDescription)
-                return
-            }
-            
-            print(tags)
-        }
-    }
+// MARK: - Error Constants
 
-}
+let BaseErrorDomain = "com.ivanmagda.Tagger"
