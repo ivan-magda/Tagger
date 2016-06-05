@@ -19,7 +19,7 @@ import Foundation
     - ClientError: HTTP response status code between 400...499.
     - UnexpectedError: Failed wit unexpected error.
 */
-public enum ApiClientResult {
+enum ApiClientResult {
     case RawData(NSData)
     case Json(JSONDictionary)
     case Error(NSError)

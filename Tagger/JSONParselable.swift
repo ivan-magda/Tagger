@@ -9,5 +9,5 @@
 import Foundation
 
 protocol JSONParselable {
-    static func decode(json: JSONDictionary) -> Self?
+    static func decode(input: JSONDictionary) -> Self?
 }
