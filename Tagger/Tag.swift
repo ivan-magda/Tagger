@@ -20,22 +20,38 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import Foundation
 
-// MARK: DiscoverTagsViewController: UIViewController -
+// MARK: Tag -
 
-class DiscoverTagsViewController: UIViewController {
-
-    // MARK: - View Life Cycle
+struct Tag {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        FlickrApiClient.sharedInstance.getWeekTagsHotList({ tags in
-            print(tags)
-            }) { error in
-                print(error.localizedDescription)
+    // MARK: - Properties
+    
+    let score: Int
+    let content: String
+    
+    // MARK: - Init
+    
+    init?(json: JSONDictionary) {
+        guard let scoreString = JSON.string(json, key: "score"),
+            let score = Int(scoreString),
+            let content = JSON.string(json, key: "_content") else {
+                return nil
         }
+        
+        self.score = score
+        self.content = content
     }
+    
+}
 
+// MARK: - Tag: JSONParselable -
+
+extension Tag: JSONParselable {
+    
+    static func decode(input: JSONDictionary) -> Tag? {
+        return Tag.init(json: input)
+    }
+    
 }

@@ -28,7 +28,7 @@ typealias MethodParameters = [String: AnyObject]
 
 // MARK: - FlickrApiClient: JsonApiClient -
 
-class FlickrApiClient: JsonApiClient {
+class FlickrApiClient: MIApiClient {
     
     // MARK: - Properties
     

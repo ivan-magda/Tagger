@@ -31,13 +31,6 @@ typealias FlickrImageDownloadingCompletionHandler = (imageData: NSData?, error: 
 
 extension FlickrApiClient {
     
-    private func checkFlickrStatusFromJson(json: JSONDictionary) -> Bool {
-        guard let flickrStatus = json[Constants.FlickrResponseKeys.Status] as? String where flickrStatus == Constants.FlickrResponseValues.OKStatus else {
-            return false
-        }
-        return true
-    }
-    
     // MARK: - Public Methods -
     
     func loadImageData(url: NSURL, completionHandler: FlickrImageDownloadingCompletionHandler) {
@@ -68,56 +61,26 @@ extension FlickrApiClient {
     // MARK: - Tags -
     // MARK: Public
     
-    func getWeekTagsHotList(completionHandler: (tags: [JSONDictionary]?, error: NSError?) -> Void) {
-        getTagsHotListForPeriod(Constants.FlickrParameterValues.WeekPeriod, completionHandler: completionHandler)
+    func getWeekTagsHotList(success: [Tag] -> Void, fail: NSError -> Void) {
+        getTagsHotListForPeriod(Constants.FlickrParameterValues.WeekPeriod, success: success, fail: fail)
     }
     
-    func getTodayTagsHotList(completionHandler: (tags: [JSONDictionary]?, error: NSError?) -> Void) {
-        getTagsHotListForPeriod(Constants.FlickrParameterValues.DayPeriod, completionHandler: completionHandler)
+    func getTodayTagsHotList(success: [Tag] -> Void, fail: NSError -> Void) {
+        getTagsHotListForPeriod(Constants.FlickrParameterValues.DayPeriod, success: success, fail: fail)
     }
     
     // MARK: Private
     
-    private func getTagsHotListForPeriod(period: String, numberOfTags count: Int = 20, completionHandler: (tags: [JSONDictionary]?, error: NSError?) -> Void) {
+    private func getTagsHotListForPeriod(period: String, numberOfTags count: Int = 20, success: [Tag] -> Void, fail: NSError -> Void) {
         var methodParameters = getBaseMethodParameters()
         methodParameters[Constants.FlickrParameterKeys.Method] = Constants.FlickrParameterValues.TagsHotList
         methodParameters[Constants.FlickrParameterKeys.Period] = period
         methodParameters[Constants.FlickrParameterKeys.Count] = count
         
+        let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
+        
         let request = NSURLRequest(URL: urlFromParameters(methodParameters))
-        fetchJson(request) { [unowned self] result in
-            performOnMain {
-                func sendError(error: String) {
-                    self.debugLog("Error: \(error)")
-                    let error = NSError(
-                        domain: FlickrApiClient.Constants.Error.GetTagsHotListErrorDomain,
-                        code: FlickrApiClient.Constants.Error.GetTagsHotListErrorCode,
-                        userInfo: [NSLocalizedDescriptionKey : error]
-                    )
-                    completionHandler(tags: nil, error: error)
-                }
-                
-                switch result {
-                case .Error(let error):
-                    sendError(error.localizedDescription)
-                case .Json(let json):
-                    guard self.checkFlickrStatusFromJson(json) == true else {
-                        sendError("Flick API returned an error.")
-                        return
-                    }
-                    
-                    guard let hotTags = json[Constants.FlickrResponseKeys.HotTags] as? JSONDictionary,
-                        let tags = hotTags[Constants.FlickrResponseKeys.Tag] as? [JSONDictionary] else {
-                        sendError("Could't parse recieved JSON object.")
-                        return
-                    }
-                    
-                    completionHandler(tags: tags, error: nil)
-                default:
-                    sendError(result.defaultErrorMessage()!)
-                }
-            }
-        }
+        fetchCollection(request, rootKeys: keys, success: success, fail: fail)
     }
     
     // MARK: - Photos -
@@ -214,6 +177,15 @@ extension FlickrApiClient {
                 }
             }
         }
+    }
+    
+    // MARK: - Private Helpers -
+    
+    private func checkFlickrStatusFromJson(json: JSONDictionary) -> Bool {
+        guard let flickrStatus = json[Constants.FlickrResponseKeys.Status] as? String where flickrStatus == Constants.FlickrResponseValues.OKStatus else {
+            return false
+        }
+        return true
     }
 
 }

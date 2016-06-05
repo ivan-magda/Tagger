@@ -18,9 +18,9 @@ private struct ErrorDomain {
 }
 
 private enum ErrorCode: Int {
-    case EmptyResponse = 200
-    case JSONDeserializing = 201
-    case NotSuccsessfullResponseStatusCode = 202
+    case EmptyResponse = 120
+    case JSONDeserializing = 121
+    case NotSuccsessfullResponseStatusCode = 122
 }
 
 // MARK: - Typealiases
@@ -70,7 +70,7 @@ class JsonApiClient: HttpApiClient {
         var deserializedJSON: AnyObject?
         
         do {
-            deserializedJSON = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            deserializedJSON = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers)
         } catch let error as NSError {
             completionHandler(jsonObject: nil, error: error)
         }
