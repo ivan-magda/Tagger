@@ -22,20 +22,103 @@
 
 import UIKit
 
-// MARK: DiscoverTagsViewController: UIViewController -
+// MARK: Types
+
+private enum SectionType: Int, CaseCountable {
+    
+    case Trends
+    case Categories
+    
+    enum TrendsTagHeader: Int, CaseCountable {
+        case Today, Week
+        
+        static var tagValues: [String] = {
+            return ["now", "this week"]
+        }()
+    }
+    
+}
+
+// MARK: - DiscoverTagsViewController: UIViewController -
 
 class DiscoverTagsViewController: UIViewController {
+    
+    // MARK: Outlets
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    // MARK: Properties
+    
+    private let defaultTagCategories = [
+        "art", "light", "park", "winter", "sun", "clouds", "family", "new", "macro", "summer"
+    ]
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        FlickrApiClient.sharedInstance.getWeekTagsHotList({ tags in
-            print(tags)
-            }) { error in
-                print(error.localizedDescription)
-        }
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
+}
+
+// MARK: - DiscoverTagsViewController: UICollectionViewDataSource -
+
+extension DiscoverTagsViewController: UICollectionViewDataSource {
+    
+    // MARK: UICollectionViewDataSource
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return SectionType.countCases()
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let section = SectionType(rawValue: section) else { return 0 }
+        switch section {
+        case .Trends:
+            return SectionType.TrendsTagHeader.caseCount
+        case .Categories:
+            return defaultTagCategories.count
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TagCollectionViewCell.reuseIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
+        configureCell(cell, atIndexPath: indexPath)
+        
+        return cell
+    }
+    
+    // MARK: Helpers
+    
+    private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+        guard let section = SectionType(rawValue: indexPath.section) else { return }
+        switch section {
+        case .Trends:
+            configureTrendTagCell(cell, forRow: indexPath.row)
+        case .Categories:
+            configureCategoryTagCell(cell, forRow: indexPath.row)
+        }
+    }
+    
+    private func configureTrendTagCell(cell: TagCollectionViewCell, forRow row: Int) {
+        cell.title.text = SectionType.TrendsTagHeader.tagValues[row]
+    }
+    
+    private func configureCategoryTagCell(cell: TagCollectionViewCell, forRow row: Int) {
+        cell.title.text = defaultTagCategories[row]
+    }
+    
+}
+
+// MARK: - DiscoverTagsViewController: UICollectionViewDelegate -
+
+extension DiscoverTagsViewController: UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        print("Did select item at index: \(indexPath.row)")
+    }
+    
 }
