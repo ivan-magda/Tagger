@@ -67,28 +67,20 @@ class MIApiClient: JsonApiClient {
             performOnMain {
                 if let error = self.checkApiClientResultForAnError(result) {
                     fail(error: error)
-                } else {
-                    switch result {
-                    case .Json(let json):
-                        if let resource = parseBlock(json) {
-                            success(resource)
-                        } else {
-                            self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                            self.debugLog("\(json)")
-                            
-                            let error = NSError(
-                                domain: ErrorDomain.UnexpectedResponse,
-                                code: ErrorCode.UnexpectedResponse.rawValue,
-                                userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]
-                            )
-                            
-                            fail(error: error)
-                        }
-                    default:
-                        fail(error: NSError(domain: ErrorDomain.UnexpectedSituation,
-                            code: ErrorCode.UnexpectedSituation.rawValue,
-                            userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
+                    return
+                }
+                
+                switch result {
+                case .Json(let json):
+                    guard let resource = parseBlock(json) else {
+                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
+                        self.debugLog("\(json)")
+                        fail(error: NSError(domain: ErrorDomain.UnexpectedResponse, code: ErrorCode.UnexpectedResponse.rawValue, userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
+                        return
                     }
+                    success(resource)
+                default:
+                    fail(error: NSError(domain: ErrorDomain.UnexpectedSituation, code: ErrorCode.UnexpectedSituation.rawValue, userInfo: [NSLocalizedDescriptionKey : "Unexpected error."]))
                 }
             }
         }
@@ -107,42 +99,44 @@ class MIApiClient: JsonApiClient {
             performOnMain {
                 if let error = self.checkApiClientResultForAnError(result) {
                     failure(error: error)
-                } else {
-                    switch result {
-                    case .Json(let json):
-                        var jsonArray: [JSONDictionary]?
-                        var json = json
-                        for key in rootKeys {
-                            if key == rootKeys.last! {
-                                jsonArray = json[key] as? [JSONDictionary]
-                            } else {
-                                if let node = json[key] as? JSONDictionary {
-                                    json = node
-                                } else {
-                                    failure(error: parsingJsonError())
-                                    self.debugLog("\(json)")
-                                    return
-                                }
-                            }
+                    return
+                }
+                
+                switch result {
+                case .Json(let json):
+                    var jsonArray: [JSONDictionary]?
+                    var json = json
+                    
+                    for key in rootKeys {
+                        if key == rootKeys.last! {
+                            jsonArray = json[key] as? [JSONDictionary]
+                            break
                         }
                         
-                        guard jsonArray != nil else {
+                        guard let node = json[key] as? JSONDictionary else {
                             failure(error: parsingJsonError())
+                            self.debugLog("\(json)")
                             return
                         }
-                        
-                        if let resourceCollection = parseBlock(jsonArray!) {
-                            success(resourceCollection)
-                        } else {
-                            self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                            self.debugLog("\(json)")
-                            failure(error: parsingJsonError())
-                        }
-                    default:
-                        failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
-                            code: ErrorCode.UnexpectedSituation.rawValue,
-                            userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
+                        json = node
                     }
+                    
+                    guard jsonArray != nil else {
+                        failure(error: parsingJsonError())
+                        return
+                    }
+                    
+                    guard let resourceCollection = parseBlock(jsonArray!) else {
+                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
+                        self.debugLog("\(json)")
+                        failure(error: parsingJsonError())
+                        return
+                    }
+                    success(resourceCollection)
+                default:
+                    failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
+                        code: ErrorCode.UnexpectedSituation.rawValue,
+                        userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
                 }
             }
         }
