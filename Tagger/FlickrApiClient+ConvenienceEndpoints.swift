@@ -21,11 +21,22 @@
  */
 
 import Foundation
+import UIKit.UIImage
 
-// MARK: Typealiases
+// MARK: Types
+
+enum Period: String {
+    case Day = "day"
+    case Week = "week"
+}
+
+// MARK: - Typealiases
+
+typealias FlickrTagSuccessCompletionHandler = [Tag] -> Void
+typealias FlickrTagFailCompletionHandler = NSError -> Void
 
 typealias FlickPhotoTaskCompletionHandler = (album: JSONDictionary?, photos: [JSONDictionary]?, error: NSError?) -> Void
-typealias FlickrImageDownloadingCompletionHandler = (imageData: NSData?, error: NSError?) -> Void
+typealias FlickrImageDownloadingCompletionHandler = (image: UIImage?, error: NSError?) -> Void
 
 // MARK: - FlickrApiClient (Calling Api Endpoints)
 
@@ -43,14 +54,14 @@ extension FlickrApiClient {
                         code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
                         userInfo: [NSLocalizedDescriptionKey : error]
                     )
-                    completionHandler(imageData: nil, error: error)
+                    completionHandler(image: nil, error: error)
                 }
                 
                 switch result {
                 case .Error(let error):
                     sendError(error.localizedDescription)
                 case .RawData(let data):
-                    completionHandler(imageData: data, error: nil)
+                    completionHandler(image: UIImage(data: data), error: nil)
                 default:
                     sendError(result.defaultErrorMessage()!)
                 }
@@ -61,24 +72,13 @@ extension FlickrApiClient {
     // MARK: - Tags -
     // MARK: Public
     
-    func getWeekTagsHotList(success: [Tag] -> Void, fail: NSError -> Void) {
-        getTagsHotListForPeriod(Constants.FlickrParameterValues.WeekPeriod, success: success, fail: fail)
-    }
-    
-    func getTodayTagsHotList(success: [Tag] -> Void, fail: NSError -> Void) {
-        getTagsHotListForPeriod(Constants.FlickrParameterValues.DayPeriod, success: success, fail: fail)
-    }
-    
-    // MARK: Private
-    
-    private func getTagsHotListForPeriod(period: String, numberOfTags count: Int = 20, success: [Tag] -> Void, fail: NSError -> Void) {
+    func getListHotTagsForPeriod(period: Period, numberOfTags count: Int = 20, withSuccessBlock success: FlickrTagSuccessCompletionHandler, failBlock fail: FlickrTagFailCompletionHandler) {
         var methodParameters = getBaseMethodParameters()
         methodParameters[Constants.FlickrParameterKeys.Method] = Constants.FlickrParameterValues.TagsHotList
-        methodParameters[Constants.FlickrParameterKeys.Period] = period
+        methodParameters[Constants.FlickrParameterKeys.Period] = period.rawValue
         methodParameters[Constants.FlickrParameterKeys.Count] = count
         
         let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
-        
         let request = NSURLRequest(URL: urlFromParameters(methodParameters))
         fetchCollection(request, rootKeys: keys, success: success, fail: fail)
     }

@@ -20,43 +20,16 @@
  * THE SOFTWARE.
  */
 
-import Foundation
+import UIKit
 
-// MARK: Tag -
-
-struct Tag {
-    
-    // MARK: - Properties
-    
-    let score: Int
-    let content: String
-    
-    // MARK: - Init
-    
-    init(score: Int, content: String) {
-        self.score = score
-        self.content = content
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let scoreString = JSON.string(json, key: "score"),
-            let score = Int(scoreString),
-            let content = JSON.string(json, key: "_content") else {
-                return nil
-        }
-        
-        self.score = score
-        self.content = content
-    }
-    
+protocol Alertable {
+    func alert(title: String?, message: String, handler: (UIAlertAction -> Void)?) -> UIAlertController
 }
 
-// MARK: - Tag: JSONParselable -
-
-extension Tag: JSONParselable {
-    
-    static func decode(input: JSONDictionary) -> Tag? {
-        return Tag.init(json: input)
+extension Alertable {
+    func alert(title: String?, message: String, handler: (UIAlertAction -> Void)?) -> UIAlertController {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: handler))
+        return alert
     }
-    
 }

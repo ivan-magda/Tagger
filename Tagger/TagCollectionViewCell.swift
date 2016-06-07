@@ -31,4 +31,30 @@ class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var title: UILabel!
     
+    // MARK: Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        themeCell()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        themeCell()
+    }
+    
+    // Override Methods
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+    
+    // MARK: Private
+    
+    private func themeCell() {
+        layer.borderColor = UIColor.lightGrayColor().CGColor
+        layer.borderWidth = 0.5
+    }
+    
 }
