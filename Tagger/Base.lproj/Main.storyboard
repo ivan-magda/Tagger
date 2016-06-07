@@ -39,7 +39,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="75L-rJ-jol" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1372" y="207"/>
+            <point key="canvasLocation" x="1057" y="207"/>
         </scene>
         <!--Discover-->
         <scene sceneID="tne-QT-ifu">
@@ -56,15 +56,15 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cuw-7K-PRw">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="N3w-or-Q8j">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="8" id="2yT-z3-KI3">
                                     <size key="itemSize" width="100" height="100"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TagCollectionViewCell" id="bEY-2M-rk3" customClass="TagCollectionViewCell" customModule="Tagger" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="100" height="100"/>
+                                        <rect key="frame" x="0.0" y="114" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -74,9 +74,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myV-ZM-Lbd">
-                                                    <rect key="frame" x="33" y="39" width="34" height="21"/>
+                                                    <rect key="frame" x="33" y="40" width="34" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -96,6 +96,26 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SectionHeaderCollectionReusableView" id="wXr-Vs-VNn" customClass="SectionHeaderCollectionReusableView" customModule="Tagger" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="64" width="320" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yvw-Sy-cg5">
+                                            <rect key="frame" x="15" y="14" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Yvw-Sy-cg5" firstAttribute="leading" secondItem="wXr-Vs-VNn" secondAttribute="leading" constant="15" id="3SB-YM-eXD"/>
+                                        <constraint firstItem="Yvw-Sy-cg5" firstAttribute="centerY" secondItem="wXr-Vs-VNn" secondAttribute="centerY" id="Gbq-7Y-0TA"/>
+                                        <constraint firstItem="Yvw-Sy-cg5" firstAttribute="leading" secondItem="wXr-Vs-VNn" secondAttribute="leadingMargin" constant="7" id="srB-71-Jlc"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="title" destination="Yvw-Sy-cg5" id="2bh-Bc-FkX"/>
+                                    </connections>
+                                </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -113,7 +133,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1379" y="-522"/>
+            <point key="canvasLocation" x="1057" y="-522"/>
         </scene>
         <!--Tags-->
         <scene sceneID="JHw-fO-ArO">

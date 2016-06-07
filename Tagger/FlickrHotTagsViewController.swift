@@ -20,43 +20,44 @@
  * THE SOFTWARE.
  */
 
-import Foundation
+import UIKit
 
-// MARK: Tag -
+// MARK: FlickrHotTagsViewController: TagListViewController -
 
-struct Tag {
+class FlickrHotTagsViewController: TagListViewController {
     
-    // MARK: - Properties
+    // MARK: Properties
     
-    let score: Int
-    let content: String
+    private var period = Period.Day
+    var flickrApiClient: FlickrApiClient!
+
+    // MARK: - View Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchData()
+    }
     
     // MARK: - Init
     
-    init(score: Int, content: String) {
-        self.score = score
-        self.content = content
+    convenience init(period: Period, flickrApiClient: FlickrApiClient) {
+        self.init(nibName: TagListViewController.nibName, bundle: nil)
+        self.period = period
+        self.flickrApiClient = flickrApiClient
     }
     
-    init?(json: JSONDictionary) {
-        guard let scoreString = JSON.string(json, key: "score"),
-            let score = Int(scoreString),
-            let content = JSON.string(json, key: "_content") else {
-                return nil
+    // MARK: - Private
+    
+    private func fetchData() {
+        UIUtils.showNetworkActivityIndicator()
+        flickrApiClient.getListHotTagsForPeriod(period, withSuccessBlock: { [unowned self] tags in
+            UIUtils.hideNetworkActivityIndicator()
+            self.tags = tags
+        }) { [unowned self] error in
+            UIUtils.hideNetworkActivityIndicator()
+            let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
-        
-        self.score = score
-        self.content = content
     }
-    
-}
 
-// MARK: - Tag: JSONParselable -
-
-extension Tag: JSONParselable {
-    
-    static func decode(input: JSONDictionary) -> Tag? {
-        return Tag.init(json: input)
-    }
-    
 }

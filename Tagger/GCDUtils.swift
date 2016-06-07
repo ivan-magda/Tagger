@@ -21,3 +21,9 @@ func performAfterOnMain(time: Double, block: Block) {
         block()
     }
 }
+
+func performOnBackgroud(block: Block) {
+    dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_UTILITY.rawValue), 0)) {
+        block()
+    }
+}

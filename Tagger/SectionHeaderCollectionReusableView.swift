@@ -20,43 +20,18 @@
  * THE SOFTWARE.
  */
 
-import Foundation
+import UIKit
 
-// MARK: Tag -
+// MARK: SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseIdentifierable -
 
-struct Tag {
+class SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseIdentifierable {
     
-    // MARK: - Properties
+    // MARK: Outlets
     
-    let score: Int
-    let content: String
+    @IBOutlet weak var title: UILabel!
     
-    // MARK: - Init
+    // MARK: Properties
     
-    init(score: Int, content: String) {
-        self.score = score
-        self.content = content
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let scoreString = JSON.string(json, key: "score"),
-            let score = Int(scoreString),
-            let content = JSON.string(json, key: "_content") else {
-                return nil
-        }
-        
-        self.score = score
-        self.content = content
-    }
-    
-}
-
-// MARK: - Tag: JSONParselable -
-
-extension Tag: JSONParselable {
-    
-    static func decode(input: JSONDictionary) -> Tag? {
-        return Tag.init(json: input)
-    }
+    static let height: CGFloat = 26.0
     
 }
