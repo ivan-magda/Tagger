@@ -66,8 +66,13 @@ class DiscoverTagsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
+        
+        flickrApiClient.searchPhotosWithTags(defaultTagCategories, doneWithSuccess: { album in
+            print(album)
+        }) { error in
+            print(error.localizedDescription)
+        }
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
