@@ -29,6 +29,8 @@
 		754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1AF91D024B9400410CA0 /* UIUtils.swift */; };
 		754F1B0B1D024CEA00410CA0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1B0A1D024CEA00410CA0 /* Constants.swift */; };
 		754F1B0E1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F1B0D1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift */; };
+		75523B561D0717BB00EBB0FC /* CountPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75523B541D0717BB00EBB0FC /* CountPickerViewController.swift */; };
+		75523B571D0717BB00EBB0FC /* CountPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */; };
 		7552DF8E1D013A740032ECFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DF8D1D013A740032ECFA /* AppDelegate.swift */; };
 		7552DF931D013A740032ECFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF911D013A740032ECFA /* Main.storyboard */; };
 		7552DF951D013A740032ECFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7552DF941D013A740032ECFA /* Assets.xcassets */; };
@@ -81,6 +83,8 @@
 		754F1AF91D024B9400410CA0 /* UIUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		754F1B0A1D024CEA00410CA0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		754F1B0D1D025A0C00410CA0 /* FlickrApiClient+ConvenienceEndpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlickrApiClient+ConvenienceEndpoints.swift"; sourceTree = "<group>"; };
+		75523B541D0717BB00EBB0FC /* CountPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountPickerViewController.swift; sourceTree = "<group>"; };
+		75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountPickerViewController.xib; sourceTree = "<group>"; };
 		7552DF8A1D013A740032ECFA /* Tagger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tagger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7552DF8D1D013A740032ECFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7552DF921D013A740032ECFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -278,6 +282,7 @@
 				7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */,
 				754532341D063F4000AEC34C /* TagListViewController.swift */,
 				754532421D066EBE00AEC34C /* FlickrHotTagsViewController.swift */,
+				75523B541D0717BB00EBB0FC /* CountPickerViewController.swift */,
 				7552DFC31D015A5D0032ECFA /* PhotoTaggerViewController.swift */,
 				7552DFC51D015A840032ECFA /* TagsViewController.swift */,
 				7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */,
@@ -292,6 +297,7 @@
 				7552DF961D013A740032ECFA /* LaunchScreen.storyboard */,
 				7552DF941D013A740032ECFA /* Assets.xcassets */,
 				7545323F1D0669D700AEC34C /* TagListViewController.xib */,
+				75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -401,6 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7552DF981D013A740032ECFA /* LaunchScreen.storyboard in Resources */,
+				75523B571D0717BB00EBB0FC /* CountPickerViewController.xib in Resources */,
 				754532411D0669D700AEC34C /* TagListViewController.xib in Resources */,
 				7552DF951D013A740032ECFA /* Assets.xcassets in Resources */,
 				7552DF931D013A740032ECFA /* Main.storyboard in Resources */,
@@ -433,6 +440,7 @@
 				754C204A1D043FE200CA4B34 /* SectionHeaderCollectionReusableView.swift in Sources */,
 				754F1B001D024B9400410CA0 /* HttpMethod.swift in Sources */,
 				754C20451D041F3D00CA4B34 /* CellReuseIdentifierable.swift in Sources */,
+				75523B561D0717BB00EBB0FC /* CountPickerViewController.swift in Sources */,
 				754F1AFD1D024B9400410CA0 /* FlickrConstants.swift in Sources */,
 				754F1AFE1D024B9400410CA0 /* GCDUtils.swift in Sources */,
 				754F1AFA1D024B9400410CA0 /* ApiClientResult.swift in Sources */,

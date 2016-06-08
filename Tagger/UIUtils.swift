@@ -45,4 +45,10 @@ class UIUtils {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
     
+    // MARK: View Controller
+    
+    class func getRootViewController() -> UIViewController? {
+        return UIApplication.sharedApplication().keyWindow?.rootViewController
+    }
+    
 }

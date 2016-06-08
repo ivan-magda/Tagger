@@ -28,13 +28,16 @@ class FlickrHotTagsViewController: TagListViewController {
     
     // MARK: Properties
     
-    private var period = Period.Day
     var flickrApiClient: FlickrApiClient!
-
+    
+    private var period = Period.Day
+    private var numberOfTags = 20
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
         fetchData()
     }
     
@@ -46,11 +49,30 @@ class FlickrHotTagsViewController: TagListViewController {
         self.flickrApiClient = flickrApiClient
     }
     
+    // MARK: Actions
+    
+    func moreBarButtonItemDidPressed() {
+        let actionSheet = UIAlertController(title: "Choose an action", message: nil, preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .Default, handler: { [unowned self] action in
+            CountPickerViewController.showPickerWithTitle("Number of Tags", rows: 200, initialSelection: self.numberOfTags-1, doneBlock: { (selectedIndex, selectedValue) in
+                self.numberOfTags = selectedValue
+                self.fetchData()
+                }, cancelBlock: nil)
+            }))
+        presentViewController(actionSheet, animated: true, completion: nil)
+    }
+    
     // MARK: - Private
+    
+    private func configureUI() {
+        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"), style: .Plain, target: self, action: #selector(moreBarButtonItemDidPressed))
+        navigationItem.rightBarButtonItem = moreBarButtonItem
+    }
     
     private func fetchData() {
         UIUtils.showNetworkActivityIndicator()
-        flickrApiClient.getListHotTagsForPeriod(period, withSuccessBlock: { [unowned self] tags in
+        flickrApiClient.getListHotTagsForPeriod(period, numberOfTags: numberOfTags, withSuccessBlock: { [unowned self] tags in
             UIUtils.hideNetworkActivityIndicator()
             self.tags = tags
         }) { [unowned self] error in
@@ -59,5 +81,5 @@ class FlickrHotTagsViewController: TagListViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
-
+    
 }
