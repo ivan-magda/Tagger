@@ -22,7 +22,7 @@
 
 import Foundation
 
-// MARK: - FlickrApiClient (Constants)
+// MARK: FlickrApiClient (Constants)
 
 extension FlickrApiClient {
     
@@ -35,7 +35,6 @@ extension FlickrApiClient {
         // MARK: Flickr
         
         struct Flickr {
-            
             static let APIScheme = "https"
             static let APIHost = "api.flickr.com"
             static let APIPath = "/services/rest"
@@ -49,7 +48,6 @@ extension FlickrApiClient {
         // MARK: Flickr Parameter Keys
         
         struct FlickrParameterKeys {
-            
             static let Method = "method"
             static let APIKey = "api_key"
             static let GalleryID = "gallery_id"
@@ -62,12 +60,13 @@ extension FlickrApiClient {
             static let PerPage = "per_page"
             static let Period = "period"
             static let Count = "count"
+            static let ContentType = "content_type"
+            static let Tags = "tags"
         }
         
         // MARK: Flickr Parameter Values
         
         struct FlickrParameterValues {
-            
             static let APIKey = FlickrApplicationKey
             static let ResponseFormat = "json"
             static let DisableJSONCallback = "1"
@@ -80,12 +79,18 @@ extension FlickrApiClient {
             static let UseSafeSearch = "1"
             static let DayPeriod = "day"
             static let WeekPeriod = "week"
+            
+            enum ContentType: Int {
+                case Photos = 1
+                case Screenshots
+                case Other
+            }
+            
         }
         
         // MARK: Flickr Response Keys
         
         struct FlickrResponseKeys {
-            
             static let Status = "stat"
             static let Photos = "photos"
             static let Photo = "photo"
@@ -100,6 +105,10 @@ extension FlickrApiClient {
             static let Total = "total"
             static let HotTags = "hottags"
             static let Tag = "tag"
+            static let Owner = "owner"
+            static let Secret = "secret"
+            static let Server = "server"
+            static let Farm = "farm"
         }
         
         // MARK: Flickr Response Values
@@ -111,7 +120,6 @@ extension FlickrApiClient {
         // MARK: Error
         
         struct Error {
-            
             static let ErrorDomain = "\(BaseErrorDomain).FlickrApiClient"
             static let ErrorCode = 300
             

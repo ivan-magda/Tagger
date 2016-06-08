@@ -32,11 +32,13 @@ enum Period: String {
 
 // MARK: - Typealiases
 
+typealias FlickrImageDownloadingCompletionHandler = (image: UIImage?, error: NSError?) -> Void
+
 typealias FlickrTagSuccessCompletionHandler = [Tag] -> Void
 typealias FlickrTagFailCompletionHandler = NSError -> Void
 
-typealias FlickPhotoTaskCompletionHandler = (album: JSONDictionary?, photos: [JSONDictionary]?, error: NSError?) -> Void
-typealias FlickrImageDownloadingCompletionHandler = (image: UIImage?, error: NSError?) -> Void
+typealias FlickrPhotosSearchSuccessBlock = (album: FlickrAlbum) -> Void
+typealias FlickrPhotosSearchFailBlock = (error: NSError) -> Void
 
 // MARK: - FlickrApiClient (Calling Api Endpoints)
 
@@ -73,8 +75,7 @@ extension FlickrApiClient {
     // MARK: Public
     
     func getListHotTagsForPeriod(period: Period, numberOfTags count: Int = 20, withSuccessBlock success: FlickrTagSuccessCompletionHandler, failBlock fail: FlickrTagFailCompletionHandler) {
-        var methodParameters = getBaseMethodParameters()
-        methodParameters[Constants.FlickrParameterKeys.Method] = Constants.FlickrParameterValues.TagsHotList
+        var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.TagsHotList)
         methodParameters[Constants.FlickrParameterKeys.Period] = period.rawValue
         methodParameters[Constants.FlickrParameterKeys.Count] = count
         
@@ -86,106 +87,43 @@ extension FlickrApiClient {
     // MARK: - Photos -
     // MARK: Public
     
-    /// Returns number of pages for a photo search.
-    func getNumberOfPagesForFlickrPhotoSearch(completionHandler: (Int, NSError?) -> Void) {
-        var methodParameters = getBaseMethodParameters()
-        methodParameters[Constants.FlickrParameterKeys.Method] = Constants.FlickrParameterValues.SearchMethod
-        let request = NSURLRequest(URL: urlFromParameters(methodParameters))
-        
-        fetchJson(request) { [unowned self] apiClientResult in
-            performOnMain {
-                func sendError(error: String) {
-                    self.debugLog("Error: \(error)")
-                    let error = NSError(
-                        domain: FlickrApiClient.Constants.Error.NumberOfPagesForPhotoSearchErrorDomain,
-                        code: FlickrApiClient.Constants.Error.NumberOfPagesForPhotoSearchErrorCode,
-                        userInfo: [NSLocalizedDescriptionKey : error]
-                    )
-                    completionHandler(0, error)
-                }
-                
-                switch apiClientResult {
-                case .Error(let error):
-                    sendError(error.localizedDescription)
-                case .Json(let json):
-                    guard self.checkFlickrStatusFromJson(json) == true else {
-                        sendError("Flick API returned an error.")
-                        return
-                    }
-                    
-                    guard let photosDictionary = json[Constants.FlickrResponseKeys.Photos] as? JSONDictionary,
-                        let numberOfPages = photosDictionary[Constants.FlickrResponseKeys.Pages] as? Int else {
-                            sendError("Could't parse recieved JSON object.")
-                            return
-                    }
-                    
-                    completionHandler(numberOfPages, nil)
-                default:
-                    sendError(apiClientResult.defaultErrorMessage()!)
-                }
-            }
-        }
+    func searchPhotosWithTags(tags: [String], doneWithSuccess success: FlickrPhotosSearchSuccessBlock, failBlock fail: FlickrPhotosSearchFailBlock) {
+        var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.SearchMethod)
+        methodParameters[Constants.FlickrParameterKeys.Extras] = "\(Constants.FlickrParameterValues.ThumbnailURL),\(Constants.FlickrParameterValues.SmallURL),\(Constants.FlickrParameterValues.MediumURL)"
+        methodParameters[Constants.FlickrParameterKeys.PerPage] = 20
+        methodParameters[Constants.FlickrParameterKeys.ContentType] = Constants.FlickrParameterValues.ContentType.Photos.rawValue
+        methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joinWithSeparator(",")
+        searchPhotosWithParameters(methodParameters, doneWithSuccess: success, failBlock: fail)
     }
     
     // MARK: Private
     
-    private func fetchPhotosWithMethodParameters(param: MethodParameters, completionHandler: FlickPhotoTaskCompletionHandler) {
-        func sendError(error: String) {
-            debugLog("Error: \(error)")
-            let error = NSError(
-                domain: FlickrApiClient.Constants.Error.FetchPhotosErrorDomain,
-                code: FlickrApiClient.Constants.Error.FetchPhotosErrorCode,
-                userInfo: [NSLocalizedDescriptionKey : error]
-            )
-            completionHandler(album: nil, photos: nil, error: error)
-        }
-        
+    private func searchPhotosWithParameters(param: MethodParameters, doneWithSuccess success: FlickrPhotosSearchSuccessBlock, failBlock fail: FlickrPhotosSearchFailBlock) {
         let request = NSURLRequest(URL: urlFromParameters(param))
-        fetchJson(request) { apiClientResult in
+        fetchResource(request, success: { (album: FlickrAlbum) in
             performOnMain {
-                switch apiClientResult {
-                case .Error(let error):
-                    sendError(error.localizedDescription)
-                case .Json(let json):
-                    // GUARD: Did Flickr return an error?
-                    guard let flickrStatus = json[Constants.FlickrResponseKeys.Status] as? String where flickrStatus == Constants.FlickrResponseValues.OKStatus else {
-                        sendError("Flick API returned an error.")
-                        return
-                    }
-                    
-                    // GUARD: Are the "photos" and "photo" keys in our result.
-                    guard let photosDictionary = json[Constants.FlickrResponseKeys.Photos] as? JSONDictionary,
-                        let photoArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [JSONDictionary] else {
-                            sendError("Cannot find 'photos' or 'photo' keys!")
-                            return
-                    }
-                    
-                    guard photoArray.count > 0 else {
-                        sendError("No photo found. Try again.")
-                        return
-                    }
-                    
-                    var albumDictionary = JSONDictionary()
-                    albumDictionary[Constants.FlickrResponseKeys.Page] = photosDictionary[Constants.FlickrParameterKeys.Page]
-                    albumDictionary[Constants.FlickrResponseKeys.Pages] = photosDictionary[Constants.FlickrResponseKeys.Pages]
-                    albumDictionary[Constants.FlickrResponseKeys.PerPage] = photosDictionary[Constants.FlickrResponseKeys.PerPage]
-                    albumDictionary[Constants.FlickrResponseKeys.Total] = photosDictionary[Constants.FlickrResponseKeys.Total]
-                    
-                    completionHandler(album: albumDictionary, photos: photoArray, error: nil)
-                default:
-                    sendError(apiClientResult.defaultErrorMessage()!)
-                }
+                success(album: album)
+            }
+        }) { error in
+            performOnMain {
+                fail(error: error)
             }
         }
     }
     
     // MARK: - Private Helpers -
     
-    private func checkFlickrStatusFromJson(json: JSONDictionary) -> Bool {
+    private func parametersWithMethodName(method: String) -> MethodParameters {
+        var parameters = getBaseMethodParameters()
+        parameters[Constants.FlickrParameterKeys.Method] = method
+        return parameters
+    }
+    
+    private func checkFlickrResponse(json: JSONDictionary) -> Bool {
         guard let flickrStatus = json[Constants.FlickrResponseKeys.Status] as? String where flickrStatus == Constants.FlickrResponseValues.OKStatus else {
             return false
         }
         return true
     }
-
+    
 }
