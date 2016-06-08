@@ -9,7 +9,7 @@
         <scene sceneID="ISO-ax-u4r">
             <objects>
                 <navigationController id="ltE-10-cAx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tagging" image="hammer" id="Px3-R9-ryy"/>
+                    <tabBarItem key="tabBarItem" title="Tagging" image="hammer-tab-bar" id="Px3-R9-ryy"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h3o-fL-usK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -198,7 +198,7 @@
         <scene sceneID="gb5-G8-HTQ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2hs-dC-212" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" image="compass" id="dwL-JL-jU8"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="compass-tab-bar" id="dwL-JL-jU8"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5C9-Io-UwC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -217,7 +217,7 @@
         <scene sceneID="B0u-Bj-RMB">
             <objects>
                 <navigationController id="8Jd-ez-daW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tags" image="tags" id="Uql-lA-Ion"/>
+                    <tabBarItem key="tabBarItem" title="Tags" image="tags-tab-bar" id="Uql-lA-Ion"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="u00-On-cR8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -234,7 +234,7 @@
         <scene sceneID="1wV-1c-KzS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dUW-0L-org" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="More" image="more" id="n4h-OA-2ys"/>
+                    <tabBarItem key="tabBarItem" title="More" image="more-tab-bar" id="n4h-OA-2ys"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WrH-E9-c82">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -251,9 +251,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="compass" width="30" height="30"/>
-        <image name="hammer" width="30" height="30"/>
-        <image name="more" width="30" height="30"/>
-        <image name="tags" width="30" height="30"/>
+        <image name="compass-tab-bar" width="30" height="30"/>
+        <image name="hammer-tab-bar" width="30" height="30"/>
+        <image name="more-tab-bar" width="30" height="30"/>
+        <image name="tags-tab-bar" width="30" height="30"/>
     </resources>
 </document>
