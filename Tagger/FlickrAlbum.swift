@@ -31,7 +31,7 @@ struct FlickrAlbum {
     let page: Int
     let pages: Int
     let perpage: Int
-    let total: String
+    let total: Int
     var photos: [FlickrPhoto]
     
     // MARK: Init
@@ -41,7 +41,8 @@ struct FlickrAlbum {
             let page = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Page),
             let pages = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Pages),
             let perpage = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.PerPage),
-            let total = JSON.string(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Total),
+            let totalString = JSON.string(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Total),
+            let total = Int(totalString),
             let photoJsonArray = photosJson[FlickrApiClient.Constants.FlickrResponseKeys.Photo] as? [JSONDictionary] else {
                 return nil
         }

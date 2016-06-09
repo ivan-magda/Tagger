@@ -70,12 +70,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eid-Wx-zvo">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eid-Wx-zvo">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myV-ZM-Lbd">
-                                                    <rect key="frame" x="33" y="40" width="34" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <rect key="frame" x="28" y="37" width="45" height="26"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -83,8 +83,10 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="myV-ZM-Lbd" secondAttribute="trailing" constant="4" id="74m-By-hID"/>
                                             <constraint firstAttribute="trailing" secondItem="eid-Wx-zvo" secondAttribute="trailing" id="8MD-r8-d9k"/>
                                             <constraint firstItem="myV-ZM-Lbd" firstAttribute="centerY" secondItem="bEY-2M-rk3" secondAttribute="centerY" id="9US-O6-J3T"/>
+                                            <constraint firstItem="myV-ZM-Lbd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bEY-2M-rk3" secondAttribute="leading" constant="4" id="GOr-T0-v0n"/>
                                             <constraint firstItem="myV-ZM-Lbd" firstAttribute="centerX" secondItem="bEY-2M-rk3" secondAttribute="centerX" id="HrT-ce-uwG"/>
                                             <constraint firstAttribute="bottom" secondItem="eid-Wx-zvo" secondAttribute="bottom" id="YBw-wQ-szh"/>
                                             <constraint firstItem="eid-Wx-zvo" firstAttribute="top" secondItem="bEY-2M-rk3" secondAttribute="top" id="dkm-Z9-3Ft"/>
