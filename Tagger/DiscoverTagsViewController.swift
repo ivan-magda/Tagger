@@ -46,9 +46,9 @@ private enum SegueIdentifier: String {
     case TagCategoryDetail
 }
 
-// MARK: - DiscoverTagsViewController: UIViewController -
+// MARK: - DiscoverTagsViewController: UIViewController, Alertable -
 
-class DiscoverTagsViewController: UIViewController {
+class DiscoverTagsViewController: UIViewController, Alertable {
     
     // MARK: Outlets
     
@@ -57,22 +57,18 @@ class DiscoverTagsViewController: UIViewController {
     // MARK: Properties
     
     private let flickrApiClient = FlickrApiClient.sharedInstance
+    
     private var numberOfColumns = 2
     private let defaultTagCategories = [
         "art", "light", "park", "winter", "sun", "clouds", "family", "new", "macro", "summer"
     ]
+    private var images = [String: UIImage]()
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        
-        flickrApiClient.searchPhotosWithTags(defaultTagCategories, doneWithSuccess: { album in
-            print(album)
-        }) { error in
-            print(error.localizedDescription)
-        }
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -145,16 +141,45 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         case .Trends:
             configureTrendTagCell(cell, forRow: indexPath.row)
         case .Categories:
-            configureCategoryTagCell(cell, forRow: indexPath.row)
+            configureCategoryTagCell(cell, atIndexPath: indexPath)
         }
     }
     
     private func configureTrendTagCell(cell: TagCollectionViewCell, forRow row: Int) {
         cell.title.text = SectionType.TrendingTags.tags[row]
+        cell.title.textColor = .blackColor()
+        cell.imageView.image = nil
     }
     
-    private func configureCategoryTagCell(cell: TagCollectionViewCell, forRow row: Int) {
-        cell.title.text = defaultTagCategories[row]
+    private func configureCategoryTagCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+        cell.title.text = defaultTagCategories[indexPath.row]
+        updateTitleColorForCell(cell)
+        
+        let tag = defaultTagCategories[indexPath.row]
+        if let image = images[tag] {
+            cell.imageView.image = image
+            updateTitleColorForCell(cell)
+            return
+        }
+        
+        flickrApiClient.randomPhotoFromTags([tag], successBlock: { [weak self] image in
+            self?.setImage(image, toCellAtIndexPath: indexPath)
+            }, failBlock: { [weak self] error in
+                self?.setImage(nil, toCellAtIndexPath: indexPath)
+                print("Failed to load an image. Error: \(error.localizedDescription)")
+            })
+    }
+    
+    private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
+        guard collectionView.indexPathsForVisibleItems().contains(indexPath) == true else { return }
+        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCollectionViewCell else { return }
+        cell.imageView.image = image
+        images[defaultTagCategories[indexPath.row]] = image
+        updateTitleColorForCell(cell)
+    }
+    
+    private func updateTitleColorForCell(cell: TagCollectionViewCell) {
+        cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
     }
     
     private func configureSectionHeaderView(view: SectionHeaderCollectionReusableView, forIndexPath indexPath: NSIndexPath) {

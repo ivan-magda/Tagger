@@ -32,13 +32,10 @@ enum Period: String {
 
 // MARK: - Typealiases
 
-typealias FlickrImageDownloadingCompletionHandler = (image: UIImage?, error: NSError?) -> Void
-
-typealias FlickrTagSuccessCompletionHandler = [Tag] -> Void
-typealias FlickrTagFailCompletionHandler = NSError -> Void
-
-typealias FlickrPhotosSearchSuccessBlock = (album: FlickrAlbum) -> Void
-typealias FlickrPhotosSearchFailBlock = (error: NSError) -> Void
+typealias FlickrRequestFailCompletionHandler = (error: NSError) -> Void
+typealias FlickrImageDownloadingSuccessCompletionHandler = (image: UIImage) -> Void
+typealias FlickrTagsSuccessCompletionHandler = (tags: [Tag]) -> Void
+typealias FlickrPhotosSearchSuccessCompletionHandler = (album: FlickrAlbum) -> Void
 
 // MARK: - FlickrApiClient (Calling Api Endpoints)
 
@@ -46,7 +43,7 @@ extension FlickrApiClient {
     
     // MARK: - Public Methods -
     
-    func loadImageData(url: NSURL, completionHandler: FlickrImageDownloadingCompletionHandler) {
+    func loadImageData(url: NSURL, successBlock success: FlickrImageDownloadingSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
         fetchRawData(NSURLRequest(URL: url)) { result in
             performOnMain {
                 func sendError(error: String) {
@@ -56,14 +53,18 @@ extension FlickrApiClient {
                         code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
                         userInfo: [NSLocalizedDescriptionKey : error]
                     )
-                    completionHandler(image: nil, error: error)
+                    fail(error: error)
                 }
                 
                 switch result {
                 case .Error(let error):
                     sendError(error.localizedDescription)
                 case .RawData(let data):
-                    completionHandler(image: UIImage(data: data), error: nil)
+                    guard let image = UIImage(data: data) else {
+                        sendError("Could not initialize the image from the specified data.")
+                        return
+                    }
+                    success(image: image)
                 default:
                     sendError(result.defaultErrorMessage()!)
                 }
@@ -74,7 +75,7 @@ extension FlickrApiClient {
     // MARK: - Tags -
     // MARK: Public
     
-    func getListHotTagsForPeriod(period: Period, numberOfTags count: Int = 20, withSuccessBlock success: FlickrTagSuccessCompletionHandler, failBlock fail: FlickrTagFailCompletionHandler) {
+    func getListHotTagsForPeriod(period: Period, numberOfTags count: Int = 20, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
         var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.TagsHotList)
         methodParameters[Constants.FlickrParameterKeys.Period] = period.rawValue
         methodParameters[Constants.FlickrParameterKeys.Count] = count
@@ -87,18 +88,36 @@ extension FlickrApiClient {
     // MARK: - Photos -
     // MARK: Public
     
-    func searchPhotosWithTags(tags: [String], doneWithSuccess success: FlickrPhotosSearchSuccessBlock, failBlock fail: FlickrPhotosSearchFailBlock) {
+    func searchPhotosWithTags(tags: [String], perpage: Int = 20, successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
         var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.SearchMethod)
         methodParameters[Constants.FlickrParameterKeys.Extras] = "\(Constants.FlickrParameterValues.ThumbnailURL),\(Constants.FlickrParameterValues.SmallURL),\(Constants.FlickrParameterValues.MediumURL)"
-        methodParameters[Constants.FlickrParameterKeys.PerPage] = 20
+        methodParameters[Constants.FlickrParameterKeys.PerPage] = perpage
         methodParameters[Constants.FlickrParameterKeys.ContentType] = Constants.FlickrParameterValues.ContentType.Photos.rawValue
         methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joinWithSeparator(",")
-        searchPhotosWithParameters(methodParameters, doneWithSuccess: success, failBlock: fail)
+        searchPhotosWithParameters(methodParameters, successBlock: success, failBlock: fail)
+    }
+    
+    func randomPhotoFromTags(tags: [String], successBlock success: FlickrImageDownloadingSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+        searchPhotosWithTags(tags, perpage: 10, successBlock: { album in
+            guard album.total > 0 else {
+                fail(error: Constants.Error.EmptyResponseError)
+                return
+            }
+            
+            let idx = RandomNumberUtils.numberFromZeroTo(album.total > album.perpage ? album.perpage : album.total)
+            
+            guard let url = NSURL(string: album.photos[idx].urlSmall) else {
+                fail(error: Constants.Error.DefaultError)
+                return
+            }
+            self.loadImageData(url, successBlock: success, failBlock: fail)
+            }, failBlock: fail)
     }
     
     // MARK: Private
     
-    private func searchPhotosWithParameters(param: MethodParameters, doneWithSuccess success: FlickrPhotosSearchSuccessBlock, failBlock fail: FlickrPhotosSearchFailBlock) {
+    // TODO: param.count > 0, album.photos.count > 0
+    private func searchPhotosWithParameters(param: MethodParameters, successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
         let request = NSURLRequest(URL: urlFromParameters(param))
         fetchResource(request, success: { (album: FlickrAlbum) in
             performOnMain {
