@@ -62,7 +62,9 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     private let defaultTagCategories = [
         "art", "light", "park", "winter", "sun", "clouds", "family", "new", "macro", "summer"
     ]
+    
     private var images = [String: UIImage]()
+    private var imagesIsInLoading = Set<NSIndexPath>()
     
     // MARK: - View Life Cycle
     
@@ -162,7 +164,10 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
             return
         }
         
-        flickrApiClient.randomPhotoFromTags([tag], successBlock: { [weak self] image in
+        guard imagesIsInLoading.contains(indexPath) == false else { return }
+        imagesIsInLoading.insert(indexPath)
+        
+        flickrApiClient.randomImageFromTags([tag], successBlock: { [weak self] image in
             self?.setImage(image, toCellAtIndexPath: indexPath)
             }, failBlock: { [weak self] error in
                 self?.setImage(nil, toCellAtIndexPath: indexPath)
@@ -171,8 +176,11 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     }
     
     private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
+        imagesIsInLoading.remove(indexPath)
+        
         guard collectionView.indexPathsForVisibleItems().contains(indexPath) == true else { return }
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCollectionViewCell else { return }
+        
         cell.imageView.image = image
         images[defaultTagCategories[indexPath.row]] = image
         updateTitleColorForCell(cell)

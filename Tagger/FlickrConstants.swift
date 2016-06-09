@@ -141,7 +141,7 @@ extension FlickrApiClient {
             static let EmptyResultErrorDomain = "\(ErrorDomain).empty-result"
             static let EmptyResultErrorCode = 305
             
-            static let DefaultErrorCode = 306
+            static let DefaultErrorCode = 307
             
             // MARK: NSError
             

@@ -104,35 +104,23 @@ class MIApiClient: JsonApiClient {
                 
                 switch result {
                 case .Json(let json):
-                    var jsonArray: [JSONDictionary]?
-                    var json = json
+                    let keyPath = rootKeys.joinWithSeparator(".")
+                    guard let jsonArray = (json as NSDictionary).valueForKeyPath(keyPath) as? [JSONDictionary] else {
+                        failure(error: parsingJsonError())
+                        return
+                    }
                     
-                    for key in rootKeys {
-                        if key == rootKeys.last! {
-                            jsonArray = json[key] as? [JSONDictionary]
-                            break
-                        }
-                        
-                        guard let node = json[key] as? JSONDictionary else {
-                            failure(error: parsingJsonError())
+                    performOnBackgroud {
+                        guard let resourceCollection = parseBlock(jsonArray) else {
+                            self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
                             self.debugLog("\(json)")
+                            failure(error: parsingJsonError())
                             return
                         }
-                        json = node
+                        performOnMain {
+                            success(resourceCollection)
+                        }
                     }
-                    
-                    guard jsonArray != nil else {
-                        failure(error: parsingJsonError())
-                        return
-                    }
-                    
-                    guard let resourceCollection = parseBlock(jsonArray!) else {
-                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                        self.debugLog("\(json)")
-                        failure(error: parsingJsonError())
-                        return
-                    }
-                    success(resourceCollection)
                 default:
                     failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
                         code: ErrorCode.UnexpectedSituation.rawValue,
