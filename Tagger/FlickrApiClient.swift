@@ -44,7 +44,6 @@ class FlickrApiClient: MIApiClient {
         super.init(configuration: configuration)
         configuration.timeoutIntervalForRequest  = 30.0
         configuration.timeoutIntervalForResource = 60.0
-        
         loggingEnabled = true
     }
     
@@ -67,9 +66,8 @@ class FlickrApiClient: MIApiClient {
         components.path = Constants.Flickr.APIPath
         components.queryItems = [NSURLQueryItem]()
         
-        for (key, value) in parameters {
-            let queryItem = NSURLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+        parameters.forEach { (key, value) in
+            components.queryItems?.append(NSURLQueryItem(name: key, value: "\(value)"))
         }
         
         return components.URL!
