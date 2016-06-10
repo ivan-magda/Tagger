@@ -138,26 +138,15 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     // MARK: Helpers
     
     private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let section = SectionType(rawValue: indexPath.section) else { return }
-        switch section {
-        case .Trends:
-            configureTrendTagCell(cell, forRow: indexPath.row)
-        case .Categories:
-            configureCategoryTagCell(cell, atIndexPath: indexPath)
+        func failedToLoadImageWithError(error: NSError) {
+            setImage(nil, toCellAtIndexPath: indexPath)
+            print("Failed to load an image. Error: \(error.localizedDescription)")
         }
-    }
-    
-    private func configureTrendTagCell(cell: TagCollectionViewCell, forRow row: Int) {
-        cell.title.text = SectionType.TrendingTags.tags[row]
-        cell.title.textColor = .blackColor()
-        cell.imageView.image = nil
-    }
-    
-    private func configureCategoryTagCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
-        cell.title.text = defaultTagCategories[indexPath.row]
+        
+        let tag = tagFromIndexPath(indexPath)
+        cell.title.text = tag
         updateTitleColorForCell(cell)
         
-        let tag = defaultTagCategories[indexPath.row]
         if let image = images[tag] {
             cell.imageView.image = image
             updateTitleColorForCell(cell)
@@ -167,12 +156,25 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         guard imagesIsInLoading.contains(indexPath) == false else { return }
         imagesIsInLoading.insert(indexPath)
         
-        flickrApiClient.randomImageFromTags([tag], successBlock: { [weak self] image in
-            self?.setImage(image, toCellAtIndexPath: indexPath)
-            }, failBlock: { [weak self] error in
-                self?.setImage(nil, toCellAtIndexPath: indexPath)
-                print("Failed to load an image. Error: \(error.localizedDescription)")
+        if indexPath.section == SectionType.Trends.rawValue {
+            let period: Period = (indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week)
+            flickrApiClient.tagsHotListForPeriod(period, successBlock: { [unowned self] tags in
+                let tags = tags.map { $0.content }
+                self.flickrApiClient.randomImageFromTags(tags, successBlock: { [weak self] image in
+                    self?.setImage(image, toCellAtIndexPath: indexPath)
+                    }, failBlock: { error in
+                        failedToLoadImageWithError(error)
+                })
+            }) { error in
+                failedToLoadImageWithError(error)
+            }
+        } else {
+            flickrApiClient.randomImageFromTags([tag], successBlock: { [weak self] image in
+                self?.setImage(image, toCellAtIndexPath: indexPath)
+                }, failBlock: { error in
+                    failedToLoadImageWithError(error)
             })
+        }
     }
     
     private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
@@ -182,12 +184,19 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCollectionViewCell else { return }
         
         cell.imageView.image = image
-        images[defaultTagCategories[indexPath.row]] = image
+        images[tagFromIndexPath(indexPath)] = image
         updateTitleColorForCell(cell)
     }
     
     private func updateTitleColorForCell(cell: TagCollectionViewCell) {
         cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
+    }
+    
+    private func tagFromIndexPath(indexPath: NSIndexPath) -> String {
+        return (indexPath.section == SectionType.Trends.rawValue
+            ? SectionType.TrendingTags.tags[indexPath.row]
+            : defaultTagCategories[indexPath.row]
+        )
     }
     
     private func configureSectionHeaderView(view: SectionHeaderCollectionReusableView, forIndexPath indexPath: NSIndexPath) {

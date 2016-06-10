@@ -23,7 +23,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
-typealias TaskCompletionHandler = ApiClientResult -> Void
+typealias TaskCompletionHandler = (result: ApiClientResult) -> Void
 
 // MARK: - HttpApiClient -
 
@@ -38,10 +38,10 @@ class HttpApiClient {
         return NSURLSession(configuration: self.configuration)
     }()
     
-    /** 
-        Keep track of all requests that are in flight.
+    /**
+     Keep track of all requests that are in flight.
      
-        @return Set of NSURLSessionDataTasks, that are active.
+     @return Set of NSURLSessionDataTasks, that are active.
      */
     var currentTasks: Set<NSURLSessionDataTask> = []
     
@@ -57,42 +57,42 @@ class HttpApiClient {
     // MARK: - Network -
     
     func cancelAllRequests() {
-        for task in self.currentTasks {
-            task.cancel()
-        }
-        self.currentTasks = []
+        currentTasks.forEach { $0.cancel() }
+        currentTasks = []
     }
     
     // MARK: Data Tasks
     
-    func fetchRawData(request: NSURLRequest, completion: TaskCompletionHandler) {
-        let task = dataTaskWithRequest(request, completion: completion)
+    func fetchRawDataForRequest(request: NSURLRequest, completionHandler: TaskCompletionHandler) {
+        let task = dataTaskWithRequest(request) { result in
+            performOnMain {
+                completionHandler(result: result)
+            }
+        }
         task.resume()
     }
     
-    func dataTaskWithRequest(request: NSURLRequest, completion: TaskCompletionHandler) -> NSURLSessionDataTask {
+    func dataTaskWithRequest(request: NSURLRequest, completionHandler: TaskCompletionHandler) -> NSURLSessionDataTask {
         var task: NSURLSessionDataTask?
         task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
             self.currentTasks.remove(task!)
             
-            /* GUARD: Was there an error? */
             guard error == nil else {
-                self.debugLog("Received an error from HTTP \(request.HTTPMethod!) to \(request.URL!)")
-                self.debugLog("Error: \(error)")
-                completion(.Error(error!))
+                self.debugLog("Received an error from HTTP \(request.HTTPMethod!) to \(request.URL!).")
+                self.debugLog("Error: \(error).")
+                completionHandler(result: .Error(error!))
                 return
             }
             
             guard let httpResponse = response as? NSHTTPURLResponse else {
                 self.debugLog("Failed on response processing.")
-                self.debugLog("Error: \(error)")
-                let userInfo = [NSLocalizedDescriptionKey: "Failed processing on HTTP response."]
+                self.debugLog("Error: \(error).")
                 let error = NSError(
                     domain: ErrorDomain.BadResponse,
                     code: ErrorCode.BadResponse.rawValue,
-                    userInfo: userInfo
+                    userInfo: [NSLocalizedDescriptionKey: "Failed processing on HTTP response."]
                 )
-                completion(.Error(error))
+                completionHandler(result: .Error(error))
                 return
             }
             
@@ -100,38 +100,34 @@ class HttpApiClient {
             let statusCode = httpResponse.statusCode
             switch statusCode {
             case 200...299:
-                self.debugLog("Status code: \(statusCode)")
+                self.debugLog("Status code: \(statusCode).")
             case 404:
-                completion(.NotFound)
+                completionHandler(result: .NotFound)
                 return
             case 400...499:
-                completion(.ClientError(statusCode))
+                completionHandler(result: .ClientError(statusCode))
                 return
             case 500...599:
-                completion(.ServerError(statusCode))
+                completionHandler(result: .ServerError(statusCode))
                 return
             default:
-                print("Received HTTP status code \(statusCode), which was't be handled")
-                completion(.UnexpectedError(statusCode, error))
+                print("Received HTTP status code \(statusCode), which was't be handled.")
+                completionHandler(result: .UnexpectedError(statusCode, error))
                 return
             }
-            
             self.debugLog("Received HTTP \(httpResponse.statusCode) from \(request.HTTPMethod!) to \(request.URL!)")
             
-            /* GUARD: Was there any data returned? */
             guard let data = data else {
-                self.debugLog("Received an empty response")
-                let userInfo = [NSLocalizedDescriptionKey: "No data was returned by the request"]
+                self.debugLog("Received an empty response.")
                 let error = NSError(
                     domain: ErrorDomain.EmptyResponse,
                     code: ErrorCode.EmptyResponse.rawValue,
-                    userInfo: userInfo
+                    userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request."]
                 )
-                completion(ApiClientResult.Error(error))
+                completionHandler(result: .Error(error))
                 return
             }
-            
-            completion(ApiClientResult.RawData(data))
+            completionHandler(result: .RawData(data))
         })
         currentTasks.insert(task!)
         
@@ -148,11 +144,11 @@ class HttpApiClient {
     func debugResponseData(data: NSData) {
         guard loggingEnabled else { return }
         
-        if let body = String(data: data, encoding: NSUTF8StringEncoding) {
-            print(body)
-        } else {
+        guard let body = String(data: data, encoding: NSUTF8StringEncoding) else {
             print("<empty response>")
+            return
         }
+        print(body)
     }
     
 }
