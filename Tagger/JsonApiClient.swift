@@ -25,7 +25,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
-typealias JsonDeserializingCompletionHandler = (jsonObject: AnyObject?, error: NSError?) -> Void
+typealias DeserializedJsonTuple = (json: AnyObject?, error: NSError?)
 
 // MARK: - JsonApiClient: HttpApiClient -
 
@@ -33,44 +33,43 @@ class JsonApiClient: HttpApiClient {
     
     // MARK: Data Tasks
     
-    func fetchJson(request: NSURLRequest, completionHandler: TaskCompletionHandler) {
-        fetchRawData(request) { result in
+    func fetchJsonForRequest(request: NSURLRequest, completionHandler: TaskCompletionHandler) {
+        fetchRawDataForRequest(request) { result in
             switch result {
             case .RawData(let data):
-                self.deserializeJsonData(data) { (jsonObject, error) in
-                    guard error == nil else {
-                        completionHandler(.Error(error!))
-                        return
-                    }
-                    
-                    guard let json = jsonObject as? JSONDictionary else {
-                        let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(jsonObject)'"
-                        self.debugLog(errorMessage)
-                        
-                        let userInfo = [NSLocalizedDescriptionKey: errorMessage]
-                        let error = NSError(domain: ErrorDomain.JSONDeserializing,
-                                            code: ErrorCode.JSONDeserializing.rawValue, userInfo: userInfo)
-                        completionHandler(.Error(error))
-                        return
-                    }
-                    completionHandler(.Json(json))
+                let deserializedJson = self.deserializeJsonData(data)
+                
+                guard deserializedJson.error == nil else {
+                    completionHandler(result: .Error(deserializedJson.error!))
+                    return
                 }
+                
+                guard let json = deserializedJson.json as? JSONDictionary else {
+                    let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(deserializedJson.json)'"
+                    self.debugLog(errorMessage)
+                    
+                    let error = NSError(domain: ErrorDomain.JSONDeserializing,
+                                        code: ErrorCode.JSONDeserializing.rawValue,
+                                        userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                    completionHandler(result: .Error(error))
+                    return
+                }
+                completionHandler(result: .Json(json))
             default:
-                completionHandler(result)
+                completionHandler(result: result)
             }
         }
     }
     
     // MARK: JSON Deserializing
     
-    func deserializeJsonData(data: NSData, completionHandler: JsonDeserializingCompletionHandler) {
-        var deserializedJSON: AnyObject? = nil
+    func deserializeJsonData(data: NSData) -> DeserializedJsonTuple {
         do {
-            deserializedJSON = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers)
+            let deserializedJSON = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            return (json: deserializedJSON, error: nil)
         } catch let error as NSError {
-            completionHandler(jsonObject: nil, error: error)
+            return (json: nil, error: error)
         }
-        completionHandler(jsonObject: deserializedJSON, error: nil)
     }
     
 }

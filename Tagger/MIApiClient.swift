@@ -48,13 +48,13 @@ class MIApiClient: JsonApiClient {
     // MARK: - Requests -
     // MARK: Public
     
-    func fetchResource<T: JSONParselable>(request: NSURLRequest, success: T -> Void, fail: MIFailureCompletionHandler) {
+    func fetchResourceForRequest<T: JSONParselable>(request: NSURLRequest, success: T -> Void, fail: MIFailureCompletionHandler) {
         fetchForResource(request, parseBlock: { json -> T? in
             return T.decode(json)
             }, success: success, fail: fail)
     }
     
-    func fetchCollection<T: JSONParselable>(request: NSURLRequest, rootKeys: [String], success: [T] -> Void, fail: MIFailureCompletionHandler) {
+    func fetchCollectionForRequest<T: JSONParselable>(request: NSURLRequest, rootKeys: [String], success: [T] -> Void, fail: MIFailureCompletionHandler) {
         fetchForCollection(request, rootKeys: rootKeys, parseBlock: { (json) -> [T]? in
             return json.flatMap { T.decode($0) }
             }, success: success, failure: fail)
@@ -63,69 +63,77 @@ class MIApiClient: JsonApiClient {
     // MARK: Private
     
     private func fetchForResource<T>(request: NSURLRequest, parseBlock: JSONDictionary -> T?, success: T -> Void, fail: MIFailureCompletionHandler) {
-        fetchJson(request) { result in
-            performOnMain {
-                if let error = self.checkApiClientResultForAnError(result) {
-                    fail(error: error)
-                    return
-                }
-                
-                switch result {
-                case .Json(let json):
+        fetchJsonForRequest(request) { [unowned self] result in
+            if let error = self.checkApiClientResultForAnError(result) {
+                fail(error: error)
+                return
+            }
+            
+            switch result {
+            case .Json(let json):
+                performOnBackgroud {
                     guard let resource = parseBlock(json) else {
                         self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.debugLog("\(json)")
-                        fail(error: NSError(domain: ErrorDomain.UnexpectedResponse, code: ErrorCode.UnexpectedResponse.rawValue, userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
+                        performOnMain {
+                            fail(error: NSError(domain: ErrorDomain.UnexpectedResponse,
+                                code: ErrorCode.UnexpectedResponse.rawValue,
+                                userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
+                        }
                         return
                     }
-                    success(resource)
-                default:
-                    fail(error: NSError(domain: ErrorDomain.UnexpectedSituation, code: ErrorCode.UnexpectedSituation.rawValue, userInfo: [NSLocalizedDescriptionKey : "Unexpected error."]))
+                    performOnMain {
+                        success(resource)
+                    }
                 }
+            default:
+                fail(error: NSError(domain: ErrorDomain.UnexpectedSituation,
+                    code: ErrorCode.UnexpectedSituation.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey : "Unexpected error."]))
             }
         }
     }
     
     private func fetchForCollection<T>(request: NSURLRequest, rootKeys: [String], parseBlock: [JSONDictionary] -> [T]?, success: [T] -> Void, failure: MIFailureCompletionHandler) {
         func parsingJsonError() -> NSError {
-            return NSError(
-                domain: ErrorDomain.UnexpectedResponse,
-                code: ErrorCode.UnexpectedResponse.rawValue,
-                userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]
-            )
+            return NSError(domain: ErrorDomain.UnexpectedResponse,
+                           code: ErrorCode.UnexpectedResponse.rawValue,
+                           userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."])
         }
         
-        fetchJson(request) { result in
-            performOnMain {
-                if let error = self.checkApiClientResultForAnError(result) {
-                    failure(error: error)
-                    return
-                }
-                
-                switch result {
-                case .Json(let json):
+        fetchJsonForRequest(request) { [unowned self] result in
+            if let error = self.checkApiClientResultForAnError(result) {
+                failure(error: error)
+                return
+            }
+            
+            switch result {
+            case .Json(let json):
+                performOnBackgroud {
                     let keyPath = rootKeys.joinWithSeparator(".")
                     guard let jsonArray = (json as NSDictionary).valueForKeyPath(keyPath) as? [JSONDictionary] else {
-                        failure(error: parsingJsonError())
+                        performOnMain {
+                            failure(error: parsingJsonError())
+                        }
                         return
                     }
                     
-                    performOnBackgroud {
-                        guard let resourceCollection = parseBlock(jsonArray) else {
-                            self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                            self.debugLog("\(json)")
-                            failure(error: parsingJsonError())
-                            return
-                        }
+                    guard let collection = parseBlock(jsonArray) else {
+                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
+                        self.debugLog("\(json)")
                         performOnMain {
-                            success(resourceCollection)
+                            failure(error: parsingJsonError())
                         }
+                        return
                     }
-                default:
-                    failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
-                        code: ErrorCode.UnexpectedSituation.rawValue,
-                        userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
+                    performOnMain {
+                        success(collection)
+                    }
                 }
+            default:
+                failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
+                    code: ErrorCode.UnexpectedSituation.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
             }
         }
     }
@@ -134,27 +142,18 @@ class MIApiClient: JsonApiClient {
         switch result {
         case .Error, .NotFound, .ServerError, .ClientError, .UnexpectedError:
             let message = result.defaultErrorMessage()!
-            var rawDataString: String?
+            self.debugLog("Failed to perform api request. Message: \(message).")
             
             switch result {
             case .RawData(let data):
-                rawDataString = String(data: data, encoding: NSUTF8StringEncoding)
+                debugResponseData(data)
             default:
                 break
             }
             
-            self.debugLog("Failed to perform api request. Message: \(message)")
-            if let rawDataString = rawDataString {
-                self.debugLog("Raw data string: \(rawDataString)")
-            }
-            
-            let error = NSError(
-                domain: ErrorDomain.ApiRequest,
-                code: ErrorCode.FailureApiRequestReason.rawValue,
-                userInfo: [NSLocalizedDescriptionKey : message]
-            )
-            
-            return error
+            return NSError(domain: ErrorDomain.ApiRequest,
+                           code: ErrorCode.FailureApiRequestReason.rawValue,
+                           userInfo: [NSLocalizedDescriptionKey : message])
         default:
             return nil
         }

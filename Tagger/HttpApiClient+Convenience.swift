@@ -35,30 +35,34 @@ extension HttpApiClient {
     // MARK: Methods
     
     func downloadImageWithURL(url: NSURL, successBlock success: ImageDownloadingCompletionHandler, failBlock fail: RequestFailCompletionHandler) {
-        fetchRawData(NSURLRequest(URL: url)) { result in
-            performOnMain {
-                func sendError(error: String) {
-                    self.debugLog("Error: \(error)")
-                    let error = NSError(
-                        domain: FlickrApiClient.Constants.Error.LoadImageErrorDomain,
-                        code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
-                        userInfo: [NSLocalizedDescriptionKey : error]
-                    )
-                    fail(error: error)
-                }
-                
-                switch result {
-                case .Error(let error):
-                    sendError(error.localizedDescription)
-                case .RawData(let data):
+        fetchRawDataForRequest(NSURLRequest(URL: url)) { result in
+            func sendError(error: String) {
+                self.debugLog("Error: \(error)")
+                let error = NSError(
+                    domain: FlickrApiClient.Constants.Error.LoadImageErrorDomain,
+                    code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
+                    userInfo: [NSLocalizedDescriptionKey : error]
+                )
+                fail(error: error)
+            }
+            
+            switch result {
+            case .Error(let error):
+                sendError(error.localizedDescription)
+            case .RawData(let data):
+                performOnBackgroud {
                     guard let image = UIImage(data: data) else {
-                        sendError("Could not initialize the image from the specified data.")
+                        performOnMain {
+                            sendError("Could not initialize the image from the specified data.")
+                        }
                         return
                     }
-                    success(image: image)
-                default:
-                    sendError(result.defaultErrorMessage()!)
+                    performOnMain {
+                        success(image: image)
+                    }
                 }
+            default:
+                sendError(result.defaultErrorMessage()!)
             }
         }
     }

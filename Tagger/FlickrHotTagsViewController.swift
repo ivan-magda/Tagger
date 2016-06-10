@@ -72,7 +72,7 @@ class FlickrHotTagsViewController: TagListViewController {
     
     private func fetchData() {
         UIUtils.showNetworkActivityIndicator()
-        flickrApiClient.getListHotTagsForPeriod(period, numberOfTags: numberOfTags, successBlock: { [unowned self] tags in
+        flickrApiClient.tagsHotListForPeriod(period, numberOfTags: numberOfTags, successBlock: { [unowned self] tags in
             UIUtils.hideNetworkActivityIndicator()
             self.tags = tags
         }) { [unowned self] error in
