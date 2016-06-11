@@ -22,14 +22,46 @@
 
 import UIKit
 
-// MARK: PhotoTaggerViewController: UIViewController -
+// MARK: Types
 
-class PhotoTaggerViewController: UIViewController {
+private enum SegueIdentifier: String {
+    case TagAnImage
+}
 
-    // MARK: - View Life Cycle 
+// MARK: - ImageTaggerDataSourceViewController: UIViewController -
+
+class ImageTaggerDataSourceViewController: UIViewController {
+    
+    // MARK: - Properties
+    
+    private var pickedImage: UIImage?
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SegueIdentifier.TagAnImage.rawValue {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let imageTaggerViewController = navigationController.topViewController as! ImageTaggerViewController
+            imageTaggerViewController.taggingImage = pickedImage
+        }
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func selectImageFromFlickr(sender: AnyObject) {
+    }
+    
+    @IBAction func selectImageFromDevice(sender: AnyObject) {
+        MIImagePickerController.presentInViewController(self) { [unowned self] image in
+            self.pickedImage = image
+            self.performSegueWithIdentifier(SegueIdentifier.TagAnImage.rawValue, sender: self)
+        }
+    }
+    
 }
