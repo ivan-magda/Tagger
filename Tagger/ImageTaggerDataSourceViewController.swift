@@ -42,6 +42,10 @@ class ImageTaggerDataSourceViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

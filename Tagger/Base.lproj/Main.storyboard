@@ -91,22 +91,12 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6JF-Ku-h2O" secondAttribute="trailing" constant="20" symbolic="YES" id="AQt-Ib-3vF"/>
                             <constraint firstItem="wkO-08-6Jk" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="bottom" constant="44" id="Bg6-Hs-k2D"/>
-                            <constraint firstItem="UEQ-be-JQB" firstAttribute="top" secondItem="wkO-08-6Jk" secondAttribute="bottom" constant="8" symbolic="YES" id="Hh1-tf-vub"/>
                             <constraint firstAttribute="trailing" secondItem="wkO-08-6Jk" secondAttribute="trailing" id="IuE-zM-Cac"/>
                             <constraint firstItem="6JF-Ku-h2O" firstAttribute="top" secondItem="uiA-7M-vav" secondAttribute="bottom" constant="44" id="JHa-VQ-Cav"/>
-                            <constraint firstItem="wkO-08-6Jk" firstAttribute="centerY" secondItem="3rk-JE-1js" secondAttribute="centerY" id="UQT-MH-qHn"/>
                             <constraint firstItem="6JF-Ku-h2O" firstAttribute="leading" secondItem="3rk-JE-1js" secondAttribute="leading" constant="20" symbolic="YES" id="er7-t0-cYL"/>
                             <constraint firstItem="6JF-Ku-h2O" firstAttribute="centerX" secondItem="3rk-JE-1js" secondAttribute="centerX" id="hB5-7R-Y5q"/>
-                            <constraint firstItem="wkO-08-6Jk" firstAttribute="centerX" secondItem="3rk-JE-1js" secondAttribute="centerX" id="j9I-SL-aZ3"/>
                             <constraint firstItem="wkO-08-6Jk" firstAttribute="leading" secondItem="3rk-JE-1js" secondAttribute="leading" id="jX5-KW-q3f"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="UQT-MH-qHn"/>
-                                <exclude reference="j9I-SL-aZ3"/>
-                                <exclude reference="Hh1-tf-vub"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Tagging" id="Uky-fl-4pf"/>
                     <connections>
