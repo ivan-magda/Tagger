@@ -20,34 +20,31 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import Foundation
 
-extension UINavigationController {
-    
-    public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return visibleViewController?.supportedInterfaceOrientations() ?? .All
-    }
-    
-    public override func shouldAutorotate() -> Bool {
-        return visibleViewController?.shouldAutorotate() ?? true
-    }
-    
-}
+// MARK: ImaggaApiClient: MIApiClient
 
-extension UITabBarController {
+class ImaggaApiClient: MIApiClient {
     
-    public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if let selected = selectedViewController {
-            return selected.supportedInterfaceOrientations()
-        }
-        return super.supportedInterfaceOrientations()
-    }
+    // MARK: - Properties
     
-    public override func shouldAutorotate() -> Bool {
-        if let selected = selectedViewController {
-            return selected.shouldAutorotate()
-        }
-        return super.shouldAutorotate()
+    /**
+     *  This class constant provides an easy way to get access
+     *  to a shared instance of the ImaggaApiClient class.
+     */
+    static let sharedInstance = ImaggaApiClient(configuration: .defaultSessionConfiguration(), baseURL: "https://api.imagga.com/v1")
+    
+    // MARK: - Init
+    
+    override init(configuration: NSURLSessionConfiguration, baseURL: String) {
+        super.init(configuration: configuration, baseURL: baseURL)
+        configuration.HTTPAdditionalHeaders = [
+            "Authorization": ImaggaAuthenticationToken,
+            "Accept": "application/json"
+        ]
+        configuration.timeoutIntervalForRequest  = 30.0
+        configuration.timeoutIntervalForResource = 60.0
+        loggingEnabled = true
     }
     
 }

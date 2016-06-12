@@ -22,10 +22,18 @@
 
 import Foundation
 
-// MARK: API Constants
+// MARK: API Constants -
 
-let FlickrApplicationKey = "REPLACE_WITH_YOUR_KEY"
-let FlickrApplicationSecret = "REPLACE_WITH_YOUR_KEY"
+// MARK: Flickr
+
+let FlickrApplicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
+let FlickrApplicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
+
+// MARK: Imagga
+
+let ImaggaApplicationKey = "REPLACE_WITH_YOUR_IMAGGA_API_KEY"
+let ImaggaApplicationSecret = "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"
+let ImaggaAuthenticationToken = "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
 
 // MARK: - Error Constants
 

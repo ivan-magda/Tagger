@@ -23,6 +23,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
+typealias MethodParameters = [String: AnyObject]
 typealias TaskCompletionHandler = (result: ApiClientResult) -> Void
 
 // MARK: - HttpApiClient -
@@ -33,6 +34,8 @@ class HttpApiClient {
     
     /// Allow to initialize with whichever configuration you want.
     let configuration: NSURLSessionConfiguration
+    
+    let baseURL: String
     
     lazy var session: NSURLSession = {
         return NSURLSession(configuration: self.configuration)
@@ -50,8 +53,9 @@ class HttpApiClient {
     
     // MARK: - Initializers
     
-    init(configuration: NSURLSessionConfiguration) {
+    init(configuration: NSURLSessionConfiguration, baseURL: String) {
         self.configuration = configuration
+        self.baseURL = baseURL
     }
     
     // MARK: - Network -
@@ -132,6 +136,21 @@ class HttpApiClient {
         currentTasks.insert(task!)
         
         return task!
+    }
+    
+    // MARK: - Building URL
+    
+    func urlFromParameters(parameters: MethodParameters?, withPathExtension pathExtension: String? = nil) -> NSURL {
+        let components = NSURLComponents(string: baseURL)!
+        components.path = (components.path ?? "") + (pathExtension ?? "")
+        components.queryItems = [NSURLQueryItem]()
+        
+        guard let parameters = parameters else {
+            return components.URL!
+        }
+        parameters.forEach { components.queryItems!.append(NSURLQueryItem(name: $0, value: "\($1)")) }
+        
+        return components.URL!
     }
     
     // MARK: - Debug Logging

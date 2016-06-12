@@ -120,10 +120,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZBR-br-cUJ">
-                                <rect key="frame" x="20" y="72" width="280" height="447"/>
+                                <rect key="frame" x="16" y="80" width="288" height="423"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVD-Zl-lsJ">
-                                <rect key="frame" x="20" y="527" width="280" height="33"/>
+                                <rect key="frame" x="16" y="519" width="288" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="kDr-Q9-Kch"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Process on Image"/>
                                 <connections>
@@ -133,13 +136,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cJP-dz-Fet" firstAttribute="top" secondItem="hVD-Zl-lsJ" secondAttribute="bottom" constant="8" symbolic="YES" id="2ek-AK-EiK"/>
-                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="top" secondItem="ZBR-br-cUJ" secondAttribute="bottom" constant="8" symbolic="YES" id="Cqg-SB-xep"/>
-                            <constraint firstAttribute="trailing" secondItem="ZBR-br-cUJ" secondAttribute="trailing" constant="20" symbolic="YES" id="D8N-Gf-osE"/>
-                            <constraint firstAttribute="trailing" secondItem="hVD-Zl-lsJ" secondAttribute="trailing" constant="20" symbolic="YES" id="WE4-gy-Pjq"/>
-                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="20" symbolic="YES" id="XsL-Eu-wni"/>
-                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="top" secondItem="HNk-vY-E9Y" secondAttribute="bottom" constant="8" symbolic="YES" id="XyX-wL-Bav"/>
-                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="20" symbolic="YES" id="hDI-1q-W9h"/>
+                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="top" secondItem="ZBR-br-cUJ" secondAttribute="bottom" constant="16" id="Cqg-SB-xep"/>
+                            <constraint firstAttribute="trailing" secondItem="ZBR-br-cUJ" secondAttribute="trailing" constant="16" id="D8N-Gf-osE"/>
+                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="centerX" secondItem="UTu-dO-qdc" secondAttribute="centerX" id="RPH-Wy-YXV"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="hVD-Zl-lsJ" secondAttribute="bottom" constant="16" id="S5w-fF-IgS"/>
+                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="16" id="XsL-Eu-wni"/>
+                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="top" secondItem="HNk-vY-E9Y" secondAttribute="bottom" constant="16" id="XyX-wL-Bav"/>
+                            <constraint firstAttribute="trailing" secondItem="hVD-Zl-lsJ" secondAttribute="trailing" constant="16" id="aaY-Pc-eLq"/>
+                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="16" id="tNG-dX-cAq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Image Tagging" id="o3u-tB-3qA">

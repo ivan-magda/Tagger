@@ -22,11 +22,7 @@
 
 import Foundation
 
-// MARK: Typealiases
-
-typealias MethodParameters = [String: AnyObject]
-
-// MARK: - FlickrApiClient: JsonApiClient -
+// MARK: FlickrApiClient: MIApiClient
 
 class FlickrApiClient: MIApiClient {
     
@@ -36,41 +32,15 @@ class FlickrApiClient: MIApiClient {
      *  This class constant provides an easy way to get access
      *  to a shared instance of the FlickrApiClient class.
      */
-    static let sharedInstance = FlickrApiClient(configuration: .defaultSessionConfiguration())
+    static let sharedInstance = FlickrApiClient(configuration: .defaultSessionConfiguration(), baseURL: "https://api.flickr.com/services/rest")
     
     // MARK: - Init
     
-    override private init(configuration: NSURLSessionConfiguration) {
-        super.init(configuration: configuration)
+    override init(configuration: NSURLSessionConfiguration, baseURL: String) {
+        super.init(configuration: configuration, baseURL: baseURL)
         configuration.timeoutIntervalForRequest  = 30.0
         configuration.timeoutIntervalForResource = 60.0
         loggingEnabled = true
-    }
-    
-    // MARK: - Helpers
-    
-    func getBaseMethodParameters() -> MethodParameters {
-        return [
-            Constants.FlickrParameterKeys.APIKey: Constants.FlickrParameterValues.APIKey,
-            Constants.FlickrParameterKeys.SafeSearch: Constants.FlickrParameterValues.UseSafeSearch,
-            Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
-            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
-        ]
-    }
-    
-    /// Helper for Creating a URL from Parameters.
-    func urlFromParameters(parameters: MethodParameters) -> NSURL {
-        let components = NSURLComponents()
-        components.scheme = Constants.Flickr.APIScheme
-        components.host = Constants.Flickr.APIHost
-        components.path = Constants.Flickr.APIPath
-        components.queryItems = [NSURLQueryItem]()
-        
-        parameters.forEach { (key, value) in
-            components.queryItems?.append(NSURLQueryItem(name: key, value: "\(value)"))
-        }
-        
-        return components.URL!
     }
     
 }

@@ -138,7 +138,9 @@ class MIApiClient: JsonApiClient {
         }
     }
     
-    private func checkApiClientResultForAnError(result: ApiClientResult) -> NSError? {
+    // MARK: - Helpers
+    
+    func checkApiClientResultForAnError(result: ApiClientResult) -> NSError? {
         switch result {
         case .Error, .NotFound, .ServerError, .ClientError, .UnexpectedError:
             let message = result.defaultErrorMessage()!

@@ -35,10 +35,6 @@ extension FlickrApiClient {
         // MARK: Flickr
         
         struct Flickr {
-            static let APIScheme = "https"
-            static let APIHost = "api.flickr.com"
-            static let APIPath = "/services/rest"
-            
             static let SearchBBoxHalfWidth = 1.0
             static let SearchBBoxHalfHeight = 1.0
             static let SearchLatRange = SearchCoordinateRange(start: -90.0, end: 90.0)
