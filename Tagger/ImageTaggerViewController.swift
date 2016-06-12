@@ -22,16 +22,18 @@
 
 import UIKit
 
-// MARK: ImageTaggerViewController: UIViewController
+// MARK: ImageTaggerViewController: UIViewController, Alertable
 
-class ImageTaggerViewController: UIViewController {
+class ImageTaggerViewController: UIViewController, Alertable {
     
     // MARK: - Properties
     
     var taggingImage: UIImage!
     
+    private let imaggaApiClient = ImaggaApiClient.sharedInstance
+    
     // MARK: - Outlets
-
+    
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var processOnImageButton: UIButton!
@@ -45,12 +47,18 @@ class ImageTaggerViewController: UIViewController {
     }
     
     // MARK: - Actions
-
+    
     @IBAction func cancelDidPressed(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func processOnImageButtonDidPressed(sender: AnyObject) {
+        imaggaApiClient.uploadImage(taggingImage, successBlock: { contentId in
+            print(contentId)
+        }) { [unowned self] error in
+            let alertController = self.alert("Error", message: error.localizedDescription, handler: nil)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
 }

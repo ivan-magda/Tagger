@@ -32,7 +32,7 @@ enum Period: String {
 
 // MARK: - Typealiases
 
-typealias FlickrRequestFailCompletionHandler = (error: NSError) -> Void
+typealias FlickrFailCompletionHandler = (error: NSError) -> Void
 typealias FlickrTagsSuccessCompletionHandler = (tags: [Tag]) -> Void
 typealias FlickrPhotosSearchSuccessCompletionHandler = (album: FlickrAlbum) -> Void
 typealias FlickrNumberSuccessCompletionHandler = (number: Int) -> Void
@@ -45,24 +45,24 @@ extension FlickrApiClient {
     // MARK: - Tags -
     // MARK: Public
     
-    func tagsHotListForPeriod(period: Period, numberOfTags count: Int = 20, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
-        var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.TagsHotList)
-        methodParameters[Constants.FlickrParameterKeys.Period] = period.rawValue
-        methodParameters[Constants.FlickrParameterKeys.Count] = count
+    func tagsHotListForPeriod(period: Period, numberOfTags count: Int = 20, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
+        var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsHotList)
+        param[Constants.FlickrParameterKeys.Period] = period.rawValue
+        param[Constants.FlickrParameterKeys.Count] = count
         
         let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
-        let request = NSURLRequest(URL: urlFromParameters(methodParameters))
+        let request = NSURLRequest(URL: urlFromParameters(param))
         fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
     }
     
     // MARK: - Photos -
     // MARK: Public
     
-    func searchPhotosWithTags(tags: [String], successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+    func searchPhotosWithTags(tags: [String], successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
         searchPhotosWithParameters(parametersForPhotosSearchWithTags(tags), successBlock: success, failBlock: fail)
     }
     
-    func randomImageFromTags(tags: [String], successBlock success: ImageDownloadingCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+    func randomImageFromTags(tags: [String], successBlock success: ImageDownloadingCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
         randomPhotoForPhotosSearchWithParameters(parametersForPhotosSearchWithTags(tags), successBlock: { [unowned self] photo in
             guard let url = NSURL(string: photo.urlSmall) else {
                 fail(error: Constants.Error.DefaultError)
@@ -72,7 +72,7 @@ extension FlickrApiClient {
             }, failBlock: fail)
     }
     
-    func randomPhotoForPhotosSearchWithParameters(parameters: MethodParameters, successBlock success: FlickrPhotoSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+    func randomPhotoForPhotosSearchWithParameters(parameters: MethodParameters, successBlock success: FlickrPhotoSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
         countPagesForPhotoSearchWithParameters(parameters, successBlock: { pages in
             let pageLimit = min(pages, 20)
             let randomPage = RandomNumberUtils.numberFromZeroTo(pageLimit) + 1
@@ -93,13 +93,13 @@ extension FlickrApiClient {
     
     // MARK: Private
     
-    private func searchPhotosWithParameters(param: MethodParameters, successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+    private func searchPhotosWithParameters(param: MethodParameters, successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
         let request = NSURLRequest(URL: urlFromParameters(param))
         fetchResourceForRequest(request, success: success, fail: fail)
     }
     
     /// Returns number of pages for a photos search.
-    private func countPagesForPhotoSearchWithParameters(param: MethodParameters, successBlock success: FlickrNumberSuccessCompletionHandler, failBlock fail: FlickrRequestFailCompletionHandler) {
+    private func countPagesForPhotoSearchWithParameters(param: MethodParameters, successBlock success: FlickrNumberSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
         let request = NSURLRequest(URL: urlFromParameters(param))
         fetchJsonForRequest(request) { result in
             func sendError(error: String) {
@@ -129,14 +129,24 @@ extension FlickrApiClient {
     
     // MARK: - Private Helpers -
     
-    private func parametersWithMethodName(method: String) -> MethodParameters {
-        var parameters = getBaseMethodParameters()
+    func getBaseMethodParameters(method: String? = nil) -> MethodParameters {
+        var parameters = [
+            Constants.FlickrParameterKeys.APIKey: Constants.FlickrParameterValues.APIKey,
+            Constants.FlickrParameterKeys.SafeSearch: Constants.FlickrParameterValues.UseSafeSearch,
+            Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
+            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
+        ]
+        
+        guard let method = method else {
+            return parameters
+        }
         parameters[Constants.FlickrParameterKeys.Method] = method
+        
         return parameters
     }
     
     private func parametersForPhotosSearchWithTags(tags: [String]) -> MethodParameters {
-        var methodParameters = parametersWithMethodName(Constants.FlickrParameterValues.SearchMethod)
+        var methodParameters = getBaseMethodParameters(Constants.FlickrParameterValues.SearchMethod)
         methodParameters[Constants.FlickrParameterKeys.Extras] = "\(Constants.FlickrParameterValues.ThumbnailURL),\(Constants.FlickrParameterValues.SmallURL),\(Constants.FlickrParameterValues.MediumURL)"
         methodParameters[Constants.FlickrParameterKeys.ContentType] = Constants.FlickrParameterValues.ContentType.Photos.rawValue
         methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joinWithSeparator(",")
