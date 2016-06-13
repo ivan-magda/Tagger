@@ -33,7 +33,7 @@ enum Period: String {
 // MARK: - Typealiases
 
 typealias FlickrFailCompletionHandler = (error: NSError) -> Void
-typealias FlickrTagsSuccessCompletionHandler = (tags: [Tag]) -> Void
+typealias FlickrTagsSuccessCompletionHandler = (tags: [FlickrTag]) -> Void
 typealias FlickrPhotosSearchSuccessCompletionHandler = (album: FlickrAlbum) -> Void
 typealias FlickrNumberSuccessCompletionHandler = (number: Int) -> Void
 typealias FlickrPhotoSuccessCompletionHandler = (photo: FlickrPhoto) -> Void

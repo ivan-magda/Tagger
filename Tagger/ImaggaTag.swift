@@ -22,18 +22,43 @@
 
 import Foundation
 
-// MARK: Tag
+// MARK: ImaggaTag: Tag -
 
-class Tag {
+final class ImaggaTag: Tag {
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    let name: String
+    let confidence: Double
     
     // MARK: - Init
     
-    init(name: String) {
-        self.name = name
+    init(confidence: Double, tag: String) {
+        self.confidence = confidence
+        super.init(name: tag)
+    }
+    
+    convenience init?(json: JSONDictionary) {
+        guard let confidence = JSON.double(json, key: "confidence"),
+            let tag = JSON.string(json, key: "tag") else {
+                return nil
+        }
+        self.init(confidence: confidence, tag: tag)
+    }
+    
+    // MARK: - Static
+    
+    static func sanitezedTags(json: [JSONDictionary]) -> [ImaggaTag] {
+        return json.flatMap { self.init(json: $0) }
+    }
+    
+}
+
+// MARK: - ImaggaTag: JSONParselable -
+
+extension ImaggaTag: JSONParselable {
+    
+    static func decode(input: JSONDictionary) -> ImaggaTag? {
+        return ImaggaTag.init(json: input)
     }
     
 }

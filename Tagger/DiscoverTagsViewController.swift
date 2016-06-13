@@ -159,7 +159,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         if indexPath.section == SectionType.Trends.rawValue {
             let period: Period = (indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week)
             flickrApiClient.tagsHotListForPeriod(period, successBlock: { [unowned self] tags in
-                let tags = tags.map { $0.content }
+                let tags = tags.map { $0.name }
                 self.flickrApiClient.randomImageFromTags(tags, successBlock: { [weak self] image in
                     self?.setImage(image, toCellAtIndexPath: indexPath)
                     }, failBlock: { error in

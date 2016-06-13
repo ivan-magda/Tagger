@@ -13,12 +13,6 @@ import CoreGraphics.CGGeometry
 
 class UIUtils {
     
-    // MARK: Properties
-    
-    static let placeholderImageName = "Placeholder"
-    static let checkmarkImageName = "Checkmark"
-    static let editImageName = "Edit"
-    
     // MARK: Init
     
     private init() {

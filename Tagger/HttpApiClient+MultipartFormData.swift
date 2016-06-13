@@ -27,7 +27,7 @@ import Foundation
 /// - parameter data: Data to uploaded
 /// - parameter name: The optional field name to be used when uploading files. If you supply paths, you must supply filePathKey, too.
 /// - parameter fileName: Name of the uploading file
-typealias MultipartBodyPart = (data: NSData, name: String, fileName: String)
+typealias MultipartData = (data: NSData, name: String, fileName: String)
 
 // MARK: - HttpApiClient (multipart/form-data)
 
@@ -40,7 +40,7 @@ extension HttpApiClient {
     /// - parameter boundary:     The multipart/form-data boundary
     ///
     /// - returns: The NSData of the body of the request
-    func createMultipartBodyWithParameters(parameters: [String: AnyObject]?, files: [MultipartBodyPart]?, boundary: String) -> NSData {
+    func createMultipartBodyWithParameters(parameters: MethodParameters?, files: [MultipartData]?, boundary: String) -> NSData {
         let body = NSMutableData()
         
         if let parameters = parameters {
