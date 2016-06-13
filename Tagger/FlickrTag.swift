@@ -22,18 +22,38 @@
 
 import Foundation
 
-// MARK: Tag
+// MARK: FlickrTag: Tag -
 
-class Tag {
+final class FlickrTag: Tag {
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    let name: String
+    let score: Int
     
     // MARK: - Init
     
-    init(name: String) {
-        self.name = name
+    init(score: Int, content: String) {
+        self.score = score
+        super.init(name: content)
+    }
+    
+    convenience init?(json: JSONDictionary) {
+        guard let scoreString = JSON.string(json, key: "score"),
+            let score = Int(scoreString),
+            let content = JSON.string(json, key: "_content") else {
+                return nil
+        }
+        self.init(score: score, content: content)
+    }
+    
+}
+
+// MARK: - FlickrTag: JSONParselable -
+
+extension FlickrTag: JSONParselable {
+    
+    static func decode(input: JSONDictionary) -> FlickrTag? {
+        return FlickrTag.init(json: input)
     }
     
 }

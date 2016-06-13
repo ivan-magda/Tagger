@@ -40,6 +40,7 @@ class TagListViewController: UIViewController, Alertable {
     
     var tags = [Tag]() {
         didSet {
+            guard tableView != nil else { return }
             reloadData()
         }
     }
@@ -91,7 +92,7 @@ extension TagListViewController: UITableViewDataSource {
     // MARK: Helpers
     
     private func configureCell(cell: UITableViewCell, withTag tag: Tag) {
-        cell.textLabel?.text = tag.content
+        cell.textLabel?.text = tag.name
     }
     
 }

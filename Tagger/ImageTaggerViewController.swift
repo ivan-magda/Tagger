@@ -31,6 +31,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
     var taggingImage: UIImage!
     
     private let imaggaApiClient = ImaggaApiClient.sharedInstance
+    private var generatedTags: [ImaggaTag]?
     
     // MARK: - Outlets
     
@@ -53,12 +54,26 @@ class ImageTaggerViewController: UIViewController, Alertable {
     }
     
     @IBAction func processOnImageButtonDidPressed(sender: AnyObject) {
-        imaggaApiClient.uploadImage(taggingImage, successBlock: { contentId in
-            print(contentId)
-        }) { [unowned self] error in
-            let alertController = self.alert("Error", message: error.localizedDescription, handler: nil)
-            self.presentViewController(alertController, animated: true, completion: nil)
+        if generatedTags != nil {
+            showTags()
+        } else {
+            imaggaApiClient.taggingImage(taggingImage, successBlock: { [unowned self] tags in
+                self.generatedTags = tags
+                self.showTags()
+            }) { [unowned self] error in
+                let alertController = self.alert("Error", message: error.localizedDescription, handler: nil)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
+    }
+    
+    // MARK: - Helpers
+    
+    private func showTags() {
+        let tagListViewController = TagListViewController()
+        tagListViewController.title = "Generated Tags"
+        tagListViewController.tags = generatedTags!
+        navigationController?.pushViewController(tagListViewController, animated: true)
     }
     
 }
@@ -68,6 +83,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
 extension ImageTaggerViewController {
     
     private func configureUI() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         imageView.image = taggingImage
     }
     

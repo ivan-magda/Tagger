@@ -34,15 +34,25 @@ private enum ImaggaApiEndpoint: String {
 // MARK: - Typealiases
 
 typealias ImaggaContentIdSuccessCompletionHandler = (contentId: String) -> Void
+typealias ImaggaTaggingSuccessCompletionHandler = (tags: [ImaggaTag]) -> Void
 typealias ImaggaFailCompletionHandler = (error: NSError) -> Void
 
 // MARK: - ImaggaApiClient (Calling Api Endpoints)
 
 extension ImaggaApiClient {
     
-    // MARK: Requests
+    // MARK: - API Endpoints -
+    // MARK: Public
     
-    func uploadImage(image: UIImage, successBlock success: ImaggaContentIdSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
+    func taggingImage(image: UIImage, successBlock success: ImaggaTaggingSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
+        uploadImage(image, successBlock: { [unowned self] contentId in
+            self.taggingByContentId(contentId, successBlock: success, failBlock: fail)
+            }, failBlock: fail)
+    }
+    
+    // MARK: Private
+    
+    private func uploadImage(image: UIImage, successBlock success: ImaggaContentIdSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
         guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
             sendError("Could not get JPEG representation of selected image.", toBlock: fail)
             return
@@ -50,16 +60,16 @@ extension ImaggaApiClient {
         
         let boundary = generateBoundaryString()
         
-        let URLRequest = NSMutableURLRequest(URL: urlFromParameters(nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
-        URLRequest.HTTPMethod = HttpMethod.POST.rawValue
-        URLRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        URLRequest.HTTPBody = createMultipartBodyWithParameters(
+        let request = NSMutableURLRequest(URL: urlFromParameters(nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
+        request.HTTPMethod = HttpMethod.POST.rawValue
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = createMultipartBodyWithParameters(
             nil,
             files: [(data: imageData, name: "imagefile", fileName: "image.jpg")],
             boundary: boundary
         )
         
-        fetchJsonForRequest(URLRequest) { [unowned self] result in
+        fetchJsonForRequest(request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
                 fail(error: error)
                 return
@@ -83,6 +93,27 @@ extension ImaggaApiClient {
             default:
                 self.sendError("An error occured. Please, try again.", toBlock: fail)
             }
+        }
+    }
+    
+    private func taggingByContentId(id: String, successBlock success: ImaggaTaggingSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
+        let url = urlFromParameters(["content": id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
+        let request = NSURLRequest(URL: url)
+        fetchJsonForRequest(request) { result in
+            switch result {
+            case .Json(let json):
+                guard let results = json["results"] as? [JSONDictionary],
+                    let tagsJson = results.first?["tags"] as? [JSONDictionary] else {
+                        self.sendError("", toBlock: fail)
+                        return
+                }
+                
+                let tags = ImaggaTag.sanitezedTags(tagsJson)
+                success(tags: tags)
+            default:
+                self.sendError("An error occured. Please, try again.", toBlock: fail)
+            }
+            
         }
     }
     
