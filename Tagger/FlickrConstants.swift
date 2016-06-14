@@ -105,6 +105,8 @@ extension FlickrApiClient {
             static let Secret = "secret"
             static let Server = "server"
             static let Farm = "farm"
+            static let Score = "score"
+            static let Content = "_content"
         }
         
         // MARK: Flickr Response Values
