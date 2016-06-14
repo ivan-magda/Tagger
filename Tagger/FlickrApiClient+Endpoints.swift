@@ -55,6 +55,15 @@ extension FlickrApiClient {
         fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
     }
     
+    func relatedTagsForTag(tag: String, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrFailCompletionHandler) {
+        var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsGetRelated)
+        param[Constants.FlickrParameterKeys.Tag] = tag
+        
+        let keys = [Constants.FlickrResponseKeys.Tags, Constants.FlickrResponseKeys.Tag]
+        let request = NSURLRequest(URL: urlFromParameters(param))
+        fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
+    }
+    
     // MARK: - Photos -
     // MARK: Public
     

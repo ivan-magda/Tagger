@@ -60,7 +60,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     private var numberOfColumns = 2
     private let defaultTagCategories = [
-        "art", "light", "park", "winter", "sun", "clouds", "family", "new", "macro", "summer"
+        "art", "light", "park", "winter", "sun", "clouds", "family", "football", "macro", "summer"
     ]
     
     private var images = [String: UIImage]()
@@ -255,9 +255,9 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
             hotTagsViewController.title = SectionType.TrendingTags.tags[indexPath.row].capitalizedString
             navigationController?.pushViewController(hotTagsViewController, animated: true)
         case SectionType.Categories.rawValue:
-            let tagListViewController = TagListViewController()
-            tagListViewController.title = defaultTagCategories[indexPath.row].capitalizedString
-            navigationController?.pushViewController(tagListViewController, animated: true)
+            let tag = defaultTagCategories[indexPath.row]
+            let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickrApiClient, tag: tag)
+            navigationController?.pushViewController(relatedTagsViewController, animated: true)
         default:
             break
         }
