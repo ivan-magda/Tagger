@@ -28,9 +28,13 @@ final class FlickrTag: Tag {
     
     // MARK: - Properties
     
-    let score: Int
+    private (set) var score: Int? = nil
     
     // MARK: - Init
+    
+    init(content: String) {
+        super.init(name: content)
+    }
     
     init(score: Int, content: String) {
         self.score = score
@@ -38,12 +42,15 @@ final class FlickrTag: Tag {
     }
     
     convenience init?(json: JSONDictionary) {
-        guard let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString),
-            let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-                return nil
+        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
+            return nil
         }
-        self.init(score: score, content: content)
+        self.init(content: content)
+        
+        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
+            let score = Int(scoreString) {
+            self.score = score
+        }
     }
     
 }

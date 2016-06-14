@@ -57,6 +57,7 @@ extension FlickrApiClient {
             static let Period = "period"
             static let Count = "count"
             static let ContentType = "content_type"
+            static let Tag = "tag"
             static let Tags = "tags"
         }
         
@@ -68,6 +69,7 @@ extension FlickrApiClient {
             static let DisableJSONCallback = "1"
             static let SearchMethod = "flickr.photos.search"
             static let TagsHotList = "flickr.tags.getHotList"
+            static let TagsGetRelated = "flickr.tags.getRelated"
             static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
             static let ThumbnailURL = "url_t"
             static let SmallURL = "url_s"
@@ -101,6 +103,7 @@ extension FlickrApiClient {
             static let Total = "total"
             static let HotTags = "hottags"
             static let Tag = "tag"
+            static let Tags = "tags"
             static let Owner = "owner"
             static let Secret = "secret"
             static let Server = "server"
