@@ -22,38 +22,39 @@
 
 import Foundation
 
-// MARK: FlickrTag: Tag -
+// MARK: ImaggaApiClient (Constants)
 
-final class FlickrTag: Tag {
+extension ImaggaApiClient {
     
-    // MARK: - Properties
+    // MARK: - Constants
     
-    let score: Int
-    
-    // MARK: - Init
-    
-    init(score: Int, content: String) {
-        self.score = score
-        super.init(name: content)
-    }
-    
-    convenience init?(json: JSONDictionary) {
-        guard let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString),
-            let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-                return nil
+    struct Constants {
+        
+        // MARK: ParameterKeys
+        
+        struct ParameterKeys {
+            static let Content = "content"
+            static let ImageFile = "imagefile"
         }
-        self.init(score: score, content: content)
-    }
-    
-}
-
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
+        
+        // MARK: ResponseKeys
+        
+        struct ResponseKeys {
+            static let Status = "status"
+            static let Message = "message"
+            static let Uploaded = "uploaded"
+            static let ID = "id"
+            static let Results = "results"
+            static let Tag = "tag"
+            static let Tags = "tags"
+            static let Confidence = "confidence"
+        }
+        
+        // MARK: ResponseValues
+        
+        struct ResponseValues {
+            static let SuccessStatus = "success"
+        }
     }
     
 }

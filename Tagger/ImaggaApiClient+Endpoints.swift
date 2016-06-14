@@ -65,7 +65,7 @@ extension ImaggaApiClient {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = createMultipartBodyWithParameters(
             nil,
-            files: [(data: imageData, name: "imagefile", fileName: "image.jpg")],
+            files: [(data: imageData, name: Constants.ParameterKeys.ImageFile, fileName: "image.jpg")],
             boundary: boundary
         )
         
@@ -77,13 +77,13 @@ extension ImaggaApiClient {
             
             switch result {
             case .Json(let json):
-                guard let status = json["status"] as? String where status == "success" else {
-                    self.sendError(json["message"] as! String, toBlock: fail)
+                guard let status = json[Constants.ResponseKeys.Status] as? String where status == Constants.ResponseValues.SuccessStatus else {
+                    self.sendError(json[Constants.ResponseKeys.Message] as! String, toBlock: fail)
                     return
                 }
                 
-                guard let uploaded = json["uploaded"] as? [JSONDictionary],
-                    let fileId = uploaded.first?["id"] as? String else {
+                guard let uploaded = json[Constants.ResponseKeys.Uploaded] as? [JSONDictionary],
+                    let fileId = uploaded.first?[Constants.ResponseKeys.ID] as? String else {
                         self.sendError("Invalid information received from service.", toBlock: fail)
                         return
                 }
@@ -97,13 +97,13 @@ extension ImaggaApiClient {
     }
     
     private func taggingByContentId(id: String, successBlock success: ImaggaTaggingSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
-        let url = urlFromParameters(["content": id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
+        let url = urlFromParameters([Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
         let request = NSURLRequest(URL: url)
         fetchJsonForRequest(request) { result in
             switch result {
             case .Json(let json):
-                guard let results = json["results"] as? [JSONDictionary],
-                    let tagsJson = results.first?["tags"] as? [JSONDictionary] else {
+                guard let results = json[Constants.ResponseKeys.Results] as? [JSONDictionary],
+                    let tagsJson = results.first?[Constants.ResponseKeys.Tags] as? [JSONDictionary] else {
                         self.sendError("", toBlock: fail)
                         return
                 }

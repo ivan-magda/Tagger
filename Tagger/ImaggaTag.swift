@@ -38,8 +38,8 @@ final class ImaggaTag: Tag {
     }
     
     convenience init?(json: JSONDictionary) {
-        guard let confidence = JSON.double(json, key: "confidence"),
-            let tag = JSON.string(json, key: "tag") else {
+        guard let confidence = JSON.double(json, key: ImaggaApiClient.Constants.ResponseKeys.Confidence),
+            let tag = JSON.string(json, key: ImaggaApiClient.Constants.ResponseKeys.Tag) else {
                 return nil
         }
         self.init(confidence: confidence, tag: tag)
