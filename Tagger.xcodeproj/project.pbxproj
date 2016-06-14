@@ -53,6 +53,7 @@
 		75A190A21D09B1BD00D34D0B /* HttpApiClient+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */; };
 		75D40D171D083DC100E3AB1F /* FlickrAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */; };
 		75D40D191D083DF900E3AB1F /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */; };
+		75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E057381D0FC93700B3A258 /* ImaggaConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,7 @@
 		75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HttpApiClient+Convenience.swift"; sourceTree = "<group>"; };
 		75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAlbum.swift; sourceTree = "<group>"; };
 		75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhoto.swift; sourceTree = "<group>"; };
+		75E057381D0FC93700B3A258 /* ImaggaConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +355,7 @@
 			children = (
 				7584F34A1D0DABD0008FE98C /* ImaggaApiClient.swift */,
 				7584F34D1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift */,
+				75E057381D0FC93700B3A258 /* ImaggaConstants.swift */,
 			);
 			name = Imagga;
 			sourceTree = "<group>";
@@ -514,6 +517,7 @@
 				75D40D171D083DC100E3AB1F /* FlickrAlbum.swift in Sources */,
 				754F1B0B1D024CEA00410CA0 /* Constants.swift in Sources */,
 				754F1B011D024B9400410CA0 /* JSON.swift in Sources */,
+				75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */,
 				755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */,
 				7584F34E1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift in Sources */,
 				754C204A1D043FE200CA4B34 /* SectionHeaderCollectionReusableView.swift in Sources */,

@@ -120,30 +120,42 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZBR-br-cUJ">
-                                <rect key="frame" x="16" y="80" width="288" height="423"/>
+                                <rect key="frame" x="20" y="72" width="280" height="444"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVD-Zl-lsJ">
-                                <rect key="frame" x="16" y="519" width="288" height="33"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6L-vB-CZe">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="33" id="kDr-Q9-Kch"/>
+                                    <constraint firstAttribute="height" constant="44" id="sxo-Lv-NQE"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Process on Image"/>
-                                <connections>
-                                    <action selector="processOnImageButtonDidPressed:" destination="LU8-js-NHR" eventType="touchUpInside" id="8Rp-ou-AwU"/>
-                                </connections>
-                            </button>
+                                <items>
+                                    <barButtonItem title="Results" id="GWP-Ze-WLL">
+                                        <connections>
+                                            <action selector="showResults:" destination="LU8-js-NHR" id="k59-2X-WBy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Xip-3S-Nwo"/>
+                                    <barButtonItem title="Generate" id="nUG-lb-7Kn">
+                                        <connections>
+                                            <action selector="generateTags:" destination="LU8-js-NHR" id="6dX-YJ-Wv1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="anV-Ps-bZn">
+                                <rect key="frame" x="142" y="275" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="top" secondItem="ZBR-br-cUJ" secondAttribute="bottom" constant="16" id="Cqg-SB-xep"/>
-                            <constraint firstAttribute="trailing" secondItem="ZBR-br-cUJ" secondAttribute="trailing" constant="16" id="D8N-Gf-osE"/>
-                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="centerX" secondItem="UTu-dO-qdc" secondAttribute="centerX" id="RPH-Wy-YXV"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="hVD-Zl-lsJ" secondAttribute="bottom" constant="16" id="S5w-fF-IgS"/>
-                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="16" id="XsL-Eu-wni"/>
-                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="top" secondItem="HNk-vY-E9Y" secondAttribute="bottom" constant="16" id="XyX-wL-Bav"/>
-                            <constraint firstAttribute="trailing" secondItem="hVD-Zl-lsJ" secondAttribute="trailing" constant="16" id="aaY-Pc-eLq"/>
-                            <constraint firstItem="hVD-Zl-lsJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="16" id="tNG-dX-cAq"/>
+                            <constraint firstAttribute="trailing" secondItem="ZBR-br-cUJ" secondAttribute="trailing" constant="20" symbolic="YES" id="D8N-Gf-osE"/>
+                            <constraint firstItem="k6L-vB-CZe" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" id="FQE-4q-EsD"/>
+                            <constraint firstItem="cJP-dz-Fet" firstAttribute="top" secondItem="k6L-vB-CZe" secondAttribute="bottom" id="JlJ-O3-DQD"/>
+                            <constraint firstAttribute="trailing" secondItem="k6L-vB-CZe" secondAttribute="trailing" id="V3U-Oa-27w"/>
+                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="leading" secondItem="UTu-dO-qdc" secondAttribute="leading" constant="20" symbolic="YES" id="XsL-Eu-wni"/>
+                            <constraint firstItem="ZBR-br-cUJ" firstAttribute="top" secondItem="HNk-vY-E9Y" secondAttribute="bottom" constant="8" id="XyX-wL-Bav"/>
+                            <constraint firstItem="anV-Ps-bZn" firstAttribute="centerY" secondItem="ZBR-br-cUJ" secondAttribute="centerY" id="b2K-bI-XcF"/>
+                            <constraint firstItem="anV-Ps-bZn" firstAttribute="centerX" secondItem="ZBR-br-cUJ" secondAttribute="centerX" id="g8R-Bu-6rE"/>
+                            <constraint firstItem="k6L-vB-CZe" firstAttribute="top" secondItem="ZBR-br-cUJ" secondAttribute="bottom" constant="8" id="t6e-3B-F9x"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Image Tagging" id="o3u-tB-3qA">
@@ -154,9 +166,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="anV-Ps-bZn" id="DqR-hj-o6w"/>
                         <outlet property="cancelBarButtonItem" destination="pCX-p1-QX6" id="VxE-c5-cGA"/>
+                        <outlet property="generateBarButtonItem" destination="nUG-lb-7Kn" id="TCX-B0-4Na"/>
                         <outlet property="imageView" destination="ZBR-br-cUJ" id="yoh-kR-JMQ"/>
-                        <outlet property="processOnImageButton" destination="hVD-Zl-lsJ" id="JLh-Qc-YmQ"/>
+                        <outlet property="resultsBarButtonItem" destination="GWP-Ze-WLL" id="djq-O9-dc3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gd0-k5-JVy" userLabel="First Responder" sceneMemberID="firstResponder"/>
