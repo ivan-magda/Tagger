@@ -46,14 +46,21 @@ class MIImagePickerController: UIImagePickerController, Alertable {
         picker.didFinishPickingImageBlock = block
         picker.delegate = picker
         
-        let actionSheet = UIAlertController(title: "From where select an image?", message: "Choose source type.", preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: "From where select an image?", message: "Choose an action.", preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .Default, handler: { _ in
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler: { _ in
             picker.photoFromLibrary()
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .Default, handler: { _ in
+        })
+        photoLibraryAction.setValue(UIImage(named: "iOS-photos")?.imageWithRenderingMode(.AlwaysOriginal), forKey: "image")
+        actionSheet.addAction(photoLibraryAction)
+        
+        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: { _ in
             picker.takePhoto()
-        }))
+        })
+        takePhotoAction.setValue(UIImage(named: "compact-camera")?.imageWithRenderingMode(.AlwaysOriginal), forKey: "image")
+        actionSheet.addAction(takePhotoAction)
+        
         rootViewController.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
@@ -73,14 +80,14 @@ extension MIImagePickerController: UIImagePickerControllerDelegate, UINavigation
                 return
             }
             
-            self.rootViewController.dismissViewControllerAnimated(true, completion: { [unowned self] in
+            picker.dismissViewControllerAnimated(true, completion: { [unowned self] in
                 self.didFinishPickingImageBlock(image: pickedImage)
             })
         }
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        rootViewController.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: Private Helper Methods
