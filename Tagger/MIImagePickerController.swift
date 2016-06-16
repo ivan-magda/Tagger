@@ -46,7 +46,7 @@ class MIImagePickerController: UIImagePickerController, Alertable {
         picker.didFinishPickingImageBlock = block
         picker.delegate = picker
         
-        let actionSheet = UIAlertController(title: "From where select an image?", message: "Choose an action.", preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler: { _ in
@@ -82,7 +82,7 @@ extension MIImagePickerController: UIImagePickerControllerDelegate, UINavigation
             
             picker.dismissViewControllerAnimated(true, completion: { [unowned self] in
                 self.didFinishPickingImageBlock(image: pickedImage)
-            })
+                })
         }
     }
     

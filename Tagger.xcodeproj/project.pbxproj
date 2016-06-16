@@ -45,10 +45,16 @@
 		7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC51D015A840032ECFA /* TagsViewController.swift */; };
 		7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */; };
 		755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomNumberUtils.swift */; };
+		75755C8B1D10FCA6007DE8B8 /* String+Encode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C8A1D10FCA6007DE8B8 /* String+Encode.swift */; };
+		75755C8D1D10FD1D007DE8B8 /* String+HMACSHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C8C1D10FD1D007DE8B8 /* String+HMACSHA1.swift */; };
+		75755C941D112BDD007DE8B8 /* FlickrOAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C931D112BDD007DE8B8 /* FlickrOAuth.swift */; };
+		75755C971D1130F5007DE8B8 /* FlickrOAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C951D1130F5007DE8B8 /* FlickrOAuthViewController.swift */; };
 		7584F34B1D0DABD0008FE98C /* ImaggaApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584F34A1D0DABD0008FE98C /* ImaggaApiClient.swift */; };
 		7584F34E1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584F34D1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift */; };
 		7584F3501D0DCBFD008FE98C /* NSData+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584F34F1D0DCBFD008FE98C /* NSData+MimeType.swift */; };
 		7584F3531D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7584F3521D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift */; };
+		758EDB4C1D12CB8B00AE6A2B /* FlickrUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */; };
+		758EDB4E1D12CC2B00AE6A2B /* FlickrOAuthResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */; };
 		75991D781D0BC3DE00870189 /* MIImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75991D771D0BC3DE00870189 /* MIImagePickerController.swift */; };
 		75A190A21D09B1BD00D34D0B /* HttpApiClient+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */; };
 		75D40D171D083DC100E3AB1F /* FlickrAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */; };
@@ -119,10 +125,17 @@
 		7552DFC51D015A840032ECFA /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoViewController.swift; sourceTree = "<group>"; };
 		755E38C41D0939580052BA48 /* RandomNumberUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberUtils.swift; sourceTree = "<group>"; };
+		75755C8A1D10FCA6007DE8B8 /* String+Encode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encode.swift"; sourceTree = "<group>"; };
+		75755C8C1D10FD1D007DE8B8 /* String+HMACSHA1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMACSHA1.swift"; sourceTree = "<group>"; };
+		75755C8E1D10FD83007DE8B8 /* Tagger-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tagger-Bridging-Header.h"; sourceTree = "<group>"; };
+		75755C931D112BDD007DE8B8 /* FlickrOAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrOAuth.swift; sourceTree = "<group>"; };
+		75755C951D1130F5007DE8B8 /* FlickrOAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrOAuthViewController.swift; sourceTree = "<group>"; };
 		7584F34A1D0DABD0008FE98C /* ImaggaApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaApiClient.swift; sourceTree = "<group>"; };
 		7584F34D1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImaggaApiClient+Endpoints.swift"; sourceTree = "<group>"; };
 		7584F34F1D0DCBFD008FE98C /* NSData+MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+MimeType.swift"; sourceTree = "<group>"; };
 		7584F3521D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HttpApiClient+MultipartFormData.swift"; sourceTree = "<group>"; };
+		758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrUser.swift; sourceTree = "<group>"; };
+		758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrOAuthResult.swift; sourceTree = "<group>"; };
 		75991D771D0BC3DE00870189 /* MIImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIImagePickerController.swift; sourceTree = "<group>"; };
 		75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HttpApiClient+Convenience.swift"; sourceTree = "<group>"; };
 		75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAlbum.swift; sourceTree = "<group>"; };
@@ -162,6 +175,7 @@
 				7514BDE91D03AB46004A2E20 /* FlickrTag.swift */,
 				75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */,
 				75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */,
+				758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */,
 			);
 			name = Flickr;
 			sourceTree = "<group>";
@@ -218,6 +232,7 @@
 				754F1AF11D024B9400410CA0 /* FlickrApiClient.swift */,
 				754F1B0D1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift */,
 				754F1AF21D024B9400410CA0 /* FlickrConstants.swift */,
+				758EDB4A1D12CB6700AE6A2B /* OAuth */,
 			);
 			name = Flickr;
 			sourceTree = "<group>";
@@ -310,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				7552DF991D013A740032ECFA /* Info.plist */,
+				75755C8E1D10FD83007DE8B8 /* Tagger-Bridging-Header.h */,
 			);
 			name = SupportingFiles;
 			sourceTree = "<group>";
@@ -367,6 +383,8 @@
 			isa = PBXGroup;
 			children = (
 				7584F34F1D0DCBFD008FE98C /* NSData+MimeType.swift */,
+				75755C8A1D10FCA6007DE8B8 /* String+Encode.swift */,
+				75755C8C1D10FD1D007DE8B8 /* String+HMACSHA1.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -382,6 +400,16 @@
 				754F1AEF1D024B9400410CA0 /* ApiClientResult.swift */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		758EDB4A1D12CB6700AE6A2B /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				75755C931D112BDD007DE8B8 /* FlickrOAuth.swift */,
+				75755C951D1130F5007DE8B8 /* FlickrOAuthViewController.swift */,
+				758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */,
+			);
+			name = OAuth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -521,9 +549,13 @@
 				754F1B0B1D024CEA00410CA0 /* Constants.swift in Sources */,
 				754F1B011D024B9400410CA0 /* JSON.swift in Sources */,
 				75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */,
+				75755C941D112BDD007DE8B8 /* FlickrOAuth.swift in Sources */,
+				75755C8B1D10FCA6007DE8B8 /* String+Encode.swift in Sources */,
+				75755C971D1130F5007DE8B8 /* FlickrOAuthViewController.swift in Sources */,
 				755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */,
 				7584F34E1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift in Sources */,
 				754C204A1D043FE200CA4B34 /* SectionHeaderCollectionReusableView.swift in Sources */,
+				75755C8D1D10FD1D007DE8B8 /* String+HMACSHA1.swift in Sources */,
 				754F1B001D024B9400410CA0 /* HttpMethod.swift in Sources */,
 				754C20451D041F3D00CA4B34 /* CellReuseIdentifierable.swift in Sources */,
 				75523B561D0717BB00EBB0FC /* CountPickerViewController.swift in Sources */,
@@ -538,11 +570,13 @@
 				75E0573D1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift in Sources */,
 				7584F3531D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift in Sources */,
 				754532431D066EBE00AEC34C /* FlickrHotTagsViewController.swift in Sources */,
+				758EDB4C1D12CB8B00AE6A2B /* FlickrUser.swift in Sources */,
 				754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */,
 				7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */,
 				754F1AFF1D024B9400410CA0 /* HttpApiClient.swift in Sources */,
 				7514BDEC1D03B56A004A2E20 /* MIApiClient.swift in Sources */,
 				75991D781D0BC3DE00870189 /* MIImagePickerController.swift in Sources */,
+				758EDB4E1D12CC2B00AE6A2B /* FlickrOAuthResult.swift in Sources */,
 				754F1AFC1D024B9400410CA0 /* FlickrApiClient.swift in Sources */,
 				7543E4081D0BF01800A14B10 /* ImageTaggerViewController.swift in Sources */,
 				75A190A21D09B1BD00D34D0B /* HttpApiClient+Convenience.swift in Sources */,
@@ -700,11 +734,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Tagger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Tagger-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -712,11 +749,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Tagger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Tagger-Bridging-Header.h";
 			};
 			name = Release;
 		};
