@@ -56,11 +56,17 @@ private enum OAuthParameterKey: String {
     case Token = "oauth_token"
     case Permissions = "perms"
     case Verifier = "oauth_verifier"
+    case NoJSONCallback = "nojsoncallback"
+    case Format = "format"
+    case Method = "method"
 }
 
 private enum OAuthParameterValue: String {
     case SignatureMethod = "HMAC-SHA1"
     case Version = "1.0"
+    case DisableJSONCallback = "1"
+    case ResponseFormat = "json"
+    case TestLogin = "flickr.test.login"
 }
 
 private enum OAuthResponseKey: String {
@@ -75,13 +81,15 @@ private enum OAuthResponseKey: String {
 private enum FlickrOAuthState {
     case RequestToken
     case AccessToken
+    case Request
 }
 
 // MARK: - Constants
 
 private let kRequestTokenBaseURL = "https://www.flickr.com/services/oauth/request_token"
-private let kAuthorizeBaseURL    = "https://www.flickr.com/services/oauth/authorize"
-private let kAccessTokenBaseURL  = "https://www.flickr.com/services/oauth/access_token"
+private let kAuthorizeBaseURL = "https://www.flickr.com/services/oauth/authorize"
+private let kAccessTokenBaseURL = "https://www.flickr.com/services/oauth/access_token"
+private let kTestLoginBaseURL = "https://api.flickr.com/services/rest"
 
 // MARK: - FlickrOAuth: NSObject -
 
@@ -120,13 +128,41 @@ class FlickrOAuth: NSObject {
         getRequestToken()
     }
     
+    func testLogin() {
+        currentState = .Request
+        
+        token = "72157669288344801-ae49ba0de9a108e5"
+        tokenSecret = "e055521dd5d56965"
+        
+        let parameters = generateRequestParameters(method: OAuthParameterValue.TestLogin.rawValue)
+        let urlString = encriptedURLWithBaseURL(kTestLoginBaseURL, requestParameters: parameters)
+        let urlWithSignature = NSURL(string: urlString)!
+        let task = authSession.dataTaskWithURL(urlWithSignature) { (data, response, error) in
+            performOnMain {
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                guard let data = data,
+                    let responseString = String(data: data, encoding: NSUTF8StringEncoding) else {
+                    return
+                }
+                
+                print(responseString)
+            }
+        }
+        task.resume()
+    }
+    
     // MARK: - Private -
     // MARK: Request Token
     
     private func getRequestToken() {
         currentState = .RequestToken
         
-        let urlWithSignature = NSURL(string: urlStringWithSignatureFromParameters(generateRequestParameters()))!
+        let urlString = encriptedURLWithBaseURL(kRequestTokenBaseURL, requestParameters: generateRequestParameters())
+        let urlWithSignature = NSURL(string: urlString)!
         let task = authSession.dataTaskWithURL(urlWithSignature, completionHandler: processOnResponse)
         task.resume()
     }
@@ -149,7 +185,8 @@ class FlickrOAuth: NSObject {
         var parameters = generateRequestParameters()
         parameters[OAuthParameterKey.Verifier.rawValue] = extractVerifierFromCallbackURL(url)
         
-        let urlWithSignature = NSURL(string: urlStringWithSignatureFromParameters(parameters))!
+        let urlString = encriptedURLWithBaseURL(kAccessTokenBaseURL, requestParameters: parameters)
+        let urlWithSignature = NSURL(string: urlString)!
         let task = authSession.dataTaskWithURL(urlWithSignature, completionHandler: processOnResponse)
         task.resume()
     }
@@ -162,7 +199,7 @@ class FlickrOAuth: NSObject {
     
     // MARK: Build Destination URL
     
-    private func generateRequestParameters() -> Parameters {
+    private func generateRequestParameters(method method: String? = nil) -> Parameters {
         let timestamp = (floor(NSDate().timeIntervalSince1970) as NSNumber).stringValue
         let nonce = NSUUID().UUIDString
         let signatureMethod = OAuthParameterValue.SignatureMethod.rawValue
@@ -181,26 +218,37 @@ class FlickrOAuth: NSObject {
             parameters[OAuthParameterKey.Callback.rawValue] = callbackURL
         case .AccessToken:
             parameters[OAuthParameterKey.Token.rawValue] = token!
+        case .Request:
+            parameters[OAuthParameterKey.NoJSONCallback.rawValue] = OAuthParameterValue.DisableJSONCallback.rawValue
+            parameters[OAuthParameterKey.Format.rawValue] = OAuthParameterValue.ResponseFormat.rawValue
+            parameters[OAuthParameterKey.Token.rawValue] = token!
         }
+        
+        guard let method = method else {
+            return parameters
+        }
+        parameters[OAuthParameterKey.Method.rawValue] = method
         
         return parameters
     }
     
-    private func urlStringWithSignatureFromParameters(parameters: Parameters) -> String {
+    private func encriptedURLWithBaseURL(url: String, requestParameters parameters: Parameters) -> String {
         var parameters = parameters
-        let urlStringBeforeSignature = sortedURLStringFromRequestParameters(parameters, urlEscape: true)
+        let urlStringBeforeSignature = sortedURLString(url, requestParameters: parameters, urlEscape: true)
         
         let secretKey = "\(consumerSecret)&\(tokenSecret ?? "")"
         let signatureString = "GET&\(urlStringBeforeSignature)"
         let signature = signatureString.generateHMACSHA1EncriptedString(secretKey: secretKey)
         
+        print("BASE: \(signatureString)")
+        
         parameters[OAuthParameterKey.Signature.rawValue] = signature
-        let urlStringWithSignature = sortedURLStringFromRequestParameters(parameters, urlEscape: false)
+        let urlStringWithSignature = sortedURLString(url, requestParameters: parameters, urlEscape: false)
         
         return urlStringWithSignature
     }
     
-    private func sortedURLStringFromRequestParameters(dictionary: Parameters, urlEscape: Bool) -> String {
+    private func sortedURLString(url: String, requestParameters dictionary: Parameters, urlEscape: Bool) -> String {
         func urlEscapingIfNeeded(inout string: String) {
             if urlEscape { string = String.urlEncodedStringFromString(string) }
         }
@@ -214,7 +262,7 @@ class FlickrOAuth: NSObject {
             pairs.append("\(key)=\(escapedValue)")
         }
         
-        var urlString = (currentState == .RequestToken) ? kRequestTokenBaseURL : kAccessTokenBaseURL
+        var urlString = url
         urlEscapingIfNeeded(&urlString)
         urlString += (urlEscape ? "&" : "?")
         
@@ -282,6 +330,8 @@ class FlickrOAuth: NSObject {
                 )
                 self.resultBlock(result: result)
             }
+        default:
+            break
         }
     }
     

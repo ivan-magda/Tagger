@@ -28,6 +28,7 @@ import Foundation
 
 let FlickrApplicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
 let FlickrApplicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
+let FlickrOAuthCallbackURL = "REPLACE_WITH_YOUR_CALLBACK_URL"
 
 // MARK: Imagga
 
