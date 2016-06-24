@@ -45,6 +45,7 @@
 		7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC51D015A840032ECFA /* TagsViewController.swift */; };
 		7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */; };
 		755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomNumberUtils.swift */; };
+		75658CF01D1D87700028409D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75658CEF1D1D87700028409D /* Keychain.swift */; };
 		75755C8B1D10FCA6007DE8B8 /* String+Encode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C8A1D10FCA6007DE8B8 /* String+Encode.swift */; };
 		75755C8D1D10FD1D007DE8B8 /* String+HMACSHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C8C1D10FD1D007DE8B8 /* String+HMACSHA1.swift */; };
 		75755C941D112BDD007DE8B8 /* FlickrOAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75755C931D112BDD007DE8B8 /* FlickrOAuth.swift */; };
@@ -125,6 +126,7 @@
 		7552DFC51D015A840032ECFA /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoViewController.swift; sourceTree = "<group>"; };
 		755E38C41D0939580052BA48 /* RandomNumberUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberUtils.swift; sourceTree = "<group>"; };
+		75658CEF1D1D87700028409D /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		75755C8A1D10FCA6007DE8B8 /* String+Encode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encode.swift"; sourceTree = "<group>"; };
 		75755C8C1D10FD1D007DE8B8 /* String+HMACSHA1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMACSHA1.swift"; sourceTree = "<group>"; };
 		75755C8E1D10FD83007DE8B8 /* Tagger-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tagger-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				754C20481D0425BE00CA4B34 /* Protocols */,
 				7584F3511D0DCC04008FE98C /* Extensions */,
 				754F1B081D024BFA00410CA0 /* Utils */,
+				75658CEE1D1D1E530028409D /* ThirdParty */,
 				7552DFBB1D013B0C0032ECFA /* SupportingFiles */,
 			);
 			path = Tagger;
@@ -367,6 +370,22 @@
 				75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */,
 			);
 			name = Assets;
+			sourceTree = "<group>";
+		};
+		75658CED1D1D1E3C0028409D /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				75658CEF1D1D87700028409D /* Keychain.swift */,
+			);
+			name = Keychain;
+			sourceTree = "<group>";
+		};
+		75658CEE1D1D1E530028409D /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				75658CED1D1D1E3C0028409D /* Keychain */,
+			);
+			name = ThirdParty;
 			sourceTree = "<group>";
 		};
 		7584F34C1D0DABDC008FE98C /* Imagga */ = {
@@ -572,6 +591,7 @@
 				7584F3531D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift in Sources */,
 				754532431D066EBE00AEC34C /* FlickrHotTagsViewController.swift in Sources */,
 				758EDB4C1D12CB8B00AE6A2B /* FlickrUser.swift in Sources */,
+				75658CF01D1D87700028409D /* Keychain.swift in Sources */,
 				754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */,
 				7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */,
 				754F1AFF1D024B9400410CA0 /* HttpApiClient.swift in Sources */,
