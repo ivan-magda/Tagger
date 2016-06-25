@@ -128,13 +128,13 @@
                                     <constraint firstAttribute="height" constant="44" id="sxo-Lv-NQE"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Results" id="GWP-Ze-WLL">
+                                    <barButtonItem title="See Results" id="GWP-Ze-WLL">
                                         <connections>
                                             <action selector="showResults:" destination="LU8-js-NHR" id="k59-2X-WBy"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Xip-3S-Nwo"/>
-                                    <barButtonItem title="Generate" id="nUG-lb-7Kn">
+                                    <barButtonItem title="Generate Tags" id="nUG-lb-7Kn">
                                         <connections>
                                             <action selector="generateTags:" destination="LU8-js-NHR" id="6dX-YJ-Wv1"/>
                                         </connections>
