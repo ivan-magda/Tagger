@@ -28,13 +28,15 @@ private enum SegueIdentifier: String {
     case TagAnImage
 }
 
-// MARK: - ImageTaggerDataSourceViewController: UIViewController -
+// MARK: - ImageTaggerDataSourceViewController: UIViewController, Alertable -
 
-class ImageTaggerDataSourceViewController: UIViewController {
+class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     
     // MARK: - Properties
     
     private var pickedImage: UIImage?
+    
+    private let flickr = MIFlickr.sharedInstance
     
     // MARK: - View Life Cycle
     
@@ -55,22 +57,21 @@ class ImageTaggerDataSourceViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func selectImageFromFlickr(sender: AnyObject) {
-        MIFlickr.sharedInstance.api.testLogin { (success, error) in
-            if success {
-                print("Success")
-            } else {
-                print(error!.localizedDescription)
+        if let _ = flickr.currentUser {
+            presentFlickrUserCameraRoll()
+        } else {
+            flickr.OAuth.authorizeWithPermission(.Write) { [unowned self] result in
+                switch result {
+                case .Success(let token, let tokenSecret, let user):
+                    print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
+                    self.flickr.currentUser = user
+                    self.presentFlickrUserCameraRoll()
+                case .Failure(let error):
+                    let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
             }
         }
-        
-//        MIFlickr.sharedInstance.OAuth.authorizeWithPermission(.Write) { result in
-//            switch result {
-//            case .Success(let token, let tokenSecret, let user):
-//                print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
-//            case .Failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
     }
     
     @IBAction func selectImageFromDevice(sender: AnyObject) {
@@ -78,6 +79,12 @@ class ImageTaggerDataSourceViewController: UIViewController {
             self.pickedImage = image
             self.performSegueWithIdentifier(SegueIdentifier.TagAnImage.rawValue, sender: self)
         }
+    }
+    
+    // MARK: - Private
+    
+    private func presentFlickrUserCameraRoll() {
+        print("Present camera roll")
     }
     
 }

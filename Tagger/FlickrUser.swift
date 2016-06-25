@@ -22,10 +22,52 @@
 
 import Foundation
 
-struct FlickrUser {
+// MARK: Types
+
+private enum CoderKey: String {
+    case Fullname
+    case Username
+    case UserID
+}
+
+// MARK: - FlickrUser: NSObject
+
+class FlickrUser: NSObject {
+    
+    // MARK: - Properties
     
     let fullname: String
     let username: String
     let userID: String
+    
+    override var description: String {
+        return "FlickrUser {\n\tFullname: \(fullname)\n\tUsername: \(username)\n\tUserID: \(userID).\n}"
+    }
+    
+    // MARK: Init
+    
+    init(fullname: String, username: String, userID: String) {
+        self.fullname = fullname
+        self.username = username
+        self.userID = userID
+    }
+    
+    // MARK: NSCoding
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let fullname = aDecoder.decodeObjectForKey(CoderKey.Fullname.rawValue) as? String,
+            let username = aDecoder.decodeObjectForKey(CoderKey.Username.rawValue) as? String,
+            let userID = aDecoder.decodeObjectForKey(CoderKey.UserID.rawValue) as? String else {
+                return nil
+        }
+        
+        self.init(fullname: fullname, username: username, userID: userID)
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(fullname, forKey: CoderKey.Fullname.rawValue)
+        aCoder.encodeObject(username, forKey: CoderKey.Username.rawValue)
+        aCoder.encodeObject(userID, forKey: CoderKey.UserID.rawValue)
+    }
     
 }
