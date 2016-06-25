@@ -8,7 +8,11 @@
 
 import Foundation
 
-// MARK: MIFlickr
+// MARK: Constants
+
+private let kFlickrCurrentUserKey = "FLICKR_CURRENT_USER_KEY"
+
+// MARK: - MIFlickr
 
 class MIFlickr {
     
@@ -22,6 +26,30 @@ class MIFlickr {
     
     let api: FlickrApiClient
     let OAuth: FlickrOAuth
+    
+    var currentUser: FlickrUser? {
+        get {
+            guard let data = NSUserDefaults.standardUserDefaults().objectForKey(kFlickrCurrentUserKey) as? NSData,
+                let user = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? FlickrUser else {
+                    return nil
+            }
+            
+            return user
+        }
+        
+        set {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            
+            if let newValue = newValue {
+                let data = NSKeyedArchiver.archivedDataWithRootObject(newValue)
+                userDefaults.setObject(data, forKey: kFlickrCurrentUserKey)
+            } else {
+                userDefaults.setObject(nil, forKey: kFlickrCurrentUserKey)
+            }
+            
+            userDefaults.synchronize()
+        }
+    }
     
     // MARK: Init
     
