@@ -37,6 +37,7 @@ typealias FlickrTagsSuccessCompletionHandler = (tags: [FlickrTag]) -> Void
 typealias FlickrPhotosSearchSuccessCompletionHandler = (album: FlickrAlbum) -> Void
 typealias FlickrNumberSuccessCompletionHandler = (number: Int) -> Void
 typealias FlickrPhotoSuccessCompletionHandler = (photo: FlickrPhoto) -> Void
+typealias FlickrPhotosSuccessCompletionHandler = (photos: [FlickrPhoto]) -> Void
 
 // MARK: - FlickrApiClient (Calling Api Endpoints)
 
@@ -148,14 +149,13 @@ extension FlickrApiClient {
             completionHandler(success: false, error: error)
         }
         
-        let oauth = FlickrOAuth(consumerKey: FlickrApplicationKey, consumerSecret: FlickrApplicationSecret, callbackURL: "")
         let params = [
             Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.TestLogin,
             Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
             Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat
         ]
         
-        guard let URL = oauth.buildSHAEncryptedURLForHTTPMethod(.GET, baseURL: baseURL, requestParameters: params) else {
+        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.GET, baseURL: baseURL, requestParameters: params) else {
             sendError("Could not build HMAC-SHA1 encrypted URL. Try to login in your Flickr account.")
             return
         }
@@ -177,6 +177,26 @@ extension FlickrApiClient {
         }
     }
     
+    func getUserPhotos(user: FlickrUser, success: FlickrPhotosSuccessCompletionHandler, failure: FlickrFailCompletionHandler) {
+        var parameters = Parameters()
+        getBaseParametersForPhotosSearch().forEach { parameters[$0] = "\($1)" }
+        parameters[Constants.FlickrParameterKeys.PerPage] = "\(Constants.FlickrParameterValues.PerPageMax)"
+        parameters[Constants.FlickrResponseKeys.UserID] = user.userID
+        
+        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.GET, baseURL: baseURL, requestParameters: parameters) else {
+            return
+        }
+        
+        let request = NSURLRequest(URL: URL)
+        fetchCollectionForRequest(request, rootKeys: ["photos", "photo"], success: success, fail: failure)
+    }
+    
+    // MARK: Private
+    
+    private class func getTempOAuth() -> FlickrOAuth {
+        return FlickrOAuth(consumerKey: FlickrApplicationKey, consumerSecret: FlickrApplicationSecret, callbackURL: "")
+    }
+    
     // MARK: - Private Helpers -
     
     func getBaseMethodParameters(method: String? = nil) -> MethodParameters {
@@ -186,22 +206,22 @@ extension FlickrApiClient {
             Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
             Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
         ]
-        
-        guard let method = method else {
-            return parameters
-        }
-        parameters[Constants.FlickrParameterKeys.Method] = method
-        
+        if let method = method { parameters[Constants.FlickrParameterKeys.Method] = method }
         return parameters
     }
     
-    private func parametersForPhotosSearchWithTags(tags: [String]) -> MethodParameters {
+    private func getBaseParametersForPhotosSearch() -> MethodParameters {
         var methodParameters = getBaseMethodParameters(Constants.FlickrParameterValues.SearchMethod)
         methodParameters[Constants.FlickrParameterKeys.Extras] = "\(Constants.FlickrParameterValues.ThumbnailURL),\(Constants.FlickrParameterValues.SmallURL),\(Constants.FlickrParameterValues.MediumURL)"
         methodParameters[Constants.FlickrParameterKeys.ContentType] = Constants.FlickrParameterValues.ContentType.Photos.rawValue
-        methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joinWithSeparator(",")
         methodParameters[Constants.FlickrParameterKeys.Page] = 1
-        methodParameters[Constants.FlickrParameterKeys.PerPage] = 100
+        methodParameters[Constants.FlickrParameterKeys.PerPage] = Constants.FlickrParameterValues.PerPageDefault
+        return methodParameters
+    }
+    
+    private func parametersForPhotosSearchWithTags(tags: [String]) -> MethodParameters {
+        var methodParameters = getBaseParametersForPhotosSearch()
+        methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joinWithSeparator(",")
         return methodParameters
     }
     

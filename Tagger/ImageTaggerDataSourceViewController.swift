@@ -35,7 +35,6 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     // MARK: - Properties
     
     private var pickedImage: UIImage?
-    
     private let flickr = MIFlickr.sharedInstance
     
     // MARK: - View Life Cycle
@@ -86,6 +85,7 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     private func presentFlickrUserCameraRoll() {
         let flowLayout = UICollectionViewFlowLayout()
         let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
+        cameraRollViewController.flickr = flickr
         let navigationController = UINavigationController(rootViewController: cameraRollViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }

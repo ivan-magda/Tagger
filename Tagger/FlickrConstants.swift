@@ -78,6 +78,8 @@ extension FlickrApiClient {
             static let UseSafeSearch = "1"
             static let DayPeriod = "day"
             static let WeekPeriod = "week"
+            static let PerPageDefault = 100
+            static let PerPageMax = 500
             
             enum ContentType: Int {
                 case Photos = 1
@@ -111,6 +113,7 @@ extension FlickrApiClient {
             static let Farm = "farm"
             static let Score = "score"
             static let Content = "_content"
+            static let UserID = "user_id"
         }
         
         // MARK: Flickr Response Values
