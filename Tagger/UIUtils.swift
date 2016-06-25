@@ -17,7 +17,7 @@ class UIUtils {
     
     private init() {
     }
-    
+
     // MARK: - Class Functions -
     // MARK: Screen Sizes
     

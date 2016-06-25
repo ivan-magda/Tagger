@@ -22,13 +22,20 @@
 
 import UIKit
 
-// MARK: FlickrCameraRollCollectionViewController: UICollectionViewController
+// MARK: Typealiases
 
-class FlickrCameraRollCollectionViewController: UICollectionViewController {
+typealias FlickrCameraRollDidPickImageCompletionHandler = (image: UIImage) -> Void
+
+// MARK: - FlickrCameraRollCollectionViewController: UICollectionViewController, Alertable
+
+class FlickrCameraRollCollectionViewController: UICollectionViewController, Alertable {
     
     // MARK: Properties
     
     var flickr: MIFlickr!
+    
+    /// Did finish picking image completion handler.
+    var didFinishPickingImageBlock: FlickrCameraRollDidPickImageCompletionHandler?
     
     private var photos = [FlickrPhoto]()
     private var images = [String: UIImage]()
@@ -50,6 +57,17 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         collectionView!.collectionViewLayout.invalidateLayout()
+    }
+    
+    // MARK: Presenting
+    
+    class func presentInViewController(viewController: UIViewController, flickr: MIFlickr, didFinishPickingImage block: FlickrCameraRollDidPickImageCompletionHandler) {
+        let flowLayout = UICollectionViewFlowLayout()
+        let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
+        cameraRollViewController.flickr = flickr
+        cameraRollViewController.didFinishPickingImageBlock = block
+        let navigationController = UINavigationController(rootViewController: cameraRollViewController)
+        viewController.presentViewController(navigationController, animated: true, completion: nil)
     }
     
     // MARK: UICollectionViewDataSource
@@ -101,17 +119,19 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print(#function + "\(indexPath.row)")
+        dismiss()
+        didFinishPickingImageBlock?(image: images[photos[indexPath.row].id]!)
     }
     
     // MARK: Actions
     
-    func cancel() {
+    func dismiss() {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: Private
     
+    // TODO: Currently presents 500 user photos. Need add ability to present next photos page.
     private func fetchData() {
         UIUtils.showNetworkActivityIndicator()
         
@@ -119,9 +139,10 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
             UIUtils.hideNetworkActivityIndicator()
             self.photos = photos
             self.collectionView?.reloadData()
-        }) { error in
+        }) { [unowned self] error in
             UIUtils.hideNetworkActivityIndicator()
-            print(error.localizedDescription)
+            let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -133,7 +154,7 @@ extension FlickrCameraRollCollectionViewController {
     
     private func configureUI() {
         title = "Camera Roll"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(dismiss))
         setupCollectionView()
     }
     
