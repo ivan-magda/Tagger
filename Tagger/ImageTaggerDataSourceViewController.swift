@@ -74,20 +74,18 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     }
     
     @IBAction func selectImageFromDevice(sender: AnyObject) {
-        MIImagePickerController.presentInViewController(self) { [unowned self] image in
-            self.pickedImage = image
-            self.performSegueWithIdentifier(SegueIdentifier.TagAnImage.rawValue, sender: self)
-        }
+        MIImagePickerController.presentInViewController(self, withDidFinishPickingImageBlock: processOnPickedImage)
     }
     
     // MARK: - Private
     
+    private func processOnPickedImage(image: UIImage) {
+        pickedImage = image
+        performSegueWithIdentifier(SegueIdentifier.TagAnImage.rawValue, sender: self)
+    }
+    
     private func presentFlickrUserCameraRoll() {
-        let flowLayout = UICollectionViewFlowLayout()
-        let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
-        cameraRollViewController.flickr = flickr
-        let navigationController = UINavigationController(rootViewController: cameraRollViewController)
-        presentViewController(navigationController, animated: true, completion: nil)
+        FlickrCameraRollCollectionViewController.presentInViewController(self, flickr: flickr, didFinishPickingImage: processOnPickedImage)
     }
     
 }

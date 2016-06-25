@@ -53,7 +53,8 @@ extension ImaggaApiClient {
     // MARK: Private
     
     private func uploadImage(image: UIImage, successBlock success: ImaggaContentIdSuccessCompletionHandler, failBlock fail: ImaggaFailCompletionHandler) {
-        guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+        let compression: CGFloat = (image.size.height > 500 || image.size.width > 500 ? 0.5 : 0.9)
+        guard let imageData = UIImageJPEGRepresentation(image, compression) else {
             sendError("Could not get JPEG representation of selected image.", toBlock: fail)
             return
         }
