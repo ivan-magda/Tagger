@@ -84,7 +84,10 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     // MARK: - Private
     
     private func presentFlickrUserCameraRoll() {
-        print("Present camera roll")
+        let flowLayout = UICollectionViewFlowLayout()
+        let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
+        let navigationController = UINavigationController(rootViewController: cameraRollViewController)
+        presentViewController(navigationController, animated: true, completion: nil)
     }
     
 }
