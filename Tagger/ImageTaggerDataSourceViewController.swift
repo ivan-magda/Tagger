@@ -55,20 +55,22 @@ class ImageTaggerDataSourceViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func selectImageFromFlickr(sender: AnyObject) {
-        let flickrOAuth = FlickrOAuth(
-            consumerKey: FlickrApplicationKey,
-            consumerSecret: FlickrApplicationSecret,
-            callbackURL: FlickrOAuthCallbackURL
-        )
-        
-        flickrOAuth.authorizeWithPermission(.Write) { result in
-            switch result {
-            case .Success(let token, let tokenSecret, let user):
-                print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
-            case .Failure(let error):
-                print(error.localizedDescription)
+        MIFlickr.sharedInstance.api.testLogin { (success, error) in
+            if success {
+                print("Success")
+            } else {
+                print(error!.localizedDescription)
             }
         }
+        
+//        MIFlickr.sharedInstance.OAuth.authorizeWithPermission(.Write) { result in
+//            switch result {
+//            case .Success(let token, let tokenSecret, let user):
+//                print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
+//            case .Failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }
     
     @IBAction func selectImageFromDevice(sender: AnyObject) {

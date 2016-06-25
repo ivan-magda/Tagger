@@ -136,6 +136,47 @@ extension FlickrApiClient {
         }
     }
     
+    // MARK: - Authenticated Requests -
+    
+    func testLogin(completionHandler: (success: Bool, error: NSError?) -> Void) {
+        func sendError(error: String) {
+            self.debugLog("Error: \(error)")
+            let error = NSError(
+                domain: Constants.Error.ErrorDomain,
+                code: Constants.Error.DefaultErrorCode,
+                userInfo: [NSLocalizedDescriptionKey : error])
+            completionHandler(success: false, error: error)
+        }
+        
+        let oauth = FlickrOAuth(consumerKey: FlickrApplicationKey, consumerSecret: FlickrApplicationSecret, callbackURL: "")
+        let params = [
+            Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.TestLogin,
+            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
+            Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat
+        ]
+        
+        guard let URL = oauth.buildSHAEncryptedURLForHTTPMethod(.GET, baseURL: baseURL, requestParameters: params) else {
+            sendError("Could not build HMAC-SHA1 encrypted URL. Try to login in your Flickr account.")
+            return
+        }
+        
+        fetchJsonForRequest(NSURLRequest(URL: URL)) { result in
+            switch result {
+            case .Error(let error):
+                sendError(error.localizedDescription)
+            case .Json(let json):
+                guard self.checkFlickrResponse(json) == true else {
+                    sendError("Flickr API return an error.")
+                    return
+                }
+                print("TEST_LOGIN_SUCCESS: \(json)")
+                completionHandler(success: true, error: nil)
+            default:
+                sendError(result.defaultErrorMessage()!)
+            }
+        }
+    }
+    
     // MARK: - Private Helpers -
     
     func getBaseMethodParameters(method: String? = nil) -> MethodParameters {

@@ -71,6 +71,7 @@ extension FlickrApiClient {
             static let TagsHotList = "flickr.tags.getHotList"
             static let TagsGetRelated = "flickr.tags.getRelated"
             static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
+            static let TestLogin = "flickr.test.login"
             static let ThumbnailURL = "url_t"
             static let SmallURL = "url_s"
             static let MediumURL = "url_m"
