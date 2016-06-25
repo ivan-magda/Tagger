@@ -28,13 +28,23 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     
     // MARK: Properties
     
+    var flickr: MIFlickr!
+    
+    private var photos = [FlickrPhoto]()
+    private var images = [String: UIImage]()
+    private var imagesIsInLoading = Set<NSIndexPath>()
+    
     private var numberOfColumns = 3
     
     // MARK: View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        assert(flickr != nil)
+        
         configureUI()
+        fetchData()
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -45,7 +55,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return photos.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -55,7 +65,37 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     }
     
     private func configureCell(cell: FlickrCameraRollCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+        func failedToLoadImageWithError(error: NSError) {
+            setImage(nil, toCellAtIndexPath: indexPath)
+            print("Failed to load an image. Error: \(error.localizedDescription)")
+        }
         
+        let photo = photos[indexPath.row]
+        if let image = images[photo.id] {
+            cell.photoImageView.image = image
+            return
+        }
+        
+        guard imagesIsInLoading.contains(indexPath) == false else { return }
+        imagesIsInLoading.insert(indexPath)
+        
+        guard let URL = NSURL(string: photo.urlSmall) else { return }
+        cell.activityIndicator.startAnimating()
+        
+        flickr.api.downloadImageWithURL(URL, successBlock: { [unowned self] image in
+            self.setImage(image, toCellAtIndexPath: indexPath)
+            }, failBlock: failedToLoadImageWithError)
+    }
+    
+    private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
+        imagesIsInLoading.remove(indexPath)
+        
+        guard collectionView!.indexPathsForVisibleItems().contains(indexPath) == true else { return }
+        guard let cell = collectionView!.cellForItemAtIndexPath(indexPath) as? FlickrCameraRollCollectionViewCell else { return }
+        
+        cell.activityIndicator.stopAnimating()
+        cell.photoImageView.image = image
+        images[photos[indexPath.row].id] = image
     }
     
     // MARK: UICollectionViewDelegate
@@ -68,6 +108,21 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController {
     
     func cancel() {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: Private
+    
+    private func fetchData() {
+        UIUtils.showNetworkActivityIndicator()
+        
+        flickr.api.getUserPhotos(flickr.currentUser!, success: { [unowned self] photos in
+            UIUtils.hideNetworkActivityIndicator()
+            self.photos = photos
+            self.collectionView?.reloadData()
+        }) { error in
+            UIUtils.hideNetworkActivityIndicator()
+            print(error.localizedDescription)
+        }
     }
     
 }

@@ -162,18 +162,12 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
                 let tags = tags.map { $0.name }
                 self.flickrApiClient.randomImageFromTags(tags, successBlock: { [weak self] image in
                     self?.setImage(image, toCellAtIndexPath: indexPath)
-                    }, failBlock: { error in
-                        failedToLoadImageWithError(error)
-                })
-            }) { error in
-                failedToLoadImageWithError(error)
-            }
+                    }, failBlock: failedToLoadImageWithError)
+                }, failBlock: failedToLoadImageWithError)
         } else {
             flickrApiClient.randomImageFromTags([tag], successBlock: { [weak self] image in
                 self?.setImage(image, toCellAtIndexPath: indexPath)
-                }, failBlock: { error in
-                    failedToLoadImageWithError(error)
-            })
+                }, failBlock: failedToLoadImageWithError)
         }
     }
     
