@@ -26,13 +26,14 @@ import UIKit
 
 private let kTableViewCellReuseIdentifier = "TagTableViewCell"
 
-// MARK: - TagListViewController: UIViewController, Alertable
+// MARK: - TagListViewController: UIViewController, Alertable -
 
 class TagListViewController: UIViewController, Alertable {
     
     // MARK: Outlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolbar: UIToolbar!
     
     // MARK: Properties
     
@@ -41,9 +42,22 @@ class TagListViewController: UIViewController, Alertable {
     var tags = [Tag]() {
         didSet {
             guard tableView != nil else { return }
+            tagsTextView.tags = tags
             reloadData()
         }
     }
+    
+    private var tagsTextView: HashtagsTextView = {
+        let textView = HashtagsTextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.editable = false
+        textView.font = UIFont.systemFontOfSize(19.0)
+        textView.hidden = true
+        textView.alpha = 0.0
+        return textView
+    }()
+    
+    let actionSheet = UIAlertController(title: "Choose an action", message: nil, preferredStyle: .ActionSheet)
     
     // MARK: Init
     
@@ -55,10 +69,12 @@ class TagListViewController: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kTableViewCellReuseIdentifier)
+        configureUI()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        setTabBarHidden(false)
     }
     
     // MARK: - Private
@@ -69,6 +85,48 @@ class TagListViewController: UIViewController, Alertable {
             return
         }
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+    }
+    
+    // MARK: Actions
+    
+    func moreBarButtonItemDidPressed() {
+        presentViewController(actionSheet, animated: true, completion: nil)
+    }
+    
+}
+
+// MARK: - TagListViewController (UI Functions) -
+
+extension TagListViewController {
+    
+    private func configureUI() {
+        setTabBarHidden(true)
+        
+        // Configure table view.
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kTableViewCellReuseIdentifier)
+        
+        // Configure text view:
+        // Add as a subview to a root view and add constraints.
+        view.insertSubview(tagsTextView, belowSubview: toolbar)
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[topGuide]-0-[textView]", options: NSLayoutFormatOptions(), metrics: nil, views: ["topGuide": topLayoutGuide, "textView": tagsTextView]))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[textView]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
+        view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .Bottom, relatedBy: .Equal, toItem: toolbar, attribute: .Top, multiplier: 1.0, constant: 0.0))
+        
+        // Create more bar button and present action sheet with actions below on click.
+        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"), style: .Plain, target: self, action: #selector(moreBarButtonItemDidPressed))
+        navigationItem.rightBarButtonItem = moreBarButtonItem
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Table View", style: .Default, handler: { action in
+            guard self.tagsTextView.hidden == false else { return }
+            self.tagsTextView.setTextViewHidden(true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .Default, handler: { action in
+            guard self.tagsTextView.hidden == true else { return }
+            self.tagsTextView.setTextViewHidden(false)
+        }))
     }
     
 }
@@ -100,10 +158,8 @@ extension TagListViewController: UITableViewDataSource {
 // MARK: - TagListViewController: UITableViewDelegate -
 
 extension TagListViewController: UITableViewDelegate {
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
 }
 

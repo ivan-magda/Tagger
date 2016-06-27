@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TagListViewController" customModule="Tagger" customModuleProvider="target">
             <connections>
                 <outlet property="tableView" destination="HQX-Yo-MpG" id="tRH-VF-AMK"/>
+                <outlet property="toolbar" destination="2XN-Fu-mDv" id="gS1-js-ydX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,13 +20,25 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2XN-Fu-mDv">
+                    <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="s7O-4b-KxG"/>
+                    </constraints>
+                    <items>
+                        <barButtonItem title="Item" id="vX3-mJ-EaE"/>
+                    </items>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="2XN-Fu-mDv" secondAttribute="trailing" id="D1f-dF-HPw"/>
                 <constraint firstAttribute="bottom" secondItem="HQX-Yo-MpG" secondAttribute="bottom" id="GvO-OY-nc6"/>
+                <constraint firstAttribute="bottom" secondItem="2XN-Fu-mDv" secondAttribute="bottom" id="K0I-ej-dMa"/>
                 <constraint firstItem="HQX-Yo-MpG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="R5O-Wg-oCK"/>
                 <constraint firstAttribute="trailing" secondItem="HQX-Yo-MpG" secondAttribute="trailing" id="UXa-b2-hyU"/>
                 <constraint firstItem="HQX-Yo-MpG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WEy-H6-Ix6"/>
+                <constraint firstItem="2XN-Fu-mDv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lbi-O0-GiG"/>
             </constraints>
         </view>
     </objects>
