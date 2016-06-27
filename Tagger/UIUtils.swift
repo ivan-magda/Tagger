@@ -29,6 +29,10 @@ class UIUtils {
         return UIScreen.mainScreen().bounds.size
     }
     
+    class func statusBarHeight() -> CGFloat {
+        return UIApplication.sharedApplication().statusBarFrame.height
+    }
+    
     // MARK: Network Indicator
     
     class func showNetworkActivityIndicator() {

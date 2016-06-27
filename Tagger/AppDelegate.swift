@@ -34,10 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: UIApplicationDelegate
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        if let tabBarController = window?.rootViewController as? UITabBarController {
-            tabBarController.selectedIndex = 1
-        }
-        
         return true
     }
 
