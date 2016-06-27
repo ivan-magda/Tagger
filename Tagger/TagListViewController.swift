@@ -22,7 +22,7 @@
 
 import UIKit
 
-// MARK: Constants
+// MARK: - Constants
 
 private let kTableViewCellReuseIdentifier = "TagTableViewCell"
 
@@ -34,6 +34,9 @@ class TagListViewController: UIViewController, Alertable {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var copyAllBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var copyToClipboardBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var messageBarButtonItem: UIBarButtonItem!
     
     // MARK: Properties
     
@@ -41,11 +44,13 @@ class TagListViewController: UIViewController, Alertable {
     
     var tags = [Tag]() {
         didSet {
-            guard tableView != nil else { return }
             tagsTextView.tags = tags
+            guard tableView != nil else { return }
             reloadData()
         }
     }
+    
+    private var selectedIndexes = Set<Int>()
     
     private var tagsTextView: HashtagsTextView = {
         let textView = HashtagsTextView()
@@ -93,6 +98,21 @@ class TagListViewController: UIViewController, Alertable {
         presentViewController(actionSheet, animated: true, completion: nil)
     }
     
+    @IBAction func selectAllDidPressed(sender: AnyObject) {
+        let selectedCount = selectedIndexes.count
+        selectedIndexes.removeAll()
+        
+        if selectedCount != tags.count {
+            for i in 0..<tags.count { selectedIndexes.insert(i) }
+        }
+        
+        reloadData()
+        updateMessageToolbarItemTitle()
+    }
+    
+    @IBAction func copyToClipboardDidPressed(sender: AnyObject) {
+    }
+    
 }
 
 // MARK: - TagListViewController (UI Functions) -
@@ -127,6 +147,60 @@ extension TagListViewController {
             guard self.tagsTextView.hidden == true else { return }
             self.tagsTextView.setTextViewHidden(false)
         }))
+        
+        // Configure toolbar.
+        messageBarButtonItem.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(14.0)], forState: .Normal)
+        
+        setUIState(.Default)
+    }
+    
+    func setUIState(state: TagListViewControllerUIState) {
+        func setItemsEnabled(enabled: Bool) {
+            navigationItem.rightBarButtonItems?.forEach { $0.enabled = enabled }
+            toolbar.items?.forEach { $0.enabled = enabled }
+            
+            if enabled {
+                messageBarButtonItem.enabled = false
+                updateCopyToClipboardButtonEnabledState()
+            }
+        }
+        
+        UIUtils.hideNetworkActivityIndicator()
+        
+        switch state {
+        case .Default:
+            setItemsEnabled(tags.count > 0)
+            updateMessageToolbarItemTitle()
+        case .Downloading:
+            UIUtils.showNetworkActivityIndicator()
+            setItemsEnabled(false)
+            messageBarButtonItem.title = "Updating..."
+        case .SuccessDoneWithDownloading:
+            setItemsEnabled(tags.count > 0)
+            updateMessageToolbarItemTitle()
+        case .FailureDoneWithDownloading(let error):
+            setItemsEnabled(false)
+            messageBarButtonItem.title = error.localizedFailureReason ?? "Failed to fetch tags"
+        }
+    }
+    
+    private func updateMessageToolbarItemTitle() {
+        let selectedCount = selectedIndexes.count
+        
+        guard tags.count > 0 else {
+            messageBarButtonItem.title = "Nothing was returned"
+            return
+        }
+        
+        if selectedCount == tags.count {
+            messageBarButtonItem.title = "All Selected (\(selectedCount))"
+        } else {
+            messageBarButtonItem.title = "\(selectedCount) Selected"
+        }
+    }
+    
+    private func updateCopyToClipboardButtonEnabledState() {
+        copyToClipboardBarButtonItem.enabled = selectedIndexes.count > 0
     }
     
 }
@@ -142,15 +216,19 @@ extension TagListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kTableViewCellReuseIdentifier)!
-        configureCell(cell, withTag: tags[indexPath.row])
-        return cell
+        return tableView.dequeueReusableCellWithIdentifier(kTableViewCellReuseIdentifier)!
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        configureCell(cell, atIndexPath: indexPath)
     }
     
     // MARK: Helpers
     
-    private func configureCell(cell: UITableViewCell, withTag tag: Tag) {
+    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        let tag = tags[indexPath.row]
         cell.textLabel?.text = tag.name
+        cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
     }
     
 }
@@ -160,6 +238,16 @@ extension TagListViewController: UITableViewDataSource {
 extension TagListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if selectedIndexes.contains(indexPath.row) {
+            selectedIndexes.remove(indexPath.row)
+        } else {
+            selectedIndexes.insert(indexPath.row)
+        }
+        
+        updateCopyToClipboardButtonEnabledState()
+        updateMessageToolbarItemTitle()
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 }
 

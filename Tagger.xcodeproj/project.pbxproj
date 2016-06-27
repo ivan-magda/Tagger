@@ -67,6 +67,7 @@
 		75D40D191D083DF900E3AB1F /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */; };
 		75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E057381D0FC93700B3A258 /* ImaggaConstants.swift */; };
 		75E0573D1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */; };
+		75FBA1FD1D21316E006EC31D /* TagListViewControllerUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +155,7 @@
 		75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhoto.swift; sourceTree = "<group>"; };
 		75E057381D0FC93700B3A258 /* ImaggaConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaConstants.swift; sourceTree = "<group>"; };
 		75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrRelatedTagsViewController.swift; sourceTree = "<group>"; };
+		75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListViewControllerUIState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,7 +362,7 @@
 			children = (
 				757262E51D1E7793006DE902 /* Flickr */,
 				7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */,
-				754532341D063F4000AEC34C /* TagListViewController.swift */,
+				75FBA1FE1D213187006EC31D /* TagListViewController */,
 				75523B541D0717BB00EBB0FC /* CountPickerViewController.swift */,
 				7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */,
 				75991D771D0BC3DE00870189 /* MIImagePickerController.swift */,
@@ -460,6 +462,15 @@
 				758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */,
 			);
 			name = OAuth;
+			sourceTree = "<group>";
+		};
+		75FBA1FE1D213187006EC31D /* TagListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				754532341D063F4000AEC34C /* TagListViewController.swift */,
+				75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */,
+			);
+			name = TagListViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -652,6 +663,7 @@
 				758EDB4E1D12CC2B00AE6A2B /* FlickrOAuthResult.swift in Sources */,
 				754F1AFC1D024B9400410CA0 /* FlickrApiClient.swift in Sources */,
 				7543E4081D0BF01800A14B10 /* ImageTaggerViewController.swift in Sources */,
+				75FBA1FD1D21316E006EC31D /* TagListViewControllerUIState.swift in Sources */,
 				75A190A21D09B1BD00D34D0B /* HttpApiClient+Convenience.swift in Sources */,
 				7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */,
 				754F1B031D024B9400410CA0 /* JSONParselable.swift in Sources */,
