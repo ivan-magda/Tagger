@@ -6,6 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TagListViewController" customModule="Tagger" customModuleProvider="target">
             <connections>
+                <outlet property="copyAllBarButtonItem" destination="vX3-mJ-EaE" id="K9V-Tu-Nr7"/>
+                <outlet property="copyToClipboardBarButtonItem" destination="QTx-gB-V3y" id="WFO-bx-Npq"/>
+                <outlet property="messageBarButtonItem" destination="9OD-lv-oQN" id="F0a-Ax-q3C"/>
                 <outlet property="tableView" destination="HQX-Yo-MpG" id="tRH-VF-AMK"/>
                 <outlet property="toolbar" destination="2XN-Fu-mDv" id="gS1-js-ydX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -26,7 +29,21 @@
                         <constraint firstAttribute="height" constant="44" id="s7O-4b-KxG"/>
                     </constraints>
                     <items>
-                        <barButtonItem title="Item" id="vX3-mJ-EaE"/>
+                        <barButtonItem image="SelectAll" id="vX3-mJ-EaE" userLabel="Select All Bar Button Item">
+                            <connections>
+                                <action selector="selectAllDidPressed:" destination="-1" id="Jz4-0m-2IW"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="qAT-nW-Jk4"/>
+                        <barButtonItem enabled="NO" title="0 Copied" id="9OD-lv-oQN">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="oV0-XE-Ql4"/>
+                        <barButtonItem enabled="NO" image="Copy" id="QTx-gB-V3y">
+                            <connections>
+                                <action selector="copyToClipboardDidPressed:" destination="-1" id="kCG-TS-Oas"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                 </toolbar>
             </subviews>
@@ -42,4 +59,8 @@
             </constraints>
         </view>
     </objects>
+    <resources>
+        <image name="Copy" width="22" height="22"/>
+        <image name="SelectAll" width="22" height="22"/>
+    </resources>
 </document>

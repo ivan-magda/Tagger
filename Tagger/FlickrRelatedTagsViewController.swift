@@ -57,12 +57,12 @@ class FlickrRelatedTagsViewController: TagListViewController {
     }
     
     private func fetchData() {
-        UIUtils.showNetworkActivityIndicator()
+        setUIState(.Downloading)
         flickrApiClient.relatedTagsForTag(tag, successBlock: { [unowned self] tags in
-            UIUtils.hideNetworkActivityIndicator()
             self.tags = tags
+            self.setUIState(.SuccessDoneWithDownloading)
         }) { [unowned self] error in
-            UIUtils.hideNetworkActivityIndicator()
+            self.setUIState(.FailureDoneWithDownloading(error: error))
             let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
             self.presentViewController(alert, animated: true, completion: nil)
         }
