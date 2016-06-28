@@ -59,6 +59,7 @@ extension FlickrApiClient {
             static let ContentType = "content_type"
             static let Tag = "tag"
             static let Tags = "tags"
+            static let UserID = "user_id"
         }
         
         // MARK: Flickr Parameter Values
@@ -72,6 +73,7 @@ extension FlickrApiClient {
             static let TagsGetRelated = "flickr.tags.getRelated"
             static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
             static let TestLogin = "flickr.test.login"
+            static let PeopleGetInfo = "flickr.people.getInfo"
             static let ThumbnailURL = "url_t"
             static let SmallURL = "url_s"
             static let MediumURL = "url_m"
@@ -96,6 +98,7 @@ extension FlickrApiClient {
             static let Photos = "photos"
             static let Photo = "photo"
             static let Id = "id"
+            static let NSID = "nsid"
             static let Title = "title"
             static let ThumbnailURL = "url_t"
             static let SmallURL = "url_s"
@@ -114,6 +117,11 @@ extension FlickrApiClient {
             static let Score = "score"
             static let Content = "_content"
             static let UserID = "user_id"
+            static let IconServer = "iconserver"
+            static let IconFarm = "iconfarm"
+            static let Username = "username"
+            static let RealName = "realname"
+            static let Person = "person"
         }
         
         // MARK: Flickr Response Values

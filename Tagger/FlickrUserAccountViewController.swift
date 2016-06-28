@@ -67,6 +67,18 @@ extension FlickrUserAccountViewController {
             mainLabel.text = user.fullname
             detailLabel.text = user.username
             actionButton.setTitle("Log Out", forState: .Normal)
+            
+            flickr.api.getUserInfo(user.userID, success: { person in
+                print(person)
+                self.flickr.api.getProfilePictureFromUserInfo(person, success: { image in
+                    self.imageView.image = image
+                    }, failure: { error in
+                        print(error.localizedDescription)
+                })
+                }, failure: { error in
+                    print(error.localizedDescription)
+            })
+            
         } else {
             mainLabel.text = "You are not logged in"
             detailLabel.text = "If you want to interact with your account, then sign in"

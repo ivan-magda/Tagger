@@ -13,6 +13,7 @@
 		750DF2F81D0EDD93002A95B6 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750DF2F71D0EDD93002A95B6 /* Tag.swift */; };
 		7514BDEA1D03AB46004A2E20 /* FlickrTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDE91D03AB46004A2E20 /* FlickrTag.swift */; };
 		7514BDEC1D03B56A004A2E20 /* MIApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDEB1D03B56A004A2E20 /* MIApiClient.swift */; };
+		75388C9F1D22BB5400618D85 /* FlickrPersonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */; };
 		7543E4081D0BF01800A14B10 /* ImageTaggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */; };
 		754532351D063F4000AEC34C /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754532341D063F4000AEC34C /* TagListViewController.swift */; };
 		754532411D0669D700AEC34C /* TagListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7545323F1D0669D700AEC34C /* TagListViewController.xib */; };
@@ -97,6 +98,7 @@
 		750DF2F71D0EDD93002A95B6 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7514BDE91D03AB46004A2E20 /* FlickrTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrTag.swift; sourceTree = "<group>"; };
 		7514BDEB1D03B56A004A2E20 /* MIApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIApiClient.swift; sourceTree = "<group>"; };
+		75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPersonInfo.swift; sourceTree = "<group>"; };
 		7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTaggerViewController.swift; sourceTree = "<group>"; };
 		754532341D063F4000AEC34C /* TagListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
 		7545323F1D0669D700AEC34C /* TagListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagListViewController.xib; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */,
 				75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */,
 				758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */,
+				75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */,
 			);
 			name = Flickr;
 			sourceTree = "<group>";
@@ -662,6 +665,7 @@
 				75E0573D1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift in Sources */,
 				7584F3531D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift in Sources */,
 				754532431D066EBE00AEC34C /* FlickrHotTagsViewController.swift in Sources */,
+				75388C9F1D22BB5400618D85 /* FlickrPersonInfo.swift in Sources */,
 				757262DF1D1E2261006DE902 /* MIFlickr.swift in Sources */,
 				758EDB4C1D12CB8B00AE6A2B /* FlickrUser.swift in Sources */,
 				75658CF01D1D87700028409D /* Keychain.swift in Sources */,
