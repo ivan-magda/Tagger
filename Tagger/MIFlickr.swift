@@ -39,7 +39,14 @@ class MIFlickr {
     static let sharedInstance = MIFlickr()
     
     let api: FlickrApiClient
-    let OAuth: FlickrOAuth
+    var OAuth: FlickrOAuth {
+        get {
+            return FlickrOAuth(consumerKey: FlickrApplicationKey,
+                               consumerSecret: FlickrApplicationSecret,
+                               callbackURL: FlickrOAuthCallbackURL
+            )
+        }
+    }
     
     var currentUser: FlickrUser? {
         get {
@@ -69,11 +76,6 @@ class MIFlickr {
     
     private init() {
         self.api = FlickrApiClient.sharedInstance
-        self.OAuth = FlickrOAuth(
-            consumerKey: FlickrApplicationKey,
-            consumerSecret: FlickrApplicationSecret,
-            callbackURL: FlickrOAuthCallbackURL
-        )
     }
     
 }

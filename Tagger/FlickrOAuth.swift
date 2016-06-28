@@ -162,8 +162,8 @@ class FlickrOAuth {
         let authorizationURL = "\(kAuthorizeBaseURL)?\(OAuthParameterKey.Token.rawValue)=\(token!)&\(OAuthParameterKey.Permissions.rawValue)=\(authenticationPermission.rawValue)"
         
         let authViewController = FlickrOAuthViewController(authorizationURL: authorizationURL, callbackURL: callbackURL)
-        authViewController.authorize(success: { success(callbackURL: $0)
-        }){ self.resultBlock(result: .Failure(error: $0)) }
+        authViewController.authorize(success: { success(callbackURL: $0) },
+                                     failure: { self.resultBlock(result: .Failure(error: $0)) })
     }
     
     // MARK: Access Token
@@ -322,7 +322,7 @@ class FlickrOAuth {
     }
     
     private func parametersFromResponseString(responseString: String) -> Parameters {
-        let parameters = responseString.componentsSeparatedByString("&")
+        let parameters = responseString.stringByRemovingPercentEncoding!.componentsSeparatedByString("&")
         var dictionary = [String: String]()
         parameters.forEach {
             let components = $0.componentsSeparatedByString("=")
