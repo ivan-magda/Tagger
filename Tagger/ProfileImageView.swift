@@ -22,14 +22,29 @@
 
 import UIKit
 
-// MARK: MoreInfoViewController: UIViewController -
+// MARK: ProfileImageView: UIImageView
 
-class MoreInfoViewController: UIViewController {
-
-    // MARK: - View Life Cycle
+class ProfileImageView: UIImageView {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // MARK: Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        themeImageView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        themeImageView()
+    }
+    
+    // MARK: Theme
+    
+    private func themeImageView() {
+        layer.masksToBounds = true
+        layer.cornerRadius = bounds.size.height / 2.0
+        layer.borderWidth = 2.0
+        layer.borderColor = UIColor(red: 255.0 / 255.0, green: 0.0, blue: 132.0 / 255.0, alpha: 1.0).CGColor
     }
 
 }
