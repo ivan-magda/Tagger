@@ -53,7 +53,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     // MARK: - Private
     
     private func configureUI() {
-        title = tag
+        title = tag.capitalizedString
     }
     
     private func fetchData() {

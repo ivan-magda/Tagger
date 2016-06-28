@@ -26,19 +26,34 @@ import UIKit
 
 class HashtagsTextView: UITextView {
     
-    // MARK: Properties
+    private var tapGestureRecognizer: UITapGestureRecognizer!
     
-    var tags = [Tag]() {
-        didSet {
-            let tagsText = tags.map { $0.name }.joinWithSeparator(" #")
+    // MARK: Init
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    // MARK: Public
+    
+    func updateWithNewData(tags: [Tag]) {
+        let tagsText = tags.map { $0.name }.joinWithSeparator(" #")
+        
+        if tagsText.characters.count > 0 {
             text = "#\(tagsText)"
+        } else {
+            text = "No tags selected. First, select at least one."
         }
     }
     
-    // MARK: Public Methods
-    
     func setTextViewHidden(hidden: Bool) {
-        let duration = 0.45
+        let duration = 0.25
         if hidden {
             UIView.animateWithDuration(duration, animations: {
                 self.alpha = 0.0
@@ -51,6 +66,19 @@ class HashtagsTextView: UITextView {
                 self.alpha = 1.0
             }
         }
+    }
+    
+    // MARK: Actions
+    
+    func didTapOnText() {
+        selectedTextRange = textRangeFromPosition(beginningOfDocument, toPosition: endOfDocument)
+    }
+    
+    // MARK: Private
+    
+    private func setup() {
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnText))
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
 }
