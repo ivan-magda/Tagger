@@ -59,17 +59,12 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
         if let _ = flickr.currentUser {
             presentFlickrUserCameraRoll()
         } else {
-            flickr.OAuth.authorizeWithPermission(.Write) { [unowned self] result in
-                switch result {
-                case .Success(let token, let tokenSecret, let user):
-                    print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
-                    self.flickr.currentUser = user
-                    self.presentFlickrUserCameraRoll()
-                case .Failure(let error):
-                    let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-            }
+            let alert = UIAlertController(title: "You are not logged in", message: "If you want select photo from your Flickr account, then sign in your account.", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Sign In", style: .Default) { action in
+                self.flickrAuth()
+            })
+            presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -78,6 +73,20 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     }
     
     // MARK: - Private
+    
+    private func flickrAuth() {
+        flickr.OAuth.authorizeWithPermission(.Write) { [unowned self] result in
+            switch result {
+            case .Success(let token, let tokenSecret, let user):
+                print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
+                self.flickr.currentUser = user
+                self.presentFlickrUserCameraRoll()
+            case .Failure(let error):
+                let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
     
     private func processOnPickedImage(image: UIImage) {
         pickedImage = image
