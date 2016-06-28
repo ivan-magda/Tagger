@@ -84,18 +84,13 @@ class TagListViewController: UIViewController, Alertable {
     // MARK: - Private
     
     private func reloadData() {
-        updateTagsTextViewDataSource()
+        tagsTextView.updateWithNewData(tags.enumerate().flatMap { selectedIndexes.contains($0) ? $1 : nil })
         
         guard tableView.numberOfSections == 1 else {
             tableView.reloadData()
             return
         }
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
-    }
-    
-    private func updateTagsTextViewDataSource() {
-        tagsTextView.updateWithNewData(tags.enumerate().flatMap {
-            selectedIndexes.contains($0) ? $1 : nil })
     }
     
     // MARK: Actions
@@ -113,12 +108,27 @@ class TagListViewController: UIViewController, Alertable {
         }
         
         reloadData()
-        updateMessageToolbarItemTitle()
-        updateCopyToClipboardButtonEnabledState()
+        updateUI()
     }
     
     @IBAction func copyToClipboardDidPressed(sender: AnyObject) {
         PasteboardUtils.copyString(tagsTextView.text)
+        
+        let alert = UIAlertController(title: "Copied", message: "Now paste the tags into your Instagram/Flickr picture comments or caption", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        if URLSchemesUtils.canOpenInstagram() {
+            alert.addAction(UIAlertAction(title: "Instagram", style: .Default, handler: { action in
+                URLSchemesUtils.openInstagram()
+            }))
+        }
+        
+        if URLSchemesUtils.canOpenFlickr() {
+            alert.addAction(UIAlertAction(title: "Flickr", style: .Default, handler: { action in
+                URLSchemesUtils.openFlickr()
+            }))
+        }
+        presentViewController(alert, animated: true, completion: nil)
     }
     
 }
@@ -158,9 +168,7 @@ extension TagListViewController {
             self.tagsTextView.setTextViewHidden(false)
         }))
         
-        // Configure toolbar.
         messageBarButtonItem.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(14.0)], forState: .Normal)
-        
         setUIState(.Default)
     }
     
@@ -168,11 +176,7 @@ extension TagListViewController {
         func setItemsEnabled(enabled: Bool) {
             navigationItem.rightBarButtonItems?.forEach { $0.enabled = enabled }
             toolbar.items?.forEach { $0.enabled = enabled }
-            
-            if enabled {
-                messageBarButtonItem.enabled = false
-                updateCopyToClipboardButtonEnabledState()
-            }
+            if enabled { messageBarButtonItem.enabled = false }
         }
         
         UIUtils.hideNetworkActivityIndicator()
@@ -180,36 +184,30 @@ extension TagListViewController {
         switch state {
         case .Default:
             setItemsEnabled(tags.count > 0)
-            updateMessageToolbarItemTitle()
+            updateUI()
         case .Downloading:
             UIUtils.showNetworkActivityIndicator()
             setItemsEnabled(false)
             messageBarButtonItem.title = "Updating..."
         case .SuccessDoneWithDownloading:
             setItemsEnabled(tags.count > 0)
-            updateMessageToolbarItemTitle()
+            updateUI()
         case .FailureDoneWithDownloading(let error):
             setItemsEnabled(false)
             messageBarButtonItem.title = error.localizedFailureReason ?? "Failed to fetch tags"
         }
     }
     
-    private func updateMessageToolbarItemTitle() {
+    private func updateUI() {
         let selectedCount = selectedIndexes.count
         
         guard tags.count > 0 else {
             messageBarButtonItem.title = "Nothing was returned"
             return
         }
+        messageBarButtonItem.title = selectedCount == tags.count
+            ? "All Selected (\(selectedCount))" : "\(selectedCount) Selected"
         
-        if selectedCount == tags.count {
-            messageBarButtonItem.title = "All Selected (\(selectedCount))"
-        } else {
-            messageBarButtonItem.title = "\(selectedCount) Selected"
-        }
-    }
-    
-    private func updateCopyToClipboardButtonEnabledState() {
         copyToClipboardBarButtonItem.enabled = selectedIndexes.count > 0
     }
     
@@ -230,14 +228,7 @@ extension TagListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        configureCell(cell, atIndexPath: indexPath)
-    }
-    
-    // MARK: Helpers
-    
-    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let tag = tags[indexPath.row]
-        cell.textLabel?.text = tag.name
+        cell.textLabel?.text = tags[indexPath.row].name
         cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
     }
     
@@ -246,6 +237,7 @@ extension TagListViewController: UITableViewDataSource {
 // MARK: - TagListViewController: UITableViewDelegate -
 
 extension TagListViewController: UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
@@ -255,10 +247,8 @@ extension TagListViewController: UITableViewDelegate {
             selectedIndexes.insert(indexPath.row)
         }
         
-        updateCopyToClipboardButtonEnabledState()
-        updateMessageToolbarItemTitle()
-        updateTagsTextViewDataSource()
-        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        reloadData()
+        updateUI()
     }
+    
 }
-
