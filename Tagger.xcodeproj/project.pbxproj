@@ -44,7 +44,6 @@
 		7552DFAE1D013A750032ECFA /* TaggerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFAD1D013A750032ECFA /* TaggerUITests.swift */; };
 		7552DFC21D0159F00032ECFA /* DiscoverTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */; };
 		7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */; };
-		7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC51D015A840032ECFA /* TagsViewController.swift */; };
 		7552DFC81D015AAF0032ECFA /* MoreInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */; };
 		755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomNumberUtils.swift */; };
 		75658CF01D1D87700028409D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75658CEF1D1D87700028409D /* Keychain.swift */; };
@@ -133,7 +132,6 @@
 		7552DFAF1D013A750032ECFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverTagsViewController.swift; sourceTree = "<group>"; };
 		7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTaggerDataSourceViewController.swift; sourceTree = "<group>"; };
-		7552DFC51D015A840032ECFA /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoViewController.swift; sourceTree = "<group>"; };
 		755E38C41D0939580052BA48 /* RandomNumberUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberUtils.swift; sourceTree = "<group>"; };
 		75658CEF1D1D87700028409D /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -373,7 +371,6 @@
 				7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */,
 				75991D771D0BC3DE00870189 /* MIImagePickerController.swift */,
 				7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */,
-				7552DFC51D015A840032ECFA /* TagsViewController.swift */,
 				7552DFC71D015AAF0032ECFA /* MoreInfoViewController.swift */,
 			);
 			name = ViewControllers;
@@ -673,7 +670,6 @@
 				7543E4081D0BF01800A14B10 /* ImageTaggerViewController.swift in Sources */,
 				75FBA1FD1D21316E006EC31D /* TagListViewControllerUIState.swift in Sources */,
 				75A190A21D09B1BD00D34D0B /* HttpApiClient+Convenience.swift in Sources */,
-				7552DFC61D015A840032ECFA /* TagsViewController.swift in Sources */,
 				754F1B031D024B9400410CA0 /* JSONParselable.swift in Sources */,
 				750DF2F51D0ECE8A002A95B6 /* ImaggaTag.swift in Sources */,
 				754532451D0675E200AEC34C /* Alertable.swift in Sources */,
