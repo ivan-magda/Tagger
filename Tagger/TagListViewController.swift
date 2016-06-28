@@ -44,7 +44,6 @@ class TagListViewController: UIViewController, Alertable {
     
     var tags = [Tag]() {
         didSet {
-            tagsTextView.tags = tags
             guard tableView != nil else { return }
             reloadData()
         }
@@ -85,11 +84,18 @@ class TagListViewController: UIViewController, Alertable {
     // MARK: - Private
     
     private func reloadData() {
+        updateTagsTextViewDataSource()
+        
         guard tableView.numberOfSections == 1 else {
             tableView.reloadData()
             return
         }
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+    }
+    
+    private func updateTagsTextViewDataSource() {
+        tagsTextView.updateWithNewData(tags.enumerate().flatMap {
+            selectedIndexes.contains($0) ? $1 : nil })
     }
     
     // MARK: Actions
@@ -108,9 +114,11 @@ class TagListViewController: UIViewController, Alertable {
         
         reloadData()
         updateMessageToolbarItemTitle()
+        updateCopyToClipboardButtonEnabledState()
     }
     
     @IBAction func copyToClipboardDidPressed(sender: AnyObject) {
+        PasteboardUtils.copyString(tagsTextView.text)
     }
     
 }
@@ -131,7 +139,7 @@ extension TagListViewController {
         // Add as a subview to a root view and add constraints.
         view.insertSubview(tagsTextView, belowSubview: toolbar)
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[topGuide]-0-[textView]", options: NSLayoutFormatOptions(), metrics: nil, views: ["topGuide": topLayoutGuide, "textView": tagsTextView]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[textView]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[textView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
         view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .Bottom, relatedBy: .Equal, toItem: toolbar, attribute: .Top, multiplier: 1.0, constant: 0.0))
         
         // Create more bar button and present action sheet with actions below on click.
@@ -141,10 +149,12 @@ extension TagListViewController {
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         actionSheet.addAction(UIAlertAction(title: "Table View", style: .Default, handler: { action in
             guard self.tagsTextView.hidden == false else { return }
+            self.tableView.hidden = false
             self.tagsTextView.setTextViewHidden(true)
         }))
         actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .Default, handler: { action in
             guard self.tagsTextView.hidden == true else { return }
+            self.tableView.hidden = true
             self.tagsTextView.setTextViewHidden(false)
         }))
         
@@ -247,6 +257,7 @@ extension TagListViewController: UITableViewDelegate {
         
         updateCopyToClipboardButtonEnabledState()
         updateMessageToolbarItemTitle()
+        updateTagsTextViewDataSource()
         tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 }
