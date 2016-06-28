@@ -20,7 +20,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GSe-Gx-Zgs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="567" y="207"/>
+            <point key="canvasLocation" x="567" y="415"/>
         </scene>
         <!--Tagging-->
         <scene sceneID="L6m-2a-Tpt">
@@ -105,7 +105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="75L-rJ-jol" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1057" y="207"/>
+            <point key="canvasLocation" x="1057" y="415"/>
         </scene>
         <!--Image Tagging-->
         <scene sceneID="WVg-xX-WIG">
@@ -175,7 +175,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gd0-k5-JVy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1857" y="207"/>
+            <point key="canvasLocation" x="1857" y="415"/>
         </scene>
         <!--Discover-->
         <scene sceneID="tne-QT-ifu">
@@ -271,26 +271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1057" y="-522"/>
-        </scene>
-        <!--Tags-->
-        <scene sceneID="JHw-fO-ArO">
-            <objects>
-                <viewController id="Zmh-lY-Xts" customClass="TagsViewController" customModule="Tagger" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="uPs-wL-q0n"/>
-                        <viewControllerLayoutGuide type="bottom" id="uJx-0O-uWx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="DLk-KQ-f4C">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Tags" id="muI-Uo-g0o"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="F3a-7K-aao" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1379" y="924"/>
+            <point key="canvasLocation" x="1057" y="-270"/>
         </scene>
         <!--More-->
         <scene sceneID="MLa-vz-URG">
@@ -309,7 +290,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6J-gX-pXZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1372" y="1730"/>
+            <point key="canvasLocation" x="1057" y="1116"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="nW5-pG-uiD">
@@ -324,13 +305,12 @@
                     <connections>
                         <segue destination="2hs-dC-212" kind="relationship" relationship="viewControllers" id="6mq-2O-xAk"/>
                         <segue destination="ltE-10-cAx" kind="relationship" relationship="viewControllers" id="jfk-AQ-zt8"/>
-                        <segue destination="8Jd-ez-daW" kind="relationship" relationship="viewControllers" id="Htf-5k-igW"/>
                         <segue destination="dUW-0L-org" kind="relationship" relationship="viewControllers" id="AVV-8F-qGz"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lLD-1H-R4I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-41" y="578"/>
+            <point key="canvasLocation" x="-79" y="556"/>
         </scene>
         <!--Discover-->
         <scene sceneID="gb5-G8-HTQ">
@@ -349,24 +329,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cIf-41-bAx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="567" y="-522"/>
-        </scene>
-        <!--Tags-->
-        <scene sceneID="B0u-Bj-RMB">
-            <objects>
-                <navigationController id="8Jd-ez-daW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tags" image="tags-tab-bar" id="Uql-lA-Ion"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="u00-On-cR8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Zmh-lY-Xts" kind="relationship" relationship="rootViewController" id="YeU-HB-teZ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bB2-Au-KAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="567" y="924"/>
+            <point key="canvasLocation" x="567" y="-270"/>
         </scene>
         <!--More-->
         <scene sceneID="1wV-1c-KzS">
@@ -385,7 +348,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6an-uP-Ooq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="560" y="1730"/>
+            <point key="canvasLocation" x="582" y="1116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4KN-qE-W90">
@@ -403,7 +366,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gGg-hO-0Rt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1463" y="207"/>
+            <point key="canvasLocation" x="1463" y="415"/>
         </scene>
     </scenes>
     <resources>
@@ -412,6 +375,5 @@
         <image name="hammer-tab-bar" width="30" height="30"/>
         <image name="more-tab-bar" width="30" height="30"/>
         <image name="smartphone" width="128" height="128"/>
-        <image name="tags-tab-bar" width="30" height="30"/>
     </resources>
 </document>
