@@ -22,30 +22,37 @@
 
 import UIKit
 
-// MARK: TagCollectionViewCell: UICollectionViewCell -
+// MARK: Types
 
-class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
+private enum SegueIdentifier: String {
+    case FlickrAccount
+}
+
+// MARK: - MoreInfoTableViewController: UITableViewController
+
+class MoreInfoTableViewController: UITableViewController {
     
-    // MARK: Outlets
+    // MARK: Properties
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var title: UILabel!
+    var flickr = MIFlickr.sharedInstance
+
+    // MARK: View Life Cycle
     
-    // MARK: Init
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
+            let controller = segue.destinationViewController as! FlickrUserAccountViewController
+            controller.flickr = flickr
+        }
     }
     
-    // Override Methods
+    // MARK: UITableViewDelegate
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.image = nil
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
+
 }

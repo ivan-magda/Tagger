@@ -54,6 +54,11 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
         fetchData()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        flickr.api.cancelAllRequests()
+    }
+    
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         collectionView!.collectionViewLayout.invalidateLayout()
@@ -100,8 +105,8 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
         guard let URL = NSURL(string: photo.urlSmall) else { return }
         cell.activityIndicator.startAnimating()
         
-        flickr.api.downloadImageWithURL(URL, successBlock: { [unowned self] image in
-            self.setImage(image, toCellAtIndexPath: indexPath)
+        flickr.api.downloadImageWithURL(URL, successBlock: { [weak self] image in
+            self?.setImage(image, toCellAtIndexPath: indexPath)
             }, failBlock: failedToLoadImageWithError)
     }
     
@@ -135,14 +140,14 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     private func fetchData() {
         UIUtils.showNetworkActivityIndicator()
         
-        flickr.api.getUserPhotos(flickr.currentUser!, success: { [unowned self] photos in
+        flickr.api.getUserPhotos(flickr.currentUser!, success: { [weak self] photos in
             UIUtils.hideNetworkActivityIndicator()
-            self.photos = photos
-            self.collectionView?.reloadData()
-        }) { [unowned self] error in
+            self?.photos = photos
+            self?.collectionView?.reloadData()
+        }) { [weak self] error in
             UIUtils.hideNetworkActivityIndicator()
-            let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
+            self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
     
