@@ -21,45 +21,23 @@
  */
 
 import Foundation
+import CoreData
 
-// MARK: FlickrTag
+// MARK: Category: NSManagedObject
 
-struct FlickrTag {
+class Category: NSManagedObject {
     
-    // MARK: - Properties
+    // MARK: Init
     
-    private (set) var content: String
-    private (set) var score: Int? = nil
-    
-    // MARK: - Init
-    
-    init(content: String) {
-        self.content = content
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(score: Int, content: String) {
-        self.init(content: content)
-        self.score = score
+    convenience init(name: String, context: NSManagedObjectContext) {
+        let entity = NSEntityDescription.entityForName("Category", inManagedObjectContext: context)!
+        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.id = UUIDUtils.generateUUIDString()
+        self.name = name
     }
-    
-    init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-            return nil
-        }
-        self.init(content: content)
-        
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString) {
-            self.score = score
-        }
-    }
-    
-}
 
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
-    }
 }

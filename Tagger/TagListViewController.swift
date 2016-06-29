@@ -42,7 +42,7 @@ class TagListViewController: UIViewController, Alertable {
     
     static let nibName = "TagListViewController"
     
-    var tags = [Tag]() {
+    var tags = [String]() {
         didSet {
             guard tableView != nil else { return }
             reloadData()
@@ -61,7 +61,7 @@ class TagListViewController: UIViewController, Alertable {
         return textView
     }()
     
-    let actionSheet = UIAlertController(title: "Choose an action", message: nil, preferredStyle: .ActionSheet)
+    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
     
     // MARK: Init
     
@@ -228,7 +228,7 @@ extension TagListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.textLabel?.text = tags[indexPath.row].name
+        cell.textLabel?.text = tags[indexPath.row]
         cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
     }
     

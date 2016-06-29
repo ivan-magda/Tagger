@@ -22,44 +22,21 @@
 
 import Foundation
 
-// MARK: FlickrTag
+// MARK: PathUtils
 
-struct FlickrTag {
+class PathUtils {
     
-    // MARK: - Properties
-    
-    private (set) var content: String
-    private (set) var score: Int? = nil
-    
-    // MARK: - Init
-    
-    init(content: String) {
-        self.content = content
-    }
-    
-    init(score: Int, content: String) {
-        self.init(content: content)
-        self.score = score
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-            return nil
-        }
-        self.init(content: content)
-        
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString) {
-            self.score = score
-        }
-    }
-    
-}
+    // MARK: Init
 
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
+    private init() {
     }
+
+    // MARK: Functions
+    
+    class func applicationDocumentsDirectory() -> NSURL {
+        let fileManager = NSFileManager.defaultManager()
+        let urls = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        return urls[urls.count-1]
+    }
+    
 }

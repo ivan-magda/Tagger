@@ -71,8 +71,8 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     
     private func logOut() {
         flickr.logOutCurrentUser()
-        configureUI()
         setUIState(.Default)
+        configureUI()
     }
     
     private func signIn() {

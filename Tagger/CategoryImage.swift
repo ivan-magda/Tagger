@@ -20,46 +20,41 @@
  * THE SOFTWARE.
  */
 
-import Foundation
+import UIKit
+import CoreData
 
-// MARK: FlickrTag
+// MARK: CategoryImage: NSManagedObject
 
-struct FlickrTag {
+class CategoryImage: NSManagedObject {
     
-    // MARK: - Properties
+    // MARK: Properties
     
-    private (set) var content: String
-    private (set) var score: Int? = nil
-    
-    // MARK: - Init
-    
-    init(content: String) {
-        self.content = content
-    }
-    
-    init(score: Int, content: String) {
-        self.init(content: content)
-        self.score = score
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-            return nil
-        }
-        self.init(content: content)
-        
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString) {
-            self.score = score
+    var image: UIImage? {
+        get {
+            guard data != nil else { return nil }
+            return _image
         }
     }
     
-}
+    private lazy var _image: UIImage? = {
+        return UIImage(data: self.data!)
+    }()
+    
+    // MARK: Init
 
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
+    
+    convenience init(data: NSData, context: NSManagedObjectContext) {
+        let entity = NSEntityDescription.entityForName("CategoryImage", inManagedObjectContext: context)!
+        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.data = data
+    }
+    
+    convenience init(image: UIImage, context: NSManagedObjectContext) {
+        let data = UIImageJPEGRepresentation(image, 1.0)!
+        self.init(data: data, context: context)
+    }
+
 }
