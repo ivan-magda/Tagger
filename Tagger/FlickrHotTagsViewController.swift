@@ -54,7 +54,7 @@ class FlickrHotTagsViewController: TagListViewController {
     private func fetchData() {
         setUIState(.Downloading)
         flickrApiClient.tagsHotListForPeriod(period, numberOfTags: numberOfTags, successBlock: { [unowned self] tags in
-            self.tags = tags
+            self.tags = tags.map { $0.content }
             self.setUIState(.SuccessDoneWithDownloading)
         }) { [unowned self] error in
             self.setUIState(.FailureDoneWithDownloading(error: error))

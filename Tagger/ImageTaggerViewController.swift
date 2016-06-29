@@ -80,7 +80,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
     @IBAction func showResults(sender: AnyObject) {
         let tagListViewController = TagListViewController()
         tagListViewController.title = "Results"
-        tagListViewController.tags = generatedTags!
+        tagListViewController.tags = generatedTags!.map { $0.tag }
         navigationController?.pushViewController(tagListViewController, animated: true)
     }
     

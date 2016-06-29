@@ -25,21 +25,18 @@ import UIKit
 // MARK: Types
 
 private enum SectionType: Int, CaseCountable {
-    
     case Trends
     case Categories
     
     enum TrendingTags: Int, CaseCountable {
-        case Today, Week
-        
+        case Today
+        case Week
         static let sectionTitle = "Trending Tags"
-        static let tags = ["now", "this week"]
     }
     
-    enum UserCategories {
+    enum TagCategories {
         static let sectionTitle = "Categories"
     }
-    
 }
 
 private enum SegueIdentifier: String {
@@ -56,20 +53,28 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     // MARK: Properties
     
-    private let flickrApiClient = FlickrApiClient.sharedInstance
+    var flickr: MIFlickr!
+    var persistenceCentral: PersistenceCentral!
+    
+    private var categories: [Category] {
+        get {
+            return persistenceCentral.categories
+        }
+    }
+    private var trendingCategories: [Category] {
+        get {
+            return persistenceCentral.trendingCategories
+        }
+    }
+    private var imagesIsInLoading = Set<NSIndexPath>()
     
     private var numberOfColumns = 2
-    private let defaultTagCategories = [
-        "art", "light", "park", "winter", "sun", "clouds", "family", "football", "macro", "summer"
-    ]
-    
-    private var images = [String: UIImage]()
-    private var imagesIsInLoading = Set<NSIndexPath>()
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(flickr != nil && persistenceCentral != nil)
         configureUI()
     }
     
@@ -77,7 +82,6 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         collectionView.collectionViewLayout.invalidateLayout()
     }
-    
 }
 
 // MARK: - DiscoverTagsViewController (UI Methods)  -
@@ -88,16 +92,16 @@ extension DiscoverTagsViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        guard let layout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout else {
-            return
-        }
-        
+        guard let layout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         layout.sectionInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
         layout.minimumInteritemSpacing = 8.0
         layout.minimumLineSpacing = 8.0
         collectionView.contentInset.top += layout.sectionInset.top
     }
     
+    private func updateTitleColorForCell(cell: TagCollectionViewCell) {
+        cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
+    }
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDataSource -
@@ -114,9 +118,9 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         guard let section = SectionType(rawValue: section) else { return 0 }
         switch section {
         case .Trends:
-            return SectionType.TrendingTags.caseCount
+            return trendingCategories.count
         case .Categories:
-            return defaultTagCategories.count
+            return categories.count
         }
     }
     
@@ -139,17 +143,21 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     
     // MARK: Helpers
     
-    private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
-        func failedToLoadImageWithError(error: NSError) {
-            setImage(nil, toCellAtIndexPath: indexPath)
-            print("Failed to load an image. Error: \(error.localizedDescription)")
+    private func configureSectionHeaderView(view: SectionHeaderCollectionReusableView, forIndexPath indexPath: NSIndexPath) {
+        switch SectionType(rawValue: indexPath.section)! {
+        case .Trends:
+            view.title.text = SectionType.TrendingTags.sectionTitle.uppercaseString
+        case .Categories:
+            view.title.text = SectionType.TagCategories.sectionTitle.uppercaseString
         }
-        
-        let tag = tagFromIndexPath(indexPath)
-        cell.title.text = tag
+    }
+    
+    private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+        let category = categoryForIndexPath(indexPath)
+        cell.title.text = category.name
         updateTitleColorForCell(cell)
         
-        if let image = images[tag] {
+        if let image = category.image?.image  {
             cell.imageView.image = image
             updateTitleColorForCell(cell)
             return
@@ -157,54 +165,64 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         
         guard imagesIsInLoading.contains(indexPath) == false else { return }
         imagesIsInLoading.insert(indexPath)
+        loadImageForCellAtIndexPath(indexPath)
+    }
+    
+    private func categoryForIndexPath(indexPath: NSIndexPath) -> Category {
+        return (indexPath.section == SectionType.Trends.rawValue
+            ? trendingCategories[indexPath.row]
+            : categories[indexPath.row]
+        )
+    }
+    
+    private func loadImageForCellAtIndexPath(indexPath: NSIndexPath) {
+        func handleError(error: NSError) {
+            print("Failed to load an image. Error: \(error.localizedDescription)")
+            setImage(nil, toCellAtIndexPath: indexPath)
+            loadImageForCellAtIndexPath(indexPath)
+            UIUtils.showNetworkActivityIndicator()
+        }
+        
+        let category = categoryForIndexPath(indexPath)
+        UIUtils.showNetworkActivityIndicator()
         
         if indexPath.section == SectionType.Trends.rawValue {
             let period: Period = (indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week)
-            flickrApiClient.tagsHotListForPeriod(period, successBlock: { [unowned self] tags in
-                let tags = tags.map { $0.name }
-                self.flickrApiClient.randomImageFromTags(tags, successBlock: { [weak self] image in
-                    self?.setImage(image, toCellAtIndexPath: indexPath)
-                    }, failBlock: failedToLoadImageWithError)
-                }, failBlock: failedToLoadImageWithError)
+            flickr.api.tagsHotListForPeriod(period, successBlock: { [unowned self] tags in
+                let tags = tags.map { $0.content }
+                self.flickr.api.randomImageFromTags(tags, successBlock: { [unowned self] image in
+                    self.setImage(image, toCellAtIndexPath: indexPath)
+                    }, failBlock: handleError)
+                }, failBlock: handleError)
         } else {
-            flickrApiClient.randomImageFromTags([tag], successBlock: { [weak self] image in
-                self?.setImage(image, toCellAtIndexPath: indexPath)
-                }, failBlock: failedToLoadImageWithError)
+            flickr.api.randomImageFromTags(
+                [category.name],
+                successBlock: { self.setImage($0, toCellAtIndexPath: indexPath) },
+                failBlock: handleError
+            )
         }
     }
     
     private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
         imagesIsInLoading.remove(indexPath)
+        UIUtils.hideNetworkActivityIndicator()
+        
+        // Persist the image.
+        if let image = image {
+            let manager = persistenceCentral.coreDataStackManager
+            let categoryImage = CategoryImage(image: image, context: manager.managedObjectContext)
+            let category = categoryForIndexPath(indexPath)
+            category.image = categoryImage
+            categoryImage.category = category
+            persistenceCentral.coreDataStackManager.saveContext()
+        }
         
         guard collectionView.indexPathsForVisibleItems().contains(indexPath) == true else { return }
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCollectionViewCell else { return }
         
         cell.imageView.image = image
-        images[tagFromIndexPath(indexPath)] = image
         updateTitleColorForCell(cell)
     }
-    
-    private func updateTitleColorForCell(cell: TagCollectionViewCell) {
-        cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
-    }
-    
-    private func tagFromIndexPath(indexPath: NSIndexPath) -> String {
-        return (indexPath.section == SectionType.Trends.rawValue
-            ? SectionType.TrendingTags.tags[indexPath.row]
-            : defaultTagCategories[indexPath.row]
-        )
-    }
-    
-    private func configureSectionHeaderView(view: SectionHeaderCollectionReusableView, forIndexPath indexPath: NSIndexPath) {
-        guard let section = SectionType(rawValue: indexPath.section) else { return }
-        switch section {
-        case .Trends:
-            view.title.text = SectionType.TrendingTags.sectionTitle
-        case .Categories:
-            view.title.text = SectionType.UserCategories.sectionTitle
-        }
-    }
-    
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDelegateFlowLayout -
@@ -232,7 +250,6 @@ extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
         guard collectionView.numberOfItemsInSection(section) > 0 else { return CGSizeZero }
         return CGSize(width: collectionView.bounds.width, height: SectionHeaderCollectionReusableView.height)
     }
-    
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDelegate -
@@ -242,19 +259,17 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
-        switch indexPath.section {
-        case SectionType.Trends.rawValue:
+        let category = categoryForIndexPath(indexPath)
+        
+        switch SectionType(rawValue: indexPath.section)! {
+        case .Trends:
             let period = indexPath.row == 0 ? Period.Day : Period.Week
-            let hotTagsViewController = FlickrHotTagsViewController(period: period, flickrApiClient: flickrApiClient)
-            hotTagsViewController.title = SectionType.TrendingTags.tags[indexPath.row].capitalizedString
+            let hotTagsViewController = FlickrHotTagsViewController(period: period, flickrApiClient: flickr.api)
+            hotTagsViewController.title = category.name.capitalizedString
             navigationController?.pushViewController(hotTagsViewController, animated: true)
-        case SectionType.Categories.rawValue:
-            let tag = defaultTagCategories[indexPath.row]
-            let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickrApiClient, tag: tag)
+        case .Categories:
+            let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickr.api, tag: category.name)
             navigationController?.pushViewController(relatedTagsViewController, animated: true)
-        default:
-            break
         }
     }
-    
 }

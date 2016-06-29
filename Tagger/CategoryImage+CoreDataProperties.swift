@@ -21,45 +21,11 @@
  */
 
 import Foundation
+import CoreData
 
-// MARK: FlickrTag
+extension CategoryImage {
 
-struct FlickrTag {
-    
-    // MARK: - Properties
-    
-    private (set) var content: String
-    private (set) var score: Int? = nil
-    
-    // MARK: - Init
-    
-    init(content: String) {
-        self.content = content
-    }
-    
-    init(score: Int, content: String) {
-        self.init(content: content)
-        self.score = score
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-            return nil
-        }
-        self.init(content: content)
-        
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString) {
-            self.score = score
-        }
-    }
-    
-}
+    @NSManaged var data: NSData?
+    @NSManaged var category: Category
 
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
-    }
 }

@@ -22,22 +22,23 @@
 
 import Foundation
 
-// MARK: ImaggaTag: Tag -
+// MARK: ImaggaTag
 
-final class ImaggaTag: Tag {
+struct ImaggaTag {
     
     // MARK: - Properties
     
-    let confidence: Double
+    private (set) var tag: String
+    private (set) var confidence: Double
     
     // MARK: - Init
     
     init(confidence: Double, tag: String) {
+        self.tag = tag
         self.confidence = confidence
-        super.init(name: tag)
     }
     
-    convenience init?(json: JSONDictionary) {
+    init?(json: JSONDictionary) {
         guard let confidence = JSON.double(json, key: ImaggaApiClient.Constants.ResponseKeys.Confidence),
             let tag = JSON.string(json, key: ImaggaApiClient.Constants.ResponseKeys.Tag) else {
                 return nil
@@ -56,9 +57,7 @@ final class ImaggaTag: Tag {
 // MARK: - ImaggaTag: JSONParselable -
 
 extension ImaggaTag: JSONParselable {
-    
     static func decode(input: JSONDictionary) -> ImaggaTag? {
         return ImaggaTag.init(json: input)
     }
-    
 }

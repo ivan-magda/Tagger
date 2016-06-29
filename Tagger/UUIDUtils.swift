@@ -22,44 +22,19 @@
 
 import Foundation
 
-// MARK: FlickrTag
+// MARK: UUIDUtils
 
-struct FlickrTag {
+class UUIDUtils {
     
-    // MARK: - Properties
+    // MARK: Init
     
-    private (set) var content: String
-    private (set) var score: Int? = nil
-    
-    // MARK: - Init
-    
-    init(content: String) {
-        self.content = content
+    private init() {
     }
-    
-    init(score: Int, content: String) {
-        self.init(content: content)
-        self.score = score
-    }
-    
-    init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
-            return nil
-        }
-        self.init(content: content)
-        
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
-            let score = Int(scoreString) {
-            self.score = score
-        }
-    }
-    
-}
 
-// MARK: - FlickrTag: JSONParselable -
-
-extension FlickrTag: JSONParselable {
-    static func decode(input: JSONDictionary) -> FlickrTag? {
-        return FlickrTag.init(json: input)
+    // MARK: Functions
+    
+    class func generateUUIDString() -> String {
+        return NSUUID().UUIDString
     }
+    
 }

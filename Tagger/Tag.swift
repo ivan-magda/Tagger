@@ -21,19 +21,10 @@
  */
 
 import Foundation
+import CoreData
 
-// MARK: Tag
+// MARK: Tag: NSManagedObject
 
-class Tag {
-    
-    // MARK: Properties
-    
-    let name: String
-    
-    // MARK: - Init
-    
-    init(name: String) {
-        self.name = name
-    }
-    
+class Tag: NSManagedObject {
+
 }

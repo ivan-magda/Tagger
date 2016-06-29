@@ -42,8 +42,8 @@ class HashtagsTextView: UITextView {
     
     // MARK: Public
     
-    func updateWithNewData(tags: [Tag]) {
-        let tagsText = tags.map { $0.name }.joinWithSeparator(" #")
+    func updateWithNewData(tags: [String]) {
+        let tagsText = tags.joinWithSeparator(" #")
         
         if tagsText.characters.count > 0 {
             text = "#\(tagsText)"

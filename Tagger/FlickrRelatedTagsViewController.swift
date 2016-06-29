@@ -59,7 +59,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     private func fetchData() {
         setUIState(.Downloading)
         flickrApiClient.relatedTagsForTag(tag, successBlock: { [unowned self] tags in
-            self.tags = tags
+            self.tags = tags.map { $0.content }
             self.setUIState(.SuccessDoneWithDownloading)
         }) { [unowned self] error in
             self.setUIState(.FailureDoneWithDownloading(error: error))
