@@ -160,19 +160,17 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         if let image = category.image?.image  {
             cell.imageView.image = image
             updateTitleColorForCell(cell)
-            return
+        } else {
+            guard imagesIsInLoading.contains(indexPath) == false else { return }
+            imagesIsInLoading.insert(indexPath)
+            loadImageForCellAtIndexPath(indexPath)
         }
-        
-        guard imagesIsInLoading.contains(indexPath) == false else { return }
-        imagesIsInLoading.insert(indexPath)
-        loadImageForCellAtIndexPath(indexPath)
     }
     
     private func categoryForIndexPath(indexPath: NSIndexPath) -> Category {
-        return (indexPath.section == SectionType.Trends.rawValue
+        return indexPath.section == SectionType.Trends.rawValue
             ? trendingCategories[indexPath.row]
             : categories[indexPath.row]
-        )
     }
     
     private func loadImageForCellAtIndexPath(indexPath: NSIndexPath) {
@@ -187,13 +185,16 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         UIUtils.showNetworkActivityIndicator()
         
         if indexPath.section == SectionType.Trends.rawValue {
-            let period: Period = (indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week)
-            flickr.api.tagsHotListForPeriod(period, successBlock: { [unowned self] tags in
-                let tags = tags.map { $0.content }
-                self.flickr.api.randomImageFromTags(tags, successBlock: { [unowned self] image in
-                    self.setImage(image, toCellAtIndexPath: indexPath)
-                    }, failBlock: handleError)
-                }, failBlock: handleError)
+            let period: Period = indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week
+            flickr.api.tagsHotListForPeriod(
+                period,
+                successBlock: {
+                    self.flickr.api.randomImageFromTags(
+                        $0.map { $0.content },
+                        successBlock: { self.setImage($0, toCellAtIndexPath: indexPath) },
+                        failBlock: handleError)
+                },
+                failBlock: handleError)
         } else {
             flickr.api.randomImageFromTags(
                 [category.name],
@@ -209,12 +210,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         
         // Persist the image.
         if let image = image {
-            let manager = persistenceCentral.coreDataStackManager
-            let categoryImage = CategoryImage(image: image, context: manager.managedObjectContext)
-            let category = categoryForIndexPath(indexPath)
-            category.image = categoryImage
-            categoryImage.category = category
-            persistenceCentral.coreDataStackManager.saveContext()
+            persistenceCentral.setImage(image, toCategory: categoryForIndexPath(indexPath))
         }
         
         guard collectionView.indexPathsForVisibleItems().contains(indexPath) == true else { return }
@@ -266,9 +262,11 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
             let period = indexPath.row == 0 ? Period.Day : Period.Week
             let hotTagsViewController = FlickrHotTagsViewController(period: period, flickrApiClient: flickr.api)
             hotTagsViewController.title = category.name.capitalizedString
+            hotTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(hotTagsViewController, animated: true)
         case .Categories:
             let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickr.api, tag: category.name)
+            relatedTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(relatedTagsViewController, animated: true)
         }
     }

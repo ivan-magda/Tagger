@@ -25,8 +25,8 @@ import CoreData
 
 extension Tag {
 
-    @NSManaged var id: String?
-    @NSManaged var name: String?
+    @NSManaged var id: String
+    @NSManaged var name: String
     @NSManaged var category: Category?
 
 }

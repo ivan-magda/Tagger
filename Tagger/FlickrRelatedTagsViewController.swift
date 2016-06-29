@@ -21,6 +21,7 @@
  */
 
 import UIKit
+import CoreData
 
 // MARK: FlickrRelatedTagsViewController: TagListViewController -
 
@@ -31,15 +32,14 @@ class FlickrRelatedTagsViewController: TagListViewController {
     private (set) var flickrApiClient: FlickrApiClient!
     private (set) var tag: String!
     
+    private var temporaryContext: NSManagedObjectContext!
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         assert(flickrApiClient != nil && tag != nil)
-        
-        configureUI()
-        fetchData()
+        setup()
     }
     
     // MARK: - Init
@@ -52,19 +52,28 @@ class FlickrRelatedTagsViewController: TagListViewController {
     
     // MARK: - Private
     
+    // TODO: Dont't use temporary context
+    private func setup() {
+        configureUI()
+        // Set the temporary context.
+        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
+        fetchData()
+    }
+    
     private func configureUI() {
         title = tag.capitalizedString
     }
     
     private func fetchData() {
         setUIState(.Downloading)
-        flickrApiClient.relatedTagsForTag(tag, successBlock: { [unowned self] tags in
-            self.tags = tags.map { $0.content }
-            self.setUIState(.SuccessDoneWithDownloading)
-        }) { [unowned self] error in
-            self.setUIState(.FailureDoneWithDownloading(error: error))
-            let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
-            self.presentViewController(alert, animated: true, completion: nil)
+        flickrApiClient.relatedTagsForTag(tag, successBlock: { [weak self] tags in
+            self?.tags = tags.map { Tag(name: $0.content, context: self!.temporaryContext) }
+            self?.setUIState(.SuccessDoneWithDownloading)
+        }) { [weak self] error in
+            self?.setUIState(.FailureDoneWithDownloading(error: error))
+            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
+            self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
     

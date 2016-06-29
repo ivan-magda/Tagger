@@ -21,6 +21,7 @@
  */
 
 import UIKit
+import CoreData
 
 // MARK: Types
 
@@ -40,6 +41,8 @@ class ImageTaggerViewController: UIViewController, Alertable {
     
     private let imaggaApiClient = ImaggaApiClient.sharedInstance
     private var generatedTags: [ImaggaTag]?
+    
+    var temporaryContext: NSManagedObjectContext!
     
     // MARK: - Outlets
     
@@ -77,10 +80,17 @@ class ImageTaggerViewController: UIViewController, Alertable {
         }
     }
     
+    // TODO: Rewrite
     @IBAction func showResults(sender: AnyObject) {
+        let persistenceCentral = PersistenceCentral.sharedInstance
+        // Set the temporary context.
+        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
+        
         let tagListViewController = TagListViewController()
         tagListViewController.title = "Results"
-        tagListViewController.tags = generatedTags!.map { $0.tag }
+        tagListViewController.tags = generatedTags!.map { Tag(name: $0.tag, context: temporaryContext) }
+        tagListViewController.persistenceCentral = persistenceCentral
         navigationController?.pushViewController(tagListViewController, animated: true)
     }
     
