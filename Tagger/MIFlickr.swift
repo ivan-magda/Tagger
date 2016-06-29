@@ -78,4 +78,11 @@ class MIFlickr {
         self.api = FlickrApiClient.sharedInstance
     }
     
+    // MARK: Public
+    
+    func logOutCurrentUser() {
+        currentUser = nil
+        FlickrOAuth.removeTokensFromKeychain()
+    }
+    
 }

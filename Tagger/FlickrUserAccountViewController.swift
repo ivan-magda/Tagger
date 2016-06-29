@@ -22,9 +22,16 @@
 
 import UIKit
 
-// MARK: FlickrUserAccountViewController: UIViewController
+// MARK: Types
 
-class FlickrUserAccountViewController: UIViewController {
+private enum UIState {
+    case Default
+    case Network
+}
+
+// MARK: - FlickrUserAccountViewController: UIViewController, Alertable
+
+class FlickrUserAccountViewController: UIViewController, Alertable {
     
     // MARK: Outlets
     
@@ -54,6 +61,32 @@ class FlickrUserAccountViewController: UIViewController {
     // MARK: Actions
     
     @IBAction func actionButtonDidPressed(sender: AnyObject) {
+        setUIState(.Network)
+        if flickr.currentUser == nil {
+            signIn()
+        } else {
+            logOut()
+        }
+    }
+    
+    private func logOut() {
+        flickr.logOutCurrentUser()
+        configureUI()
+        setUIState(.Default)
+    }
+    
+    private func signIn() {
+        flickr.OAuth.authorizeWithPermission(.Read) { result in
+            switch result {
+            case .Success(_, _, let user):
+                self.flickr.currentUser = user
+                self.configureUI()
+                self.setUIState(.Default)
+            case .Failure(let error):
+                self.showError(error)
+                self.setUIState(.Default)
+            }
+        }
     }
     
 }
@@ -68,17 +101,14 @@ extension FlickrUserAccountViewController {
             detailLabel.text = user.username
             actionButton.setTitle("Log Out", forState: .Normal)
             
-            flickr.api.getUserInfo(user.userID, success: { person in
-                print(person)
-                self.flickr.api.getProfilePictureFromUserInfo(person, success: { image in
-                    self.imageView.image = image
-                    }, failure: { error in
-                        print(error.localizedDescription)
-                })
-                }, failure: { error in
-                    print(error.localizedDescription)
+            setUIState(.Network)
+            flickr.api.getProfilePictureWithNSID(user.userID, success: {
+                self.imageView.image = $0
+                self.setUIState(.Default)
+                }, failure: {
+                    self.showError($0)
+                    self.setUIState(.Default)
             })
-            
         } else {
             mainLabel.text = "You are not logged in"
             detailLabel.text = "If you want to interact with your account, then sign in"
@@ -87,6 +117,26 @@ extension FlickrUserAccountViewController {
         
         let spinner = UIBarButtonItem(customView: activityIndicator)
         navigationItem.rightBarButtonItem = spinner
+    }
+    
+    private func showError(error: NSError) {
+        let alertController = alert("Error", message: error.localizedDescription, handler: nil)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func setUIState(state: UIState) {
+        switch state {
+        case .Default:
+            UIUtils.hideNetworkActivityIndicator()
+            activityIndicator.stopAnimating()
+            actionButton.enabled = true
+            actionButton.backgroundColor = UIColor(red: 0.0, green: 99.0 / 255.0, blue: 220.0 / 255.0, alpha: 1.0)
+        case .Network:
+            UIUtils.showNetworkActivityIndicator()
+            activityIndicator.startAnimating()
+            actionButton.enabled = false
+            actionButton.backgroundColor = .lightGrayColor()
+        }
     }
     
 }

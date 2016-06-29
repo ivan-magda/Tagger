@@ -140,7 +140,7 @@ extension FlickrApiClient {
     
     // MARK: - User -
     
-    func getUserInfo(userID: String, success: FlickrPersonInfoSuccessCompletionHandler, failure: FlickrFailureCompletionHandler) {
+    func getPersonInfoWithNSID(userID: String, success: FlickrPersonInfoSuccessCompletionHandler, failure: FlickrFailureCompletionHandler) {
         var parameters = getBaseMethodParameters(Constants.FlickrParameterValues.PeopleGetInfo)
         parameters[Constants.FlickrParameterKeys.UserID] = userID
         
@@ -151,6 +151,12 @@ extension FlickrApiClient {
     func getProfilePictureFromUserInfo(info: FlickrPersonInfo, success: ImageDownloadingCompletionHandler, failure: FlickrFailureCompletionHandler) {
         let URL = NSURL(string: "https://farm\(info.iconFarm).staticflickr.com/\(info.iconServer)/buddyicons/\(info.nsid)_l.jpg")!
         downloadImageWithURL(URL, successBlock: success, failBlock: failure)
+    }
+    
+    func getProfilePictureWithNSID(nsid: String, success: ImageDownloadingCompletionHandler, failure: FlickrFailureCompletionHandler) {
+        getPersonInfoWithNSID(nsid,
+                    success: { self.getProfilePictureFromUserInfo($0, success: success, failure: failure) },
+                    failure: failure)
     }
     
     // MARK: - Authenticated Requests -
