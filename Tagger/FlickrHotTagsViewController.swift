@@ -21,6 +21,7 @@
  */
 
 import UIKit
+import CoreData
 
 // MARK: FlickrHotTagsViewController: TagListViewController -
 
@@ -33,12 +34,13 @@ class FlickrHotTagsViewController: TagListViewController {
     private var period = Period.Day
     private var numberOfTags = 20
     
+    private var temporaryContext: NSManagedObjectContext!
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        fetchData()
+        setup()
     }
     
     // MARK: - Init
@@ -51,11 +53,20 @@ class FlickrHotTagsViewController: TagListViewController {
     
     // MARK: - Private
     
+    // TODO: Dont't use temporary context
+    private func setup() {
+        configureUI()
+        // Set the temporary context.
+        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
+        fetchData()
+    }
+    
     private func fetchData() {
         setUIState(.Downloading)
-        flickrApiClient.tagsHotListForPeriod(period, numberOfTags: numberOfTags, successBlock: { [unowned self] tags in
-            self.tags = tags.map { $0.content }
-            self.setUIState(.SuccessDoneWithDownloading)
+        flickrApiClient.tagsHotListForPeriod(period, numberOfTags: numberOfTags, successBlock: { [weak self] tags in
+            self?.tags = tags.map { Tag(name: $0.content, context: self!.temporaryContext)  }
+            self?.setUIState(.SuccessDoneWithDownloading)
         }) { [unowned self] error in
             self.setUIState(.FailureDoneWithDownloading(error: error))
             let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
@@ -69,11 +80,16 @@ class FlickrHotTagsViewController: TagListViewController {
 
 extension FlickrHotTagsViewController {
     private func configureUI() {
-        actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .Default, handler: { [unowned self] action in
-            CountPickerViewController.showPickerWithTitle("Number of Tags", rows: 200, initialSelection: self.numberOfTags-1, doneBlock: { (selectedIndex, selectedValue) in
-                self.numberOfTags = selectedValue
-                self.fetchData()
-                }, cancelBlock: nil)
-            }))
+        actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .Default, handler: { _ in
+            CountPickerViewController.showPickerWithTitle(
+                "Number of Tags",
+                rows: 200,
+                initialSelection: self.numberOfTags-1,
+                doneBlock: { (_, selectedValue) in
+                    self.numberOfTags = selectedValue
+                    self.fetchData() },
+                cancelBlock: nil
+            )
+        }))
     }
 }

@@ -42,7 +42,8 @@ class TagListViewController: UIViewController, Alertable {
     
     static let nibName = "TagListViewController"
     
-    var tags = [String]() {
+    var persistenceCentral: PersistenceCentral!
+    var tags = [Tag]() {
         didSet {
             guard tableView != nil else { return }
             reloadData()
@@ -73,6 +74,7 @@ class TagListViewController: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(persistenceCentral != nil)
         configureUI()
     }
     
@@ -84,7 +86,9 @@ class TagListViewController: UIViewController, Alertable {
     // MARK: - Private
     
     private func reloadData() {
-        tagsTextView.updateWithNewData(tags.enumerate().flatMap { selectedIndexes.contains($0) ? $1 : nil })
+        tagsTextView.updateWithNewData(
+            tags.enumerate().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
+        )
         
         guard tableView.numberOfSections == 1 else {
             tableView.reloadData()
@@ -130,7 +134,6 @@ class TagListViewController: UIViewController, Alertable {
         }
         presentViewController(alert, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - TagListViewController (UI Functions) -
@@ -228,10 +231,9 @@ extension TagListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.textLabel?.text = tags[indexPath.row]
+        cell.textLabel?.text = tags[indexPath.row].name
         cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
     }
-    
 }
 
 // MARK: - TagListViewController: UITableViewDelegate -
@@ -250,5 +252,4 @@ extension TagListViewController: UITableViewDelegate {
         reloadData()
         updateUI()
     }
-    
 }

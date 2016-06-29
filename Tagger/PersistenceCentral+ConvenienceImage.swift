@@ -20,23 +20,31 @@
  * THE SOFTWARE.
  */
 
-import Foundation
+import UIKit
 import CoreData
 
-// MARK: Tag: NSManagedObject
+// MARK: PersistenceCentral (Convenience Image)
 
-class Tag: NSManagedObject {
-
-    // MARK: Init
+extension PersistenceCentral {
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    func setImage(image: UIImage, toCategory category: Category) {
+        let categoryImage = CategoryImage(image: image, context: coreDataStackManager.managedObjectContext)
+        category.image = categoryImage
+        categoryImage.category = category
+        coreDataStackManager.saveContext()
     }
     
-    convenience init(name: String, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Tag", inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
-        self.id = UUIDUtils.generateUUIDString()
-        self.name = name
+    func deleteAllCategoriesImages() {
+        let request = NSFetchRequest(entityName: "CategoryImage")
+        do {
+            guard let results = try coreDataStackManager.managedObjectContext.executeFetchRequest(request) as? [CategoryImage] else {
+                return
+            }
+            results.forEach { self.coreDataStackManager.managedObjectContext.deleteObject($0) }
+            coreDataStackManager.saveContext()
+        } catch let error as NSError {
+            print("Failed to delete all images: \(error.localizedDescription)")
+        }
     }
+    
 }
