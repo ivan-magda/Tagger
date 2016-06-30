@@ -41,17 +41,18 @@ class PersistenceCentral: NSObject {
     private (set) var categories: [Category]!
     
     private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest(entityName: "Category")
+        let request = NSFetchRequest(entityName: Category.type)
         request.sortDescriptors = [
-            NSSortDescriptor(key: "trending", ascending: true),
-            NSSortDescriptor(key: "name", ascending: true)
+            NSSortDescriptor(key: Category.Key.Trending.rawValue, ascending: true),
+            NSSortDescriptor(key: Category.Key.Name.rawValue, ascending: true,
+                selector: #selector(NSString.caseInsensitiveCompare(_:)))
         ]
         request.returnsObjectsAsFaults = false
         
         let fetchedResultsController = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: self.coreDataStackManager.managedObjectContext,
-            sectionNameKeyPath: "trending",
+            sectionNameKeyPath: Category.Key.Trending.rawValue,
             cacheName: nil
         )
         fetchedResultsController.delegate = self
@@ -104,7 +105,8 @@ class PersistenceCentral: NSObject {
         userDefaults.setBool(true, forKey: kSeedInitialDataKey)
     }
     
-    // MARK: Convenience
+    // MARK: - Convenience -
+    // MARK: Category
     
     func deleteCategory(category: Category) {
         coreDataStackManager.managedObjectContext.deleteObject(category)
@@ -118,6 +120,11 @@ class PersistenceCentral: NSObject {
     
     func deleteAllTagsInCategory(category: Category) {
         category.deleteAllTags()
+        coreDataStackManager.saveContext()
+    }
+    
+    func saveCategoryWithName(name: String) {
+        let _ = Category(name: name, context: coreDataStackManager.managedObjectContext)
         coreDataStackManager.saveContext()
     }
     

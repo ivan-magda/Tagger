@@ -26,6 +26,14 @@ import CoreData
 // MARK: Tag: NSManagedObject
 
 class Tag: NSManagedObject {
+    
+    // MARK: Types
+    
+    enum Key: String {
+        case Id = "id"
+        case name = "name"
+        case category = "category"
+    }
 
     // MARK: Init
     
@@ -34,7 +42,7 @@ class Tag: NSManagedObject {
     }
     
     convenience init(name: String, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Tag", inManagedObjectContext: context)!
+        let entity = NSEntityDescription.entityForName(Tag.type, inManagedObjectContext: context)!
         self.init(entity: entity, insertIntoManagedObjectContext: context)
         self.id = UUIDUtils.generateUUIDString()
         self.name = name

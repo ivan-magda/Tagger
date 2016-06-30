@@ -42,6 +42,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     private var imagesIsInLoading = Set<NSIndexPath>()
     
     private var numberOfColumns = 3
+    private let maxNumberOfColumns = 4
     
     // MARK: View Life Cycle
     
@@ -61,6 +62,9 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
+        if numberOfColumns > maxNumberOfColumns {
+            numberOfColumns = maxNumberOfColumns
+        }
         collectionView!.collectionViewLayout.invalidateLayout()
     }
     
