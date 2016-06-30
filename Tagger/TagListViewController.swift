@@ -43,6 +43,8 @@ class TagListViewController: UIViewController, Alertable {
     static let nibName = "TagListViewController"
     
     var persistenceCentral: PersistenceCentral!
+
+    var parentCategory: Category?
     var tags = [Tag]() {
         didSet {
             guard tableView != nil else { return }
@@ -75,7 +77,7 @@ class TagListViewController: UIViewController, Alertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(persistenceCentral != nil)
-        configureUI()
+        setup()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -84,6 +86,13 @@ class TagListViewController: UIViewController, Alertable {
     }
     
     // MARK: - Private
+    
+    private func setup() {
+        if let parentCategory = parentCategory {
+            tags = parentCategory.tags
+        }
+        configureUI()
+    }
     
     private func reloadData() {
         tagsTextView.updateWithNewData(
@@ -142,6 +151,8 @@ extension TagListViewController {
     
     private func configureUI() {
         setTabBarHidden(true)
+        
+        title = parentCategory?.name.capitalizedString
         
         // Configure table view.
         tableView.dataSource = self

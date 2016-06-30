@@ -65,7 +65,8 @@ class PersistenceCentral: NSObject {
         setup()
     }
     
-    // MARK: Private Methods
+    // MARK: - Private Methods -
+    // MARK: Setup
     
     private func setup() {
         seedInitialDataIfNeeded()
@@ -102,6 +103,12 @@ class PersistenceCentral: NSObject {
         userDefaults.setBool(true, forKey: kSeedInitialDataKey)
     }
     
+    // MARK: Convenience
+    
+    func deleteAllTagsInCategory(category: Category) {
+        category.deleteAllTags()
+        coreDataStackManager.saveContext()
+    }
 }
 
 // MARK: - PersistenceCentral: NSFetchedResultsControllerDelegate -

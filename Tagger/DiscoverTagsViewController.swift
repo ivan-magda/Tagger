@@ -256,16 +256,16 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         let category = categoryForIndexPath(indexPath)
+        let flickrApi = flickr.api
         
         switch SectionType(rawValue: indexPath.section)! {
         case .Trends:
             let period = indexPath.row == 0 ? Period.Day : Period.Week
-            let hotTagsViewController = FlickrHotTagsViewController(period: period, flickrApiClient: flickr.api)
-            hotTagsViewController.title = category.name.capitalizedString
+            let hotTagsViewController = FlickrHotTagsViewController(flickrApiClient: flickrApi, period: period, category: category)
             hotTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(hotTagsViewController, animated: true)
         case .Categories:
-            let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickr.api, tag: category.name)
+            let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickr.api, category: category)
             relatedTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(relatedTagsViewController, animated: true)
         }

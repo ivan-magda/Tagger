@@ -30,51 +30,63 @@ class FlickrRelatedTagsViewController: TagListViewController {
     // MARK: Properties
     
     private (set) var flickrApiClient: FlickrApiClient!
-    private (set) var tag: String!
-    
-    private var temporaryContext: NSManagedObjectContext!
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(flickrApiClient != nil && tag != nil)
+        assert(flickrApiClient != nil && parentCategory != nil)
         setup()
     }
     
     // MARK: - Init
     
-    convenience init(flickrApiClient: FlickrApiClient, tag: String) {
+    convenience init(flickrApiClient: FlickrApiClient, category: Category) {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
         self.flickrApiClient = flickrApiClient
-        self.tag = tag
+        self.parentCategory = category
     }
     
     // MARK: - Private
     
-    // TODO: Dont't use temporary context
     private func setup() {
         configureUI()
-        // Set the temporary context.
-        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
-        fetchData()
+        if tags.count == 0 {
+            fetchData()
+        }
     }
     
     private func configureUI() {
-        title = tag.capitalizedString
+        title = parentCategory!.name.capitalizedString
+        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
     }
     
-    private func fetchData() {
+    func fetchData() {
         setUIState(.Downloading)
-        flickrApiClient.relatedTagsForTag(tag, successBlock: { [weak self] tags in
-            self?.tags = tags.map { Tag(name: $0.content, context: self!.temporaryContext) }
-            self?.setUIState(.SuccessDoneWithDownloading)
+        flickrApiClient.relatedTagsForTag(
+            parentCategory!.name,
+            successBlock: { [weak self] tags in
+                guard let strongSelf = self else { return }
+                strongSelf.refreshControl.endRefreshing()
+                
+                strongSelf.persistenceCentral.deleteAllTagsInCategory(strongSelf.parentCategory!)
+                let manager = strongSelf.persistenceCentral.coreDataStackManager
+                
+                let mappedTags = FlickrTag.mapFlickrTags(tags,
+                    withParentCategory: strongSelf.parentCategory!,
+                    toTagsInContext: manager.managedObjectContext
+                )
+                strongSelf.tags = mappedTags
+                manager.saveContext()
+                
+                strongSelf.setUIState(.SuccessDoneWithDownloading)
         }) { [weak self] error in
+            self?.refreshControl.endRefreshing()
             self?.setUIState(.FailureDoneWithDownloading(error: error))
             let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
             self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
-    
 }

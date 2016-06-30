@@ -39,5 +39,12 @@ class Category: NSManagedObject {
         self.id = UUIDUtils.generateUUIDString()
         self.name = name
     }
+    
+    // MARK: Public
+    
+    func deleteAllTags() {
+        guard let context = managedObjectContext else { return }
+        tags.forEach { context.deleteObject($0) }
+    }
 
 }

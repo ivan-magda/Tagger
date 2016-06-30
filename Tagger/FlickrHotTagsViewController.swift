@@ -34,52 +34,70 @@ class FlickrHotTagsViewController: TagListViewController {
     private var period = Period.Day
     private var numberOfTags = 20
     
-    private var temporaryContext: NSManagedObjectContext!
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(flickrApiClient != nil && parentCategory != nil)
         setup()
     }
     
     // MARK: - Init
     
-    convenience init(period: Period, flickrApiClient: FlickrApiClient) {
+    convenience init(flickrApiClient: FlickrApiClient, period: Period, category: Category) {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
-        self.period = period
         self.flickrApiClient = flickrApiClient
+        self.period = period
+        self.parentCategory = category
     }
     
     // MARK: - Private
     
-    // TODO: Dont't use temporary context
     private func setup() {
         configureUI()
-        // Set the temporary context.
-        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
-        fetchData()
-    }
-    
-    private func fetchData() {
-        setUIState(.Downloading)
-        flickrApiClient.tagsHotListForPeriod(period, numberOfTags: numberOfTags, successBlock: { [weak self] tags in
-            self?.tags = tags.map { Tag(name: $0.content, context: self!.temporaryContext)  }
-            self?.setUIState(.SuccessDoneWithDownloading)
-        }) { [unowned self] error in
-            self.setUIState(.FailureDoneWithDownloading(error: error))
-            let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
-            self.presentViewController(alert, animated: true, completion: nil)
+        if tags.count == 0 {
+            fetchData()
         }
     }
     
+    func fetchData() {
+        setUIState(.Downloading)
+        flickrApiClient.tagsHotListForPeriod(
+            period,
+            numberOfTags: numberOfTags,
+            successBlock: { [weak self] tags in
+                guard let strongSelf = self else { return }
+                strongSelf.refreshControl.endRefreshing()
+                
+                strongSelf.persistenceCentral.deleteAllTagsInCategory(strongSelf.parentCategory!)
+                let manager = strongSelf.persistenceCentral.coreDataStackManager
+                
+                let mappedTags = FlickrTag.mapFlickrTags(tags,
+                    withParentCategory: strongSelf.parentCategory!,
+                    toTagsInContext: manager.managedObjectContext
+                )
+                strongSelf.tags = mappedTags
+                manager.saveContext()
+                
+                strongSelf.setUIState(.SuccessDoneWithDownloading)
+        }) { [weak self] error in
+            self?.refreshControl.endRefreshing()
+            self?.setUIState(.FailureDoneWithDownloading(error: error))
+            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
+            self?.presentViewController(alert!, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - FlickrHotTagsViewController (UI Functions) -
 
 extension FlickrHotTagsViewController {
     private func configureUI() {
+        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
+        
         actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .Default, handler: { _ in
             CountPickerViewController.showPickerWithTitle(
                 "Number of Tags",
