@@ -21,6 +21,7 @@
  */
 
 import Foundation
+import CoreData
 
 // MARK: FlickrTag
 
@@ -54,6 +55,23 @@ struct FlickrTag {
         }
     }
     
+    // MARK: Core Data
+    
+    func convertToTagInContext(context: NSManagedObjectContext) -> Tag {
+        return Tag(name: content, context: context)
+    }
+    
+    static func mapFlickrTags(tags: [FlickrTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
+        return tags.map {
+            let tag = $0.convertToTagInContext(context)
+            
+            if let category = category {
+                tag.category = category
+            }
+            
+            return tag
+        }
+    }
 }
 
 // MARK: - FlickrTag: JSONParselable -

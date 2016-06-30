@@ -49,7 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillResignActive(application: UIApplication) {
+        persistenceCentral.coreDataStackManager.saveContext()
+    }
+    
+    func applicationDidEnterBackground(application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
     
