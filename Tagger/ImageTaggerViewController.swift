@@ -155,6 +155,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
         saveResultsBarButtonItem.enabled = false
         showResults(self)
     }
+    
 }
 
 // MARK: - ImageTaggerViewController (UI Functions) -
@@ -192,4 +193,5 @@ extension ImageTaggerViewController {
             updateResultsButtonState()
         }
     }
+    
 }

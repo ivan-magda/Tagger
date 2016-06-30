@@ -72,12 +72,15 @@ struct FlickrTag {
             return tag
         }
     }
+    
 }
 
 // MARK: - FlickrTag: JSONParselable -
 
 extension FlickrTag: JSONParselable {
+    
     static func decode(input: JSONDictionary) -> FlickrTag? {
         return FlickrTag.init(json: input)
     }
+    
 }

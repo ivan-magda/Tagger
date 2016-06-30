@@ -88,7 +88,6 @@ extension FlickrApiClient {
                 case Screenshots
                 case Other
             }
-            
         }
         
         // MARK: Flickr Response Keys
@@ -161,17 +160,13 @@ extension FlickrApiClient {
             static let DefaultError = NSError(
                 domain: FlickrApiClient.Constants.Error.ErrorDomain,
                 code: FlickrApiClient.Constants.Error.DefaultErrorCode,
-                userInfo: [NSLocalizedDescriptionKey : "An error occured. Try again later."]
-            )
+                userInfo: [NSLocalizedDescriptionKey : "An error occured. Try again later."])
             
             static let EmptyResponseError = NSError(
                 domain: FlickrApiClient.Constants.Error.EmptyResultErrorDomain,
                 code: FlickrApiClient.Constants.Error.EmptyResultErrorCode,
-                userInfo: [NSLocalizedDescriptionKey : "No data was returned."]
-            )
-            
+                userInfo: [NSLocalizedDescriptionKey : "No data was returned."])
         }
-        
     }
     
 }

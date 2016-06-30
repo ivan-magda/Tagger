@@ -82,6 +82,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         collectionView.collectionViewLayout.invalidateLayout()
     }
+    
 }
 
 // MARK: - DiscoverTagsViewController (UI Methods)  -
@@ -102,6 +103,7 @@ extension DiscoverTagsViewController {
     private func updateTitleColorForCell(cell: TagCollectionViewCell) {
         cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
     }
+    
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDataSource -
@@ -219,6 +221,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         cell.imageView.image = image
         updateTitleColorForCell(cell)
     }
+    
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDelegateFlowLayout -
@@ -246,6 +249,7 @@ extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
         guard collectionView.numberOfItemsInSection(section) > 0 else { return CGSizeZero }
         return CGSize(width: collectionView.bounds.width, height: SectionHeaderCollectionReusableView.height)
     }
+    
 }
 
 // MARK: - DiscoverTagsViewController: UICollectionViewDelegate -
@@ -270,4 +274,5 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
             navigationController?.pushViewController(relatedTagsViewController, animated: true)
         }
     }
+    
 }

@@ -89,6 +89,7 @@ class FlickrHotTagsViewController: TagListViewController {
             self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
+    
 }
 
 // MARK: - FlickrHotTagsViewController (UI Functions) -
@@ -111,4 +112,5 @@ extension FlickrHotTagsViewController {
             )
         }))
     }
+    
 }

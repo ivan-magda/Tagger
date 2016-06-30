@@ -63,7 +63,9 @@ struct FlickrPersonInfo {
 // MARK: - FlickrPersonInfo: JSONParselable -
 
 extension FlickrPersonInfo: JSONParselable {
+    
     static func decode(input: JSONDictionary) -> FlickrPersonInfo? {
         return FlickrPersonInfo.init(json: input)
     }
+    
 }

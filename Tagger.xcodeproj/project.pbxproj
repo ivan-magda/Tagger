@@ -12,6 +12,8 @@
 		750DF2F51D0ECE8A002A95B6 /* ImaggaTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */; };
 		7514BDEA1D03AB46004A2E20 /* FlickrTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDE91D03AB46004A2E20 /* FlickrTag.swift */; };
 		7514BDEC1D03B56A004A2E20 /* MIApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDEB1D03B56A004A2E20 /* MIApiClient.swift */; };
+		7524C0431D251E000004D6CE /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7524C0421D251E000004D6CE /* CategoriesTableViewController.swift */; };
+		7524C0451D25204F0004D6CE /* ManageCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7524C0441D25204F0004D6CE /* ManageCategoryTableViewController.swift */; };
 		75388C9F1D22BB5400618D85 /* FlickrPersonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */; };
 		7543E4081D0BF01800A14B10 /* ImageTaggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */; };
 		754532351D063F4000AEC34C /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754532341D063F4000AEC34C /* TagListViewController.swift */; };
@@ -108,6 +110,8 @@
 		750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaTag.swift; sourceTree = "<group>"; };
 		7514BDE91D03AB46004A2E20 /* FlickrTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrTag.swift; sourceTree = "<group>"; };
 		7514BDEB1D03B56A004A2E20 /* MIApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIApiClient.swift; sourceTree = "<group>"; };
+		7524C0421D251E000004D6CE /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
+		7524C0441D25204F0004D6CE /* ManageCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageCategoryTableViewController.swift; sourceTree = "<group>"; };
 		75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPersonInfo.swift; sourceTree = "<group>"; };
 		7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTaggerViewController.swift; sourceTree = "<group>"; };
 		754532341D063F4000AEC34C /* TagListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
@@ -347,11 +351,8 @@
 				754F1B051D024BA300410CA0 /* API */,
 				754F1B091D024C2400410CA0 /* Model */,
 				7552DFBC1D013B210032ECFA /* UI */,
-				754C20481D0425BE00CA4B34 /* Protocols */,
-				7584F3511D0DCC04008FE98C /* Extensions */,
-				754F1B081D024BFA00410CA0 /* Utils */,
-				75658CEE1D1D1E530028409D /* ThirdParty */,
 				7552DFBB1D013B0C0032ECFA /* SupportingFiles */,
+				75658CEE1D1D1E530028409D /* ThirdParty */,
 			);
 			path = Tagger;
 			sourceTree = "<group>";
@@ -379,6 +380,9 @@
 			children = (
 				7552DF991D013A740032ECFA /* Info.plist */,
 				75755C8E1D10FD83007DE8B8 /* Tagger-Bridging-Header.h */,
+				7584F3511D0DCC04008FE98C /* Extensions */,
+				754C20481D0425BE00CA4B34 /* Protocols */,
+				754F1B081D024BFA00410CA0 /* Utils */,
 			);
 			name = SupportingFiles;
 			sourceTree = "<group>";
@@ -404,6 +408,8 @@
 				75991D771D0BC3DE00870189 /* MIImagePickerController.swift */,
 				7543E4071D0BF01800A14B10 /* ImageTaggerViewController.swift */,
 				7552DFC71D015AAF0032ECFA /* MoreInfoTableViewController.swift */,
+				7524C0421D251E000004D6CE /* CategoriesTableViewController.swift */,
+				7524C0441D25204F0004D6CE /* ManageCategoryTableViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -773,11 +779,13 @@
 				754C20421D041B7E00CA4B34 /* TagCollectionViewCell.swift in Sources */,
 				754532351D063F4000AEC34C /* TagListViewController.swift in Sources */,
 				757262E41D1E6D9E006DE902 /* FlickrCameraRollCollectionViewCell.swift in Sources */,
+				7524C0451D25204F0004D6CE /* ManageCategoryTableViewController.swift in Sources */,
 				75D769621D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift in Sources */,
 				754F1B021D024B9400410CA0 /* JsonApiClient.swift in Sources */,
 				754F1B0E1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift in Sources */,
 				7584F34B1D0DABD0008FE98C /* ImaggaApiClient.swift in Sources */,
 				7571F38F1D23965400402518 /* Category.swift in Sources */,
+				7524C0431D251E000004D6CE /* CategoriesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

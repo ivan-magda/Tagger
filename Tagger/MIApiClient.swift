@@ -152,7 +152,6 @@ class MIApiClient: JsonApiClient {
             default:
                 break
             }
-            
             return NSError(domain: ErrorDomain.ApiRequest,
                            code: ErrorCode.FailureApiRequestReason.rawValue,
                            userInfo: [NSLocalizedDescriptionKey : message])

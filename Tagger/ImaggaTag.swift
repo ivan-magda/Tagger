@@ -70,12 +70,15 @@ struct ImaggaTag {
             return tag
         }
     }
+    
 }
 
 // MARK: - ImaggaTag: JSONParselable -
 
 extension ImaggaTag: JSONParselable {
+    
     static func decode(input: JSONDictionary) -> ImaggaTag? {
         return ImaggaTag.init(json: input)
     }
+    
 }

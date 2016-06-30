@@ -114,7 +114,6 @@ extension ImaggaApiClient {
             default:
                 self.sendError("An error occured. Please, try again.", toBlock: fail)
             }
-            
         }
     }
     
@@ -128,4 +127,3 @@ extension ImaggaApiClient {
     }
     
 }
-

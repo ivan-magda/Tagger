@@ -109,6 +109,7 @@ class PersistenceCentral: NSObject {
         category.deleteAllTags()
         coreDataStackManager.saveContext()
     }
+    
 }
 
 // MARK: - PersistenceCentral: NSFetchedResultsControllerDelegate -
@@ -132,5 +133,3 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
     }
     
 }
-
-

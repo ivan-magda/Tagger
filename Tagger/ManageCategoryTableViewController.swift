@@ -22,10 +22,52 @@
 
 import UIKit
 
-extension UIViewController {
+// MARK: ManageCategoryTableViewController: UITableViewController
+
+class ManageCategoryTableViewController: UITableViewController {
     
-    func setTabBarHidden(hidden: Bool) {
-        tabBarController?.tabBar.hidden = hidden
+    // MARK: Outlets
+    
+    @IBOutlet weak var doneBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var textField: UITextField!
+    
+    // MARK: Properties
+    
+    var persistenceCentral: PersistenceCentral!
+    var category: Category?
+
+    // MARK: View Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        assert(persistenceCentral != nil)
+        configureUI()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        textField.becomeFirstResponder()
+    }
+    
+    // MARK: Actions
+
+    @IBAction func cancelDidPressed(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func doneDidPressed(sender: AnyObject) {
+    }
+    
+}
+
+// MARK: - ManageCategoryTableViewController (UI Functions) -
+
+extension ManageCategoryTableViewController {
+    
+    private func configureUI() {
+        if let category = category {
+            textField.text = category.name
+        }
     }
     
 }
