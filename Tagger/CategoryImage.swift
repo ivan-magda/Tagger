@@ -27,6 +27,13 @@ import CoreData
 
 class CategoryImage: NSManagedObject {
     
+    // MARK: Types
+    
+    enum Key: String {
+        case Data = "data"
+        case Category = "category"
+    }
+    
     // MARK: Properties
     
     var image: UIImage? {
@@ -47,7 +54,7 @@ class CategoryImage: NSManagedObject {
     }
     
     convenience init(data: NSData, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("CategoryImage", inManagedObjectContext: context)!
+        let entity = NSEntityDescription.entityForName(CategoryImage.type, inManagedObjectContext: context)!
         self.init(entity: entity, insertIntoManagedObjectContext: context)
         self.data = data
     }

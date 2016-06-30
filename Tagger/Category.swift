@@ -27,6 +27,16 @@ import CoreData
 
 class Category: NSManagedObject {
     
+    // MARK: Types
+    
+    enum Key: String {
+        case Id = "id"
+        case Name = "name"
+        case Trending = "trending"
+        case Tags = "tags"
+        case Image = "image"
+    }
+    
     // MARK: Init
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
@@ -34,7 +44,7 @@ class Category: NSManagedObject {
     }
     
     convenience init(name: String, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Category", inManagedObjectContext: context)!
+        let entity = NSEntityDescription.entityForName(Category.type, inManagedObjectContext: context)!
         self.init(entity: entity, insertIntoManagedObjectContext: context)
         self.id = UUIDUtils.generateUUIDString()
         self.name = name

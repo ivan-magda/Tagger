@@ -69,6 +69,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     private var imagesIsInLoading = Set<NSIndexPath>()
     
     private var numberOfColumns = 2
+    private var maxNumberOfColumns = 3
     
     // MARK: - View Life Cycle
     
@@ -80,6 +81,9 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
+        if numberOfColumns > maxNumberOfColumns {
+            numberOfColumns = maxNumberOfColumns
+        }
         collectionView.collectionViewLayout.invalidateLayout()
     }
     

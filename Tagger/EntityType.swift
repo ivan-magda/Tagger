@@ -20,31 +20,18 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import Foundation
 import CoreData
 
-// MARK: PersistenceCentral (Convenience Image)
+protocol EntityType {
+    static var type: String { get }
+}
 
-extension PersistenceCentral {
-    
-    func setImage(image: UIImage, toCategory category: Category) {
-        let categoryImage = CategoryImage(image: image, context: coreDataStackManager.managedObjectContext)
-        category.image = categoryImage
-        categoryImage.category = category
-        coreDataStackManager.saveContext()
+extension EntityType {
+    static var type: String {
+        return String(self)
     }
-    
-    func deleteAllCategoriesImages() {
-        let request = NSFetchRequest(entityName: CategoryImage.type)
-        do {
-            guard let results = try coreDataStackManager.managedObjectContext.executeFetchRequest(request) as? [CategoryImage] else {
-                return
-            }
-            results.forEach { self.coreDataStackManager.managedObjectContext.deleteObject($0) }
-            coreDataStackManager.saveContext()
-        } catch let error as NSError {
-            print("Failed to delete all images: \(error.localizedDescription)")
-        }
-    }
-    
+}
+
+extension NSManagedObject: EntityType {
 }

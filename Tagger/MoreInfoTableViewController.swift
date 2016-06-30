@@ -54,7 +54,6 @@ class MoreInfoTableViewController: UITableViewController {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
-            controller.title = "Add Category"
         } else if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
             let controller = segue.destinationViewController as! FlickrUserAccountViewController
             controller.flickr = flickr

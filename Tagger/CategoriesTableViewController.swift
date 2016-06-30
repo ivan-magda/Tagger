@@ -45,7 +45,11 @@ class CategoriesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(persistenceCentral != nil)
-        navigationItem.rightBarButtonItem = editButtonItem()
+        setup()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     // MARK: - Navigation
@@ -55,7 +59,6 @@ class CategoriesTableViewController: UITableViewController {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
-            controller.title = "Edit Category"
             
             let indexPath = tableView.indexPathForSelectedRow!
             let category = persistenceCentral.categories[indexPath.row]
@@ -85,7 +88,20 @@ class CategoriesTableViewController: UITableViewController {
         }
     }
     
+    // MARK: Public
+    
+    func reloadData() {
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+    }
+    
     // MARK: Private
+    
+    private func setup() {
+        navigationItem.rightBarButtonItem = editButtonItem()
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(reloadData), name: kManageCategoryTableViewControllerDidDoneOnCategoryNotification, object: nil)
+    }
     
     private func deleteCategoryAtIndexPath(indexPath: NSIndexPath) {
         let category = persistenceCentral.categories[indexPath.row]

@@ -22,9 +22,11 @@
 
 import UIKit
 
-// MARK: ManageCategoryTableViewController: UITableViewController
+let kManageCategoryTableViewControllerDidDoneOnCategoryNotification = "ManageCategoryTableViewControllerDidDoneOnCategory"
 
-class ManageCategoryTableViewController: UITableViewController {
+// MARK: ManageCategoryTableViewController: UITableViewController, Alertable
+
+class ManageCategoryTableViewController: UITableViewController, Alertable {
     
     // MARK: Outlets
     
@@ -35,13 +37,15 @@ class ManageCategoryTableViewController: UITableViewController {
     
     var persistenceCentral: PersistenceCentral!
     var category: Category?
-
+    
+    private var name = String()
+    
     // MARK: View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(persistenceCentral != nil)
-        configureUI()
+        setup()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -55,12 +59,60 @@ class ManageCategoryTableViewController: UITableViewController {
     }
     
     // MARK: Actions
-
+    
     @IBAction func cancelDidPressed(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func doneDidPressed(sender: AnyObject) {
+        textField.resignFirstResponder()
+        
+        name = name.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        if category != nil {
+            editCategory()
+        } else {
+            createCategory()
+        }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(kManageCategoryTableViewControllerDidDoneOnCategoryNotification, object: nil)
+    }
+    
+    // MARK: Private
+    
+    private func setup() {
+        configureUI()
+        textField.delegate = self
+    }
+    
+    private func shouldDoneOnCategory() -> Bool {
+        guard let category = category else {
+            return true
+        }
+        return name != category.name
+    }
+    
+    private func createCategory() {
+        persistenceCentral.saveCategoryWithName(name)
+        
+        let alert = self.alert("Success", message: "Category created") { _ in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func editCategory() {
+        let manager = persistenceCentral.coreDataStackManager
+        
+        category!.name = name
+        if let image = category!.image {
+            manager.managedObjectContext.deleteObject(image)
+        }
+        manager.saveContext()
+        
+        let alert = self.alert("Success", message: "Category edited", handler: { _ in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        presentViewController(alert, animated: true, completion: nil)
     }
     
 }
@@ -71,8 +123,41 @@ extension ManageCategoryTableViewController {
     
     private func configureUI() {
         if let category = category {
+            title = "Edit Category"
             textField.text = category.name
+            name = category.name
+        } else {
+            title = "Add Category"
         }
+        updateDoneButtonEnabledState()
+    }
+    
+    private func updateDoneButtonEnabledState() {
+        doneBarButtonItem.enabled = name.characters.count > 0 && shouldDoneOnCategory()
+    }
+    
+}
+
+// MARK: - ManageCategoryTableViewController: UITextFieldDelegate -
+
+extension ManageCategoryTableViewController: UITextFieldDelegate {
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        name = (textField.text ?? "" as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        updateDoneButtonEnabledState()
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        name = textField.text ?? ""
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if shouldDoneOnCategory() {
+            doneDidPressed(textField)
+            return true
+        }
+        return false
     }
     
 }
