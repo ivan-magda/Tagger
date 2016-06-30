@@ -57,12 +57,6 @@ class FlickrRelatedTagsViewController: TagListViewController {
         }
     }
     
-    private func configureUI() {
-        title = parentCategory!.name.capitalizedString
-        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
-        tableView.addSubview(refreshControl)
-    }
-    
     func fetchData() {
         setUIState(.Downloading)
         flickrApiClient.relatedTagsForTag(
@@ -78,8 +72,8 @@ class FlickrRelatedTagsViewController: TagListViewController {
                     withParentCategory: strongSelf.parentCategory!,
                     toTagsInContext: manager.managedObjectContext
                 )
-                strongSelf.tags = mappedTags
                 manager.saveContext()
+                strongSelf.tags = mappedTags
                 
                 strongSelf.setUIState(.SuccessDoneWithDownloading)
         }) { [weak self] error in
@@ -88,5 +82,16 @@ class FlickrRelatedTagsViewController: TagListViewController {
             let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
             self?.presentViewController(alert!, animated: true, completion: nil)
         }
+    }
+}
+
+// MARK: - FlickrRelatedTagsViewController (UI Functions) -
+
+extension FlickrRelatedTagsViewController {
+    
+    private func configureUI() {
+        title = parentCategory!.name.capitalizedString
+        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
     }
 }

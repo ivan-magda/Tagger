@@ -164,6 +164,11 @@
                                 <action selector="cancelDidPressed:" destination="LU8-js-NHR" id="L1M-u0-aMn"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" image="Save" id="3U1-DS-Mxa">
+                            <connections>
+                                <action selector="saveResults:" destination="LU8-js-NHR" id="5bJ-2W-SUx"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="anV-Ps-bZn" id="DqR-hj-o6w"/>
@@ -171,6 +176,7 @@
                         <outlet property="generateBarButtonItem" destination="nUG-lb-7Kn" id="TCX-B0-4Na"/>
                         <outlet property="imageView" destination="ZBR-br-cUJ" id="yoh-kR-JMQ"/>
                         <outlet property="resultsBarButtonItem" destination="GWP-Ze-WLL" id="djq-O9-dc3"/>
+                        <outlet property="saveResultsBarButtonItem" destination="3U1-DS-Mxa" id="9hW-SQ-oLD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gd0-k5-JVy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -479,6 +485,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Save" width="24" height="24"/>
         <image name="compass-tab-bar" width="30" height="30"/>
         <image name="flickr" width="128" height="128"/>
         <image name="flickr-logo" width="32" height="32"/>

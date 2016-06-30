@@ -78,8 +78,8 @@ class FlickrHotTagsViewController: TagListViewController {
                     withParentCategory: strongSelf.parentCategory!,
                     toTagsInContext: manager.managedObjectContext
                 )
-                strongSelf.tags = mappedTags
                 manager.saveContext()
+                strongSelf.tags = mappedTags
                 
                 strongSelf.setUIState(.SuccessDoneWithDownloading)
         }) { [weak self] error in
@@ -94,6 +94,7 @@ class FlickrHotTagsViewController: TagListViewController {
 // MARK: - FlickrHotTagsViewController (UI Functions) -
 
 extension FlickrHotTagsViewController {
+    
     private func configureUI() {
         refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
         tableView.addSubview(refreshControl)

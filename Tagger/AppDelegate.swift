@@ -66,8 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let discoverViewController = discoverNavigationController.topViewController as! DiscoverTagsViewController
         discoverViewController.flickr = flickr
         discoverViewController.persistenceCentral = persistenceCentral
+        
+        let taggingNavigationController = tabBarController.viewControllers![TabBarControllerItem.Tagging.rawValue] as! UINavigationController
+        let taggingDataSourceViewController = taggingNavigationController.topViewController as! ImageTaggerDataSourceViewController
+        taggingDataSourceViewController.flickr = flickr
+        taggingDataSourceViewController.persistenceCentral = persistenceCentral
     }
-    
-    
 }
-
