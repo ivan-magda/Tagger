@@ -83,6 +83,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
             self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
+    
 }
 
 // MARK: - FlickrRelatedTagsViewController (UI Functions) -
@@ -94,4 +95,5 @@ extension FlickrRelatedTagsViewController {
         refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
         tableView.addSubview(refreshControl)
     }
+    
 }

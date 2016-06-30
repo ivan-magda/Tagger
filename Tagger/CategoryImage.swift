@@ -56,5 +56,5 @@ class CategoryImage: NSManagedObject {
         let data = UIImageJPEGRepresentation(image, 1.0)!
         self.init(data: data, context: context)
     }
-
+    
 }

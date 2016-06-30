@@ -56,7 +56,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="7GJ-DZ-Uiz" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="4Pa-qn-KDe"/>
                                     <constraint firstItem="8zN-2r-18A" firstAttribute="centerY" secondItem="6JF-Ku-h2O" secondAttribute="centerY" id="6fM-6r-oZ7"/>
@@ -87,7 +87,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6JF-Ku-h2O" secondAttribute="trailing" constant="20" symbolic="YES" id="AQt-Ib-3vF"/>
                             <constraint firstItem="wkO-08-6Jk" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="bottom" constant="44" id="Bg6-Hs-k2D"/>
@@ -341,7 +341,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6an-uP-Ooq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="582" y="1116"/>
+            <point key="canvasLocation" x="567" y="1488"/>
         </scene>
         <!--More-->
         <scene sceneID="DZ7-rj-ZSA">
@@ -352,30 +352,82 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Accounts" id="dAb-jG-dwx">
+                            <tableViewSection footerTitle="Manage categories. Add or change the category." id="dAb-jG-dwx" userLabel="Categories">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="5ON-fM-Ev2" imageView="vBB-iE-AHt" style="IBUITableViewCellStyleDefault" id="2uK-KD-Cci">
-                                        <rect key="frame" x="0.0" y="114" width="320" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="5ON-fM-Ev2" imageView="hlc-cu-z7N" style="IBUITableViewCellStyleDefault" id="2uK-KD-Cci">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2uK-KD-Cci" id="1eb-Sr-MRg">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Flickr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5ON-fM-Ev2">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5ON-fM-Ev2">
                                                     <rect key="frame" x="62" y="0.0" width="223" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="flickr-logo" id="vBB-iE-AHt">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="HashtagsList" id="hlc-cu-z7N">
                                                     <rect key="frame" x="15" y="5" width="32" height="32"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="isa-OM-phE" kind="show" identifier="FlickrAccount" id="DP9-vi-F4g"/>
+                                            <segue destination="sWO-bn-Pgz" kind="show" identifier="ShowCategories" id="n1x-TQ-jqb"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="EfT-Yu-gTM" imageView="CHD-lY-lTq" style="IBUITableViewCellStyleDefault" id="01Y-4Y-XTv">
+                                        <rect key="frame" x="0.0" y="143" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="01Y-4Y-XTv" id="ya8-hc-3vx">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Add category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EfT-Yu-gTM">
+                                                    <rect key="frame" x="62" y="0.0" width="223" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="AddTag" id="CHD-lY-lTq">
+                                                    <rect key="frame" x="15" y="5" width="32" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="TW9-zk-wCL" kind="presentation" identifier="AddCategory" id="ng0-MM-b3I"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="Manage your accounts." id="u6L-sW-yjG">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="49G-HC-1ce" imageView="wko-ge-BSa" style="IBUITableViewCellStyleDefault" id="2pc-Kj-GVd">
+                                        <rect key="frame" x="0.0" y="232" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2pc-Kj-GVd" id="nU0-C8-70H">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Flickr" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="49G-HC-1ce">
+                                                    <rect key="frame" x="62" y="0.0" width="223" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="flickr-logo" id="wko-ge-BSa">
+                                                    <rect key="frame" x="15" y="5" width="32" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="isa-OM-phE" kind="show" identifier="FlickrAccount" id="q29-TX-WHl"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -390,7 +442,109 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u9C-ac-rWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1057" y="1116"/>
+            <point key="canvasLocation" x="1042" y="1488"/>
+        </scene>
+        <!--Categories-->
+        <scene sceneID="sac-ML-3hI">
+            <objects>
+                <tableViewController id="sWO-bn-Pgz" customClass="CategoriesTableViewController" customModule="Tagger" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="V9m-wI-ugq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategoryCell" textLabel="XlB-WW-Hj1" style="IBUITableViewCellStyleDefault" id="Lny-Cs-y0t">
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lny-Cs-y0t" id="DGf-VT-hE5">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XlB-WW-Hj1">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="TW9-zk-wCL" kind="presentation" identifier="EditCategory" id="obU-TX-INk"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sWO-bn-Pgz" id="bOD-nH-eLK"/>
+                            <outlet property="delegate" destination="sWO-bn-Pgz" id="tPg-dD-noN"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Categories" id="4rb-I8-ip8"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BGI-y9-Lwj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1463" y="1123"/>
+        </scene>
+        <!--Edit Category-->
+        <scene sceneID="Xiy-1p-six">
+            <objects>
+                <tableViewController id="iA4-Zz-nMH" customClass="ManageCategoryTableViewController" customModule="Tagger" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="qoS-iM-AHk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection id="1R9-3R-6NJ">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qEG-As-B91">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qEG-As-B91" id="vnu-AC-JVO">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Category name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8jd-TY-wcg">
+                                                    <rect key="frame" x="20" y="0.0" width="280" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8jd-TY-wcg" firstAttribute="leading" secondItem="vnu-AC-JVO" secondAttribute="leading" constant="20" symbolic="YES" id="83T-I7-piS"/>
+                                                <constraint firstItem="8jd-TY-wcg" firstAttribute="top" secondItem="vnu-AC-JVO" secondAttribute="top" id="9fI-FR-8iz"/>
+                                                <constraint firstAttribute="bottom" secondItem="8jd-TY-wcg" secondAttribute="bottom" id="bzw-zV-bHT"/>
+                                                <constraint firstAttribute="trailing" secondItem="8jd-TY-wcg" secondAttribute="trailing" constant="20" symbolic="YES" id="snl-Pr-2ry"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="iA4-Zz-nMH" id="DNL-bx-Sg6"/>
+                            <outlet property="delegate" destination="iA4-Zz-nMH" id="OlZ-nC-rE0"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Edit Category" id="Dcy-ks-mTd">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="MHk-9g-M5d">
+                            <connections>
+                                <action selector="cancelDidPressed:" destination="iA4-Zz-nMH" id="X67-XQ-TvI"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="dU5-9i-uyM">
+                            <connections>
+                                <action selector="doneDidPressed:" destination="iA4-Zz-nMH" id="a5p-7N-Ep3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="doneBarButtonItem" destination="dU5-9i-uyM" id="H6T-KC-wvl"/>
+                        <outlet property="textField" destination="8jd-TY-wcg" id="CmV-hB-ox5"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ren-8o-WPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2375" y="1488"/>
         </scene>
         <!--Flickr-->
         <scene sceneID="ZTz-MO-w8O">
@@ -463,7 +617,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Pg-4x-QmX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1463" y="1116"/>
+            <point key="canvasLocation" x="1485" y="1864"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4KN-qE-W90">
@@ -483,8 +637,28 @@
             </objects>
             <point key="canvasLocation" x="1463" y="415"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="knj-kV-5Zk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TW9-zk-wCL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NcD-kl-gA5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="iA4-Zz-nMH" kind="relationship" relationship="rootViewController" id="wjK-8M-eba"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bjf-Yq-KH5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1933" y="1488"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="AddTag" width="32" height="32"/>
+        <image name="HashtagsList" width="32" height="32"/>
         <image name="Save" width="24" height="24"/>
         <image name="compass-tab-bar" width="30" height="30"/>
         <image name="flickr" width="128" height="128"/>
@@ -494,4 +668,7 @@
         <image name="more-tab-bar" width="30" height="30"/>
         <image name="smartphone" width="128" height="128"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="obU-TX-INk"/>
+    </inferredMetricsTieBreakers>
 </document>

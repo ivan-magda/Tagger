@@ -72,7 +72,9 @@ struct FlickrPhoto {
 // MARK: - FlickrPhoto: JSONParselable -
 
 extension FlickrPhoto: JSONParselable {
+    
     static func decode(input: JSONDictionary) -> FlickrPhoto? {
         return self.init(json: input)
     }
+    
 }

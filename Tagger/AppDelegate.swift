@@ -71,5 +71,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let taggingDataSourceViewController = taggingNavigationController.topViewController as! ImageTaggerDataSourceViewController
         taggingDataSourceViewController.flickr = flickr
         taggingDataSourceViewController.persistenceCentral = persistenceCentral
+        
+        let moreInfoNavigationController = tabBarController.viewControllers![TabBarControllerItem.More.rawValue] as! UINavigationController
+        let moreInfoTableViewController = moreInfoNavigationController.topViewController as! MoreInfoTableViewController
+        moreInfoTableViewController.flickr = flickr
+        moreInfoTableViewController.persistenceCentral = persistenceCentral
     }
+    
 }

@@ -195,4 +195,5 @@ extension FlickrCameraRollCollectionViewController: UICollectionViewDelegateFlow
         
         return CGSize(width: width, height: width)
     }
+    
 }

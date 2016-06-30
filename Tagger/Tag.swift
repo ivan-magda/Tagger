@@ -39,4 +39,5 @@ class Tag: NSManagedObject {
         self.id = UUIDUtils.generateUUIDString()
         self.name = name
     }
+    
 }

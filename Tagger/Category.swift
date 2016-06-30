@@ -46,5 +46,5 @@ class Category: NSManagedObject {
         guard let context = managedObjectContext else { return }
         tags.forEach { context.deleteObject($0) }
     }
-
+    
 }

@@ -18,7 +18,7 @@
     </entity>
     <elements>
         <element name="Category" positionX="-27" positionY="18" width="128" height="118"/>
-        <element name="Tag" positionX="160" positionY="18" width="128" height="88"/>
-        <element name="CategoryImage" positionX="117" positionY="99" width="128" height="75"/>
+        <element name="CategoryImage" positionX="169" positionY="-30" width="128" height="75"/>
+        <element name="Tag" positionX="169" positionY="54" width="128" height="88"/>
     </elements>
 </model>

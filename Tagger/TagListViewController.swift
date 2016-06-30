@@ -148,6 +148,7 @@ class TagListViewController: UIViewController, Alertable {
         }
         presentViewController(alert, animated: true, completion: nil)
     }
+    
 }
 
 // MARK: - TagListViewController (UI Functions) -
@@ -252,6 +253,7 @@ extension TagListViewController: UITableViewDataSource {
         cell.textLabel?.text = tags[indexPath.row].name
         cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
     }
+    
 }
 
 // MARK: - TagListViewController: UITableViewDelegate -
@@ -270,4 +272,5 @@ extension TagListViewController: UITableViewDelegate {
         reloadData()
         updateUI()
     }
+    
 }

@@ -27,9 +27,11 @@ protocol Alertable {
 }
 
 extension Alertable {
+    
     func alert(title: String?, message: String, handler: (UIAlertAction -> Void)?) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
         return alert
     }
+    
 }

@@ -25,6 +25,8 @@ import UIKit
 // MARK: Types
 
 private enum SegueIdentifier: String {
+    case ShowCategories
+    case AddCategory
     case FlickrAccount
 }
 
@@ -34,16 +36,26 @@ class MoreInfoTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    var flickr = MIFlickr.sharedInstance
+    var flickr: MIFlickr!
+    var persistenceCentral: PersistenceCentral!
 
     // MARK: View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(flickr != nil && persistenceCentral != nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
+        if segue.identifier == SegueIdentifier.ShowCategories.rawValue {
+            let controller = segue.destinationViewController as! CategoriesTableViewController
+            controller.persistenceCentral = persistenceCentral
+        } else if segue.identifier == SegueIdentifier.AddCategory.rawValue {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let controller = navigationController.topViewController as! ManageCategoryTableViewController
+            controller.persistenceCentral = persistenceCentral
+            controller.title = "Add Category"
+        } else if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
             let controller = segue.destinationViewController as! FlickrUserAccountViewController
             controller.flickr = flickr
         }
