@@ -25,6 +25,7 @@ import CoreData
 
 // MARK: Constants
 
+let kPersistenceCentralDidChangeContentNotification = "PersistenceCentralDidChangeContent"
 private let kSeedInitialDataKey = "initialDataSeeded"
 
 // MARK: - PersistenceCentral: NSObject
@@ -105,6 +106,16 @@ class PersistenceCentral: NSObject {
     
     // MARK: Convenience
     
+    func deleteCategory(category: Category) {
+        coreDataStackManager.managedObjectContext.deleteObject(category)
+        coreDataStackManager.saveContext()
+    }
+    
+    func deleteAllCategories() {
+        categories.forEach { coreDataStackManager.managedObjectContext.deleteObject($0) }
+        coreDataStackManager.saveContext()
+    }
+    
     func deleteAllTagsInCategory(category: Category) {
         category.deleteAllTags()
         coreDataStackManager.saveContext()
@@ -120,6 +131,7 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         updateCategories()
+        PersistenceCentral.postDidChangeContentNotification()
     }
     
     // MARK: Helpers
@@ -130,6 +142,11 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
         }
         categories = objectsForSection(0)
         trendingCategories = objectsForSection(1)
+    }
+    
+    private class func postDidChangeContentNotification() {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.postNotificationName(kPersistenceCentralDidChangeContentNotification, object: self)
     }
     
 }

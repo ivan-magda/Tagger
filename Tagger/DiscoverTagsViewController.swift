@@ -75,12 +75,31 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(flickr != nil && persistenceCentral != nil)
-        configureUI()
+        setup()
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    // MARK: - Public
+    
+    func reloadData() {
+        collectionView.reloadData()
+    }
+    
+    // MARK: - Private
+    
+    private func setup() {
+        configureUI()
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(reloadData), name: kPersistenceCentralDidChangeContentNotification, object: nil)
     }
     
 }

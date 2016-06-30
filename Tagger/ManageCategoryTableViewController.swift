@@ -49,6 +49,11 @@ class ManageCategoryTableViewController: UITableViewController {
         textField.becomeFirstResponder()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        textField.resignFirstResponder()
+    }
+    
     // MARK: Actions
 
     @IBAction func cancelDidPressed(sender: AnyObject) {
