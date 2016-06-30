@@ -34,13 +34,16 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     
     // MARK: - Properties
     
+    var flickr: MIFlickr!
+    var persistenceCentral: PersistenceCentral!
+    
     private var pickedImage: UIImage?
-    private let flickr = MIFlickr.sharedInstance
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        assert(flickr != nil && persistenceCentral != nil)
     }
     
     // MARK: - Navigation
@@ -50,6 +53,7 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
             let navigationController = segue.destinationViewController as! UINavigationController
             let imageTaggerViewController = navigationController.topViewController as! ImageTaggerViewController
             imageTaggerViewController.taggingImage = pickedImage
+            imageTaggerViewController.persistenceCentral = persistenceCentral
         }
     }
     

@@ -72,6 +72,11 @@ class TagListViewController: UIViewController, Alertable {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
     }
     
+    convenience init(persistenceCentral: PersistenceCentral) {
+        self.init()
+        self.persistenceCentral = persistenceCentral
+    }
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -152,7 +157,9 @@ extension TagListViewController {
     private func configureUI() {
         setTabBarHidden(true)
         
-        title = parentCategory?.name.capitalizedString
+        if let parentCategory = parentCategory {
+            title = parentCategory.name.capitalizedString
+        }
         
         // Configure table view.
         tableView.dataSource = self

@@ -154,7 +154,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     
     private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
         let category = categoryForIndexPath(indexPath)
-        cell.title.text = category.name
+        cell.title.text = category.name.lowercaseString
         updateTitleColorForCell(cell)
         
         if let image = category.image?.image  {

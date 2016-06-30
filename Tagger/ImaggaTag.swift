@@ -21,6 +21,7 @@
  */
 
 import Foundation
+import CoreData
 
 // MARK: ImaggaTag
 
@@ -52,6 +53,23 @@ struct ImaggaTag {
         return json.flatMap { self.init(json: $0) }
     }
     
+    // MARK: Core Data
+    
+    func convertToTagInContext(context: NSManagedObjectContext) -> Tag {
+        return Tag(name: tag, context: context)
+    }
+    
+    static func mapImaggaTags(tags: [ImaggaTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
+        return tags.map {
+            let tag = $0.convertToTagInContext(context)
+            
+            if let category = category {
+                tag.category = category
+            }
+            
+            return tag
+        }
+    }
 }
 
 // MARK: - ImaggaTag: JSONParselable -

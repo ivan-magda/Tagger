@@ -38,25 +38,32 @@ class ImageTaggerViewController: UIViewController, Alertable {
     // MARK: - Properties
     
     var taggingImage: UIImage!
+    var persistenceCentral: PersistenceCentral!
     
     private let imaggaApiClient = ImaggaApiClient.sharedInstance
+    
     private var generatedTags: [ImaggaTag]?
+    private var createdCategory: Category?
+    private lazy var temporaryContext: NSManagedObjectContext = {
+        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        context.persistentStoreCoordinator = self.persistenceCentral.coreDataStackManager.persistentStoreCoordinator
+        return context
+    }()
     
-    var temporaryContext: NSManagedObjectContext!
-    
-    // MARK: - Outlets
+    // MARK: Outlets
     
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var generateBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var resultsBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var saveResultsBarButtonItem: UIBarButtonItem!
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(taggingImage != nil)
+        assert(taggingImage != nil && persistenceCentral != nil)
         configureUI()
     }
     
@@ -68,32 +75,86 @@ class ImageTaggerViewController: UIViewController, Alertable {
     
     @IBAction func generateTags(sender: AnyObject) {
         setUIState(.Networking)
-        imaggaApiClient.taggingImage(taggingImage, successBlock: { [unowned self] tags in
-            self.generatedTags = tags
-            self.setUIState(.DoneWithNetworking)
-            self.showResults(self)
-        }) { [unowned self] error in
-            self.generatedTags = nil
-            self.setUIState(.DoneWithNetworking)
-            let alertController = self.alert("Error", message: error.localizedDescription, handler: nil)
-            self.presentViewController(alertController, animated: true, completion: nil)
+        imaggaApiClient.taggingImage(taggingImage, successBlock: { [weak self] tags in
+            self?.processOnGeneratedTags(tags)
+        }) { [weak self] error in
+            self?.generatedTags = nil
+            self?.setUIState(.DoneWithNetworking)
+            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
+            self?.presentViewController(alert!, animated: true, completion: nil)
         }
     }
     
-    // TODO: Rewrite
     @IBAction func showResults(sender: AnyObject) {
-        let persistenceCentral = PersistenceCentral.sharedInstance
-        // Set the temporary context.
-        temporaryContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        temporaryContext.persistentStoreCoordinator = persistenceCentral.coreDataStackManager.persistentStoreCoordinator
+        let tagListViewController = TagListViewController(persistenceCentral: persistenceCentral)
         
-        let tagListViewController = TagListViewController()
-        tagListViewController.title = "Results"
-        tagListViewController.tags = generatedTags!.map { Tag(name: $0.tag, context: temporaryContext) }
-        tagListViewController.persistenceCentral = persistenceCentral
+        if let createdCategory = createdCategory {
+            tagListViewController.parentCategory = createdCategory
+        } else {
+            tagListViewController.title = "Results"
+            tagListViewController.tags = ImaggaTag.mapImaggaTags(generatedTags!,
+                                                                 toTagsInContext: temporaryContext)
+        }
         navigationController?.pushViewController(tagListViewController, animated: true)
     }
     
+    @IBAction func saveResults(sender: AnyObject) {
+        func showInvalidNameAlert() {
+            let alert = self.alert("Invalid category name", message: "Try again", handler: { [unowned self] in
+                self.saveResults($0)
+            })
+            presentViewController(alert, animated: true, completion: nil)
+        }
+        
+        var categoryNameTextField: UITextField?
+        
+        let alert = UIAlertController(title: "Create Category", message: "To save the tags, please enter the category name.", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Save", style: .Default, handler: { [unowned self] _ in
+            guard let name = categoryNameTextField?.text where name.characters.count > 0 else {
+                showInvalidNameAlert()
+                return
+            }
+            self.createCategoryWithName(name)
+        }))
+        alert.addTextFieldWithConfigurationHandler { textField in
+            categoryNameTextField = textField
+            categoryNameTextField?.placeholder = "Enter category name"
+        }
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Private
+    
+    private func processOnGeneratedTags(tags: [ImaggaTag]) {
+        generatedTags = tags
+        setUIState(.DoneWithNetworking)
+        
+        let alert = UIAlertController(title: "Success", message: "Tags successfully generated. Do you want save or see them?", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Save", style: .Default) { [unowned self]  _ in
+            self.saveResults(self)
+        })
+        alert.addAction(UIAlertAction(title: "See Results", style: .Default) { [unowned self]  _ in
+            self.showResults(self)
+        })
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func createCategoryWithName(name: String) {
+        let name = name.stringByTrimmingCharactersInSet(.whitespaceCharacterSet())
+        let manager = persistenceCentral.coreDataStackManager
+        let context = manager.managedObjectContext
+        
+        let category = Category(name: name, context: context)
+        ImaggaTag.mapImaggaTags(generatedTags!, withParentCategory: category, toTagsInContext: context)
+        manager.saveContext()
+        
+        createdCategory = category
+        
+        saveResultsBarButtonItem.enabled = false
+        showResults(self)
+    }
 }
 
 // MARK: - ImageTaggerViewController (UI Functions) -
@@ -108,18 +169,22 @@ extension ImageTaggerViewController {
     
     private func setUIState(state: UIState) {
         func updateResultsButtonState() {
-            resultsBarButtonItem.enabled = generatedTags != nil && generatedTags?.count > 0
+            let enabled = generatedTags != nil && generatedTags?.count > 0
+            resultsBarButtonItem.enabled = enabled
+            saveResultsBarButtonItem.enabled = enabled
         }
         
         switch state {
         case .Default:
             imageView.image = taggingImage
             resultsBarButtonItem.enabled = false
+            saveResultsBarButtonItem.enabled = false
         case .Networking:
             UIUtils.showNetworkActivityIndicator()
             activityIndicator.startAnimating()
             resultsBarButtonItem.enabled = false
             generateBarButtonItem.enabled = false
+            saveResultsBarButtonItem.enabled = false
         case .DoneWithNetworking:
             UIUtils.hideNetworkActivityIndicator()
             activityIndicator.stopAnimating()
@@ -127,5 +192,4 @@ extension ImageTaggerViewController {
             updateResultsButtonState()
         }
     }
-    
 }
