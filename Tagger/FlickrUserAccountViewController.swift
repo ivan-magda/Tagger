@@ -55,7 +55,12 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(flickr != nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         configureUI()
+        setUIState(.Default)
     }
     
     // MARK: Actions
@@ -76,7 +81,7 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     }
     
     private func signIn() {
-        flickr.OAuth.authorizeWithPermission(.Read) { result in
+        flickr.OAuth.authorizeWithPermission(.Write) { result in
             switch result {
             case .Success(_, _, let user):
                 self.flickr.currentUser = user

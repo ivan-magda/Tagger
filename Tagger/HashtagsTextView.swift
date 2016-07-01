@@ -77,6 +77,7 @@ class HashtagsTextView: UITextView {
     // MARK: Private
     
     private func setup() {
+        updateWithNewData([])
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnText))
         addGestureRecognizer(tapGestureRecognizer)
     }

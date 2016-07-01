@@ -46,6 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         shareData()
+        themeApplication()
+        
         return true
     }
     
@@ -57,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         persistenceCentral.coreDataStackManager.saveContext()
     }
     
-    // MARK: Share
+    // MARK: Private
     
     private func shareData() {
         let tabBarController = window!.rootViewController as! UITabBarController
@@ -76,6 +78,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let moreInfoTableViewController = moreInfoNavigationController.topViewController as! MoreInfoTableViewController
         moreInfoTableViewController.flickr = flickr
         moreInfoTableViewController.persistenceCentral = persistenceCentral
+    }
+    
+    private func themeApplication() {
+        window?.tintColor = UIColor(red:0.34, green:0.70, blue:0.64, alpha:1.00)
     }
     
 }
