@@ -559,20 +559,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flickr_rocket_logo" translatesAutoresizingMaskIntoConstraints="NO" id="HMI-Cj-Sla" customClass="ProfileImageView" customModule="Tagger" customModuleProvider="target">
-                                <rect key="frame" x="80" y="80" width="160" height="160"/>
+                                <rect key="frame" x="80" y="96" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="GEg-m3-02m"/>
                                     <constraint firstAttribute="height" constant="160" id="r1G-jj-T3V"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="main label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRF-as-GHO">
-                                <rect key="frame" x="20" y="256" width="280" height="29"/>
+                                <rect key="frame" x="20" y="272" width="280" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9n-Fh-o7W">
-                                <rect key="frame" x="20" y="293" width="280" height="21"/>
+                                <rect key="frame" x="20" y="309" width="280" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -602,9 +602,9 @@
                             <constraint firstAttribute="trailing" secondItem="uRF-as-GHO" secondAttribute="trailing" constant="20" symbolic="YES" id="L9E-CJ-POq"/>
                             <constraint firstItem="s9n-Fh-o7W" firstAttribute="top" secondItem="uRF-as-GHO" secondAttribute="bottom" constant="8" symbolic="YES" id="Rwy-9J-XOB"/>
                             <constraint firstItem="s9n-Fh-o7W" firstAttribute="leading" secondItem="3nh-E5-5QL" secondAttribute="leading" constant="20" symbolic="YES" id="alo-jT-zAr"/>
-                            <constraint firstItem="Eie-FT-sRr" firstAttribute="top" secondItem="nca-SY-Jvh" secondAttribute="bottom" constant="32" id="bbp-YN-cyq"/>
                             <constraint firstItem="uRF-as-GHO" firstAttribute="top" secondItem="HMI-Cj-Sla" secondAttribute="bottom" constant="16" id="mvF-YV-vzi"/>
-                            <constraint firstItem="HMI-Cj-Sla" firstAttribute="top" secondItem="aV3-vM-L5V" secondAttribute="bottom" constant="16" id="tHa-WT-a8J"/>
+                            <constraint firstItem="Eie-FT-sRr" firstAttribute="top" secondItem="nca-SY-Jvh" secondAttribute="bottom" constant="32" id="sjp-yW-LpC"/>
+                            <constraint firstItem="HMI-Cj-Sla" firstAttribute="top" secondItem="aV3-vM-L5V" secondAttribute="bottom" constant="32" id="tHa-WT-a8J"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Flickr" id="Z4x-Lt-tc0"/>

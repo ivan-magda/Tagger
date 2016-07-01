@@ -198,6 +198,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
             : categories[indexPath.row]
     }
     
+    // TODO: If network is unreachable, then don't try to download the image again.
     private func loadImageForCellAtIndexPath(indexPath: NSIndexPath) {
         func handleError(error: NSError) {
             print("Failed to load an image. Error: \(error.localizedDescription)")
