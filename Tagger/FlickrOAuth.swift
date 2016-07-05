@@ -21,6 +21,7 @@
  */
 
 import UIKit
+import KeychainSwift
 
 /**
  * Based on this project https://github.com/josephstein/Flickr-OAuth-iOS
@@ -344,34 +345,32 @@ class FlickrOAuth {
     
     class func removeTokensFromKeychain() {
         let keychain = FlickrOAuth.getKeychain()
-        keychain[kAccessTokenKeychainKey] = nil
-        keychain[kTokenSecretKeychainKey] = nil
+        keychain.delete(kAccessTokenKeychainKey)
+        keychain.delete(kTokenSecretKeychainKey)
     }
     
     class func getTokensFromKeychain() -> (accessToken: String?, tokenSecret: String?) {
         let keychain = FlickrOAuth.getKeychain()
-        let token = keychain[kAccessTokenKeychainKey]
-        let tokenSecret = keychain[kTokenSecretKeychainKey]
+        let token = keychain.get(kAccessTokenKeychainKey)
+        let tokenSecret = keychain.get(kTokenSecretKeychainKey)
         
         return (token, tokenSecret)
     }
     
-    private class func getKeychain() -> Keychain {
-        return Keychain(service: kKeychainServiceName)
+    private class func getKeychain() -> KeychainSwift {
+        return KeychainSwift(keyPrefix: kKeychainServiceName)
     }
     
     private func storeTokensInKeychain() {
         let keychain = FlickrOAuth.getKeychain()
-        keychain[kAccessTokenKeychainKey] = token!
-        keychain[kTokenSecretKeychainKey] = tokenSecret!
+        keychain.set(token!, forKey: kAccessTokenKeychainKey)
+        keychain.set(tokenSecret!, forKey: kTokenSecretKeychainKey)
     }
     
     private func getTokensFromKeychain() -> Bool {
-        let keychain = FlickrOAuth.getKeychain()
-        guard let token = keychain[kAccessTokenKeychainKey],
-            let tokenSecret = keychain[kTokenSecretKeychainKey] else {
-                return false
-        }
+        let data = FlickrOAuth.getTokensFromKeychain()
+        guard let token = data.accessToken,
+            let tokenSecret = data.tokenSecret else { return false }
         
         self.token = token
         self.tokenSecret = tokenSecret
