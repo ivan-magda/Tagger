@@ -115,6 +115,7 @@ extension FlickrUserAccountViewController {
                     self.setUIState(.Default)
             })
         } else {
+            imageView.image = UIImage(named: "flickr_rocket_logo")!
             mainLabel.text = "You are not logged in"
             detailLabel.text = "If you want to interact with your account, then sign in"
             actionButton.setTitle("Sign In", forState: .Normal)
