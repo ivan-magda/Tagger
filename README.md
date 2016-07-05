@@ -2,9 +2,10 @@
 
 ![License](https://img.shields.io/npm/l/express.svg)
 ![Platform iOS](https://img.shields.io/badge/platform-iOS-blue.svg)
+[![codebeat badge](https://codebeat.co/badges/8192c79c-edcb-4974-8765-5ec515b414fe)](https://codebeat.co/projects/github-com-vanyaland-tagger)
 
 <img src="https://github.com/vanyaland/Tagger/blob/master/Screenshots/main.png"
-width="512" height="512" hspace="100">
+width="512" height="512" hspace="150">
 
 ## Description
 
@@ -22,6 +23,8 @@ Main features:
 - Unlimited number of tag categories.
 
 ## Installation
+- Run `pod install` on project directory([CocoaPods Installation](https://guides.cocoapods.org/using/getting-started.html)).
+- Open `Tagger.xcworkspace` and build.
 - Goto [Flickr](https://www.flickr.com/services/apps/create/) and create an App.
 Get your API Key and Secret.
 - Goto [Imagga](https://imagga.com/) to register for a free account and get your API Details(Key, Secret, Authorization).
@@ -29,6 +32,9 @@ Get your API Key and Secret.
 - Build & run, enjoy.
 
 `FlickrOAuthCallbackURL` example: `tagger://oauth-callback/flickr`.
+
+## Components
+- Keychain-Swift - https://github.com/marketplacer/keychain-swift
 
 ## Third-Party Services
 - [Flickr](https://www.flickr.com/services/api/) - online photo management and sharing application.
