@@ -49,7 +49,6 @@
 		7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */; };
 		7552DFC81D015AAF0032ECFA /* MoreInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoTableViewController.swift */; };
 		755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomNumberUtils.swift */; };
-		75658CF01D1D87700028409D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75658CEF1D1D87700028409D /* Keychain.swift */; };
 		756F445F1D2279DE00736C49 /* FlickrUserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F445E1D2279DE00736C49 /* FlickrUserAccountViewController.swift */; };
 		756F44611D227FFD00736C49 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F44601D227FFD00736C49 /* ProfileImageView.swift */; };
 		7571F3801D23950100402518 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571F37C1D23950100402518 /* CoreDataStackManager.swift */; };
@@ -86,6 +85,7 @@
 		75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E057381D0FC93700B3A258 /* ImaggaConstants.swift */; };
 		75E0573D1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */; };
 		75FBA1FD1D21316E006EC31D /* TagListViewControllerUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */; };
+		8225B30BCF67BE8D4D1F0A59 /* Pods_Tagger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439B858E84410900C822A0DA /* Pods_Tagger.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +106,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		439B858E84410900C822A0DA /* Pods_Tagger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tagger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65A7249A7666A9DB189642BB /* Pods-Tagger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tagger.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tagger/Pods-Tagger.release.xcconfig"; sourceTree = "<group>"; };
 		750A9D191D20E64D008501EF /* HashtagsTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagsTextView.swift; sourceTree = "<group>"; };
 		750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+TabBarHidable.swift"; sourceTree = "<group>"; };
 		750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaTag.swift; sourceTree = "<group>"; };
@@ -154,7 +156,6 @@
 		7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTaggerDataSourceViewController.swift; sourceTree = "<group>"; };
 		7552DFC71D015AAF0032ECFA /* MoreInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoTableViewController.swift; sourceTree = "<group>"; };
 		755E38C41D0939580052BA48 /* RandomNumberUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberUtils.swift; sourceTree = "<group>"; };
-		75658CEF1D1D87700028409D /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		756F445E1D2279DE00736C49 /* FlickrUserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrUserAccountViewController.swift; sourceTree = "<group>"; };
 		756F44601D227FFD00736C49 /* ProfileImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		7571F37C1D23950100402518 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 		75E057381D0FC93700B3A258 /* ImaggaConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaConstants.swift; sourceTree = "<group>"; };
 		75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrRelatedTagsViewController.swift; sourceTree = "<group>"; };
 		75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListViewControllerUIState.swift; sourceTree = "<group>"; };
+		F48ED7B664C4DBC8E5EE12FF /* Pods-Tagger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tagger.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tagger/Pods-Tagger.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8225B30BCF67BE8D4D1F0A59 /* Pods_Tagger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +222,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B21027FF4D9B0C585A49547 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F48ED7B664C4DBC8E5EE12FF /* Pods-Tagger.debug.xcconfig */,
+				65A7249A7666A9DB189642BB /* Pods-Tagger.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		750DF2F31D0ECE73002A95B6 /* Flickr */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +344,8 @@
 				7552DFA11D013A750032ECFA /* TaggerTests */,
 				7552DFAC1D013A750032ECFA /* TaggerUITests */,
 				7552DF8B1D013A740032ECFA /* Products */,
+				3B21027FF4D9B0C585A49547 /* Pods */,
+				AF3E27BFA54A60C21E995AB2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -354,7 +368,6 @@
 				754F1B091D024C2400410CA0 /* Model */,
 				7552DFBC1D013B210032ECFA /* UI */,
 				7552DFBB1D013B0C0032ECFA /* SupportingFiles */,
-				75658CEE1D1D1E530028409D /* ThirdParty */,
 			);
 			path = Tagger;
 			sourceTree = "<group>";
@@ -426,22 +439,6 @@
 				75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */,
 			);
 			name = Assets;
-			sourceTree = "<group>";
-		};
-		75658CED1D1D1E3C0028409D /* Keychain */ = {
-			isa = PBXGroup;
-			children = (
-				75658CEF1D1D87700028409D /* Keychain.swift */,
-			);
-			name = Keychain;
-			sourceTree = "<group>";
-		};
-		75658CEE1D1D1E530028409D /* ThirdParty */ = {
-			isa = PBXGroup;
-			children = (
-				75658CED1D1D1E3C0028409D /* Keychain */,
-			);
-			name = ThirdParty;
 			sourceTree = "<group>";
 		};
 		7571F3841D23951C00402518 /* CoreData */ = {
@@ -567,6 +564,14 @@
 			name = TagListViewController;
 			sourceTree = "<group>";
 		};
+		AF3E27BFA54A60C21E995AB2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				439B858E84410900C822A0DA /* Pods_Tagger.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -574,10 +579,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7552DFB21D013A750032ECFA /* Build configuration list for PBXNativeTarget "Tagger" */;
 			buildPhases = (
+				00F511488B3F0F287C3257D2 /* [CP] Check Pods Manifest.lock */,
 				7552DF861D013A740032ECFA /* Sources */,
 				7552DF871D013A740032ECFA /* Frameworks */,
 				7552DF881D013A740032ECFA /* Resources */,
 				752520641D1ECF710047AB57 /* ShellScript */,
+				3068D2F4895C57A181E86B8D /* [CP] Embed Pods Frameworks */,
+				56CD2C8FD6EE3DFC56BA7029 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -698,6 +706,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		00F511488B3F0F287C3257D2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3068D2F4895C57A181E86B8D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tagger/Pods-Tagger-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56CD2C8FD6EE3DFC56BA7029 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tagger/Pods-Tagger-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		752520641D1ECF710047AB57 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -755,7 +808,6 @@
 				75388C9F1D22BB5400618D85 /* FlickrPersonInfo.swift in Sources */,
 				757262DF1D1E2261006DE902 /* MIFlickr.swift in Sources */,
 				758EDB4C1D12CB8B00AE6A2B /* FlickrUser.swift in Sources */,
-				75658CF01D1D87700028409D /* Keychain.swift in Sources */,
 				754F1B041D024B9400410CA0 /* UIUtils.swift in Sources */,
 				7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */,
 				754F1AFF1D024B9400410CA0 /* HttpApiClient.swift in Sources */,
@@ -930,6 +982,7 @@
 		};
 		7552DFB31D013A750032ECFA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48ED7B664C4DBC8E5EE12FF /* Pods-Tagger.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -948,6 +1001,7 @@
 		};
 		7552DFB41D013A750032ECFA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65A7249A7666A9DB189642BB /* Pods-Tagger.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
