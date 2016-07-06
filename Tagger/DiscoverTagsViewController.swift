@@ -79,6 +79,16 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         setup()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationController()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        setNavigationBarHidden(false)
+    }
+    
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         if numberOfColumns > maxNumberOfColumns {
@@ -95,6 +105,10 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     func reloadData() {
         collectionView.reloadData()
+    }
+    
+    func hideBarGesture(recognizer: UIPanGestureRecognizer) {
+        updateNavigationBarBackgroundColor(hidden: navigationController!.navigationBarHidden)
     }
     
     // MARK: - Private
@@ -125,6 +139,24 @@ extension DiscoverTagsViewController {
     
     private func updateTitleColorForCell(cell: TagCollectionViewCell) {
         cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
+    }
+    
+    // MARK: Navigation Controller
+    
+    private func configureNavigationController() {
+        navigationController?.hidesBarsOnSwipe = true
+        navigationController?.barHideOnSwipeGestureRecognizer.addTarget(self, action: #selector(hideBarGesture))
+    }
+    
+    private func setNavigationBarHidden(hidden: Bool, animated: Bool = false) {
+        navigationController?.setNavigationBarHidden(hidden, animated: animated)
+        navigationController?.hidesBarsOnSwipe = hidden
+        updateNavigationBarBackgroundColor(hidden: hidden)
+    }
+    
+    private func updateNavigationBarBackgroundColor(hidden hidden: Bool) {
+        let color = hidden ? UIColor.whiteColor() : UIColor.clearColor()
+        UIUtils.setStatusBarBackgroundColor(color)
     }
     
 }
