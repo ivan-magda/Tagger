@@ -62,4 +62,13 @@ class UIUtils {
         return UIApplication.sharedApplication().keyWindow?.rootViewController
     }
     
+    // MARK: Status Bar
+    
+    class func setStatusBarBackgroundColor(color: UIColor) {
+        guard let statusBar = UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as? UIView else {
+            return
+        }
+        statusBar.backgroundColor = color
+    }
+    
 }
