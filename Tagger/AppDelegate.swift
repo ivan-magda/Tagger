@@ -45,9 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: UIApplicationDelegate
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        shareData()
-        themeApplication()
-        
+        setup()
         return true
     }
     
@@ -60,6 +58,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: Private
+    
+    private func setup() {
+        assert(
+                FlickrApplicationKey      != "REPLACE_WITH_YOUR_FLICKR_API_KEY"       &&
+                FlickrApplicationSecret   != "REPLACE_WITH_YOUR_FLICKR_API_SECRET"    &&
+                FlickrOAuthCallbackURL    != "REPLACE_WITH_YOUR_CALLBACK_URL"         &&
+                ImaggaApplicationKey      != "REPLACE_WITH_YOUR_IMAGGA_API_KEY"       &&
+                ImaggaApplicationSecret   != "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"    &&
+                ImaggaAuthenticationToken != "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
+            , "Change the constants properties with your own instances."
+        )
+        shareData()
+        themeApplication()
+    }
     
     private func shareData() {
         let tabBarController = window!.rootViewController as! UITabBarController
