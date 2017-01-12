@@ -11,10 +11,7 @@
 ## Description
 
 Tagger helps you increase the number of Instagram or Flickr followers and likes on your pictures.
-Tagger always search among the most trending hashtag and choose the better ones related to yours.
-Also searches hashtags in real time while other app take the results from a static list. 
-This allows you to get the highest results on Instagram or Flickr search trends.
-Discover new hashtags that you'd never thought of that!
+Tagger always searches for the most trending hashtag and choose the better ones related to yours. Also, searches hashtag in real time while other apps take the results from a static list. This allows you to get the highest results on Instagram or Flickr search trends. Discover new hashtags that you'd never thought of that!
 
 Main features:
 - Automated image recognition tasks to come up with a list of tags.
