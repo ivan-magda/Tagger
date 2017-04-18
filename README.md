@@ -20,6 +20,8 @@ Main features:
 - Search tags for a given category in real time.
 - Unlimited number of tag categories.
 
+### Tagger currently uses Swift 2.2 version.
+
 ## Installation
 - Run `pod install` on project directory([CocoaPods Installation](https://guides.cocoapods.org/using/getting-started.html)).
 - Open `Tagger.xcworkspace` and build.
