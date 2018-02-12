@@ -11,7 +11,10 @@
 ## Description
 
 *Want to be popular on some social network easily?* Use Tagger to make your account content more popular and to raise your popularity.
-Content like photos and videos with tags can be much easier to be searched and recommended by social networks algorithms to other users, especially the users that have the same interest in the tags. Tagger always searches for the most trending hashtags and choose the better ones related to yours. Moreover, Tagger searches hashtags in the *real-time* while other apps take the results from a static list. This allows you to get the highest results. Discover new hashtags that you'd never thought of that!
+
+Content like photos and videos with tags can be much easier to be searched and recommended by social networks algorithms to other users, especially the users that have the same interest in the tags. Tagger always searches for the most trending hashtags and choose the better ones related to yours. Moreover, Tagger searches hashtags in the *real-time* while other apps take the results from a static list. This allows you to get the highest results.
+
+*Discover new hashtags that you'd never thought of that!*
 
 ### Features:
 - Automatically assign tags to your images
