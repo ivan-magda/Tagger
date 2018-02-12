@@ -10,20 +10,21 @@
 
 ## Description
 
-Tagger helps you increase the number of Instagram or Flickr followers and likes on your pictures.
-Tagger always searches for the most trending hashtag and choose the better ones related to yours. Also, searches hashtag in real time while other apps take the results from a static list. This allows you to get the highest results on Instagram or Flickr search trends. Discover new hashtags that you'd never thought of that!
+Want to be popular on some social network easily? Use Tagger to make your account content more popular to raise your popularity. For you, information, photos, and videos with tags can be much easier to be searched and recommended by social network algorithms to other users, especially the users that have the same interest in the tags.
+Tagger always searches for the most trending hashtags and choose the better ones related to yours. Also, searches hashtags in the real-time while other apps take the results from a static list. This allows you to get the highest results. Discover new hashtags that you'd never thought of that!
 
-Main features:
-- Automated image recognition tasks to come up with a list of tags.
-- Select an image from your library, camera or Flickr camera roll.
-- Get a list of hot tags for the given period, for a day or a week.
-- Search tags for a given category in real time.
-- Unlimited number of tag categories.
+### Features:
+- Automatically assign tags to your images
+- Image analysis and discovery
+- Search tags for a given category in real time
+- Gain up likes and followers with matching hashtags
+- Select an image from your library, camera or Flickr camera roll
+- Get a list of hot tags for the given period, for a day or a week
+- Unlimited number of tag categories
 
-### Tagger currently uses Swift 2.2 version.
+### Tagger currently uses Swift 2.2 version and Xcode 7.*
 
 ## Installation
-- Run `pod install` on project directory([CocoaPods Installation](https://guides.cocoapods.org/using/getting-started.html)).
 - Open `Tagger.xcworkspace` and build.
 - Goto [Flickr](https://www.flickr.com/services/apps/create/) and create an App.
 Get your API Key and Secret.
