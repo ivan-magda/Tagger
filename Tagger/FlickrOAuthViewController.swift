@@ -114,12 +114,23 @@ class FlickrOAuthViewController: UIViewController {
 extension FlickrOAuthViewController: UIWebViewDelegate {
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        let callback = NSURL(string: callbackURL)!
-        if request.URL!.host == callback.host {
+        guard let url = request.URL else {
+            return false
+        }
+
+        if url.host == callbackURL.host {
             successBlock(URL: request.URL!)
             dismiss()
             return false
         }
+
+        if url.scheme != "http" && url.scheme != "https" {
+            if UIApplication.sharedApplication().canOpenURL(url) {
+                UIApplication.sharedApplication().openURL(url)
+                return false
+            }
+        }
+
         return true
     }
     
@@ -132,6 +143,16 @@ extension FlickrOAuthViewController: UIWebViewDelegate {
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+        // Ignore NSURLErrorDomain error -999.
+        if (error?.code == NSURLErrorCancelled) {
+            return
+        }
+
+        // Ignore "Fame Load Interrupted" errors. Seen after app store links.
+        if (error?.code == 102 && error?.domain == "WebKitErrorDomain") {
+            return
+        }
+
         guard let error = error else {
             let error = NSError(domain: "\(BaseErrorDomain).FlickrOAuthViewController",
                                 code: 66,
