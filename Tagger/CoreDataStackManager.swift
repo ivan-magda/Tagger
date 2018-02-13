@@ -53,12 +53,16 @@ class CoreDataStackManager {
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         } catch {
             // Report any error we got.
-            var dict = [AnyHashable: Any]()
+            var dict = [String: Any]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
 
-            let wrappedError = NSError(domain: BaseErrorDomain, code: 9999, userInfo: dict as! [String : Any])
+            let wrappedError = NSError(
+                domain: BaseErrorDomain,
+                code: 9999,
+                userInfo: dict
+            )
             print("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
 
             abort()

@@ -45,7 +45,7 @@ class HashtagsTextView: UITextView {
     func updateWithNewData(_ tags: [String]) {
         let tagsText = tags.joined(separator: " #")
         
-        if tagsText.characters.count > 0 {
+        if !tagsText.isEmpty {
             text = "#\(tagsText)"
         } else {
             text = "No tags selected. First, select at least one."

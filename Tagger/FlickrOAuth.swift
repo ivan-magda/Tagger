@@ -307,7 +307,8 @@ class FlickrOAuth {
         case .accessToken:
             guard let username = parameters[OAuthResponseKey.Username.rawValue]?.removingPercentEncoding,
                 let userID = parameters[OAuthResponseKey.UserID.rawValue]?.removingPercentEncoding,
-                let fullname = parameters[OAuthResponseKey.Fullname.rawValue]?.removingPercentEncoding, username.characters.count > 0 else {
+                let fullname = parameters[OAuthResponseKey.Fullname.rawValue]?.removingPercentEncoding,
+                !username.isEmpty else {
                     sendError("Failed to get an access token.")
                     return
             }

@@ -20,34 +20,8 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import UIKit.UIImage
 import CoreData
-
-// https://useyourloaf.com/blog/swift-3-and-comparing-optionals/
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 // MARK: Types
 
@@ -137,7 +111,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
         let alert = UIAlertController(title: "Create Category", message: "To save the tags, please enter the category name.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [unowned self] _ in
-            guard let name = categoryNameTextField?.text, name.characters.count > 0 else {
+            guard let name = categoryNameTextField?.text, !name.isEmpty else {
                 showInvalidNameAlert()
                 return
             }
@@ -196,7 +170,7 @@ extension ImageTaggerViewController {
     
     fileprivate func setUIState(_ state: UIState) {
         func updateResultsButtonState() {
-            let enabled = generatedTags != nil && generatedTags?.count > 0
+            let enabled = generatedTags != nil && generatedTags!.count > 0
             resultsBarButtonItem.isEnabled = enabled
             saveResultsBarButtonItem.isEnabled = enabled
         }

@@ -133,7 +133,7 @@ extension ManageCategoryTableViewController {
     }
     
     fileprivate func updateDoneButtonEnabledState() {
-        doneBarButtonItem.isEnabled = name.characters.count > 0 && shouldDoneOnCategory()
+        doneBarButtonItem.isEnabled = !name.isEmpty && shouldDoneOnCategory()
     }
     
 }

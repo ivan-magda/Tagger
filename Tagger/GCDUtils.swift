@@ -37,7 +37,7 @@ func performAfterOnMain(_ time: Double, block: @escaping Block) {
 }
 
 func performOnBackgroud(_ block: @escaping Block) {
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+    DispatchQueue.global(qos: .default).async {
         block()
     }
 }
