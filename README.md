@@ -25,7 +25,9 @@ Content like photos and videos with tags can be much easier to be searched and r
 - Get a list of hot tags for the given period, for a day or a week
 - Unlimited number of tag categories
 
-### Tagger currently uses Swift 2.2 version and Xcode 7.*
+## Requirements
+- Swift 4.1
+- Xcode 9.2
 
 ## Installation
 - Open `Tagger.xcworkspace` and build.
