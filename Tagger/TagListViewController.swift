@@ -216,7 +216,7 @@ extension TagListViewController {
             updateUI()
         case .failureDoneWithDownloading(let error):
             setItemsEnabled(false)
-            messageBarButtonItem.title = error.localizedFailureReason ?? "Failed to fetch tags"
+            messageBarButtonItem.title = error.localizedDescription 
         }
     }
     

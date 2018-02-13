@@ -38,7 +38,7 @@ import KeychainSwift
 
 typealias Parameters = [String: String]
 typealias FlickrOAuthCompletionHandler = (_ result: FlickrOAuthResult) -> Void
-private typealias FlickrOAuthFailureCompletionHandler = (_ error: NSError) -> Void
+private typealias FlickrOAuthFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - Types
 
@@ -153,7 +153,7 @@ class FlickrOAuth {
         
         let urlString = encriptedURLWithBaseURL(kRequestTokenBaseURL, requestParameters: getBaseRequestParameters())
         let urlWithSignature = URL(string: urlString)!
-        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse as! (Data?, URLResponse?, Error?) -> Void)
+        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse)
         task.resume()
     }
     
@@ -163,8 +163,11 @@ class FlickrOAuth {
         let authorizationURL = "\(kAuthorizeBaseURL)?\(OAuthParameterKey.Token.rawValue)=\(token!)&\(OAuthParameterKey.Permissions.rawValue)=\(authenticationPermission.rawValue)"
         
         let authViewController = FlickrOAuthViewController(authorizationURL: authorizationURL, callbackURL: callbackURL)
+
+
+
         authViewController.authorize(success: { success($0 as URL) },
-                                     failure: { self.resultBlock(result: .failure(error: $0)) })
+                                     failure: { self.resultBlock(.failure(error: $0)) })
     }
     
     // MARK: Access Token
@@ -177,7 +180,7 @@ class FlickrOAuth {
         
         let urlString = encriptedURLWithBaseURL(kAccessTokenBaseURL, requestParameters: parameters)
         let urlWithSignature = URL(string: urlString)!
-        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse as! (Data?, URLResponse?, Error?) -> Void)
+        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse)
         task.resume()
     }
     
@@ -262,13 +265,16 @@ class FlickrOAuth {
     
     // MARK: Process on Response
     
-    fileprivate func processOnResponse(_ data: Data?, response: URLResponse?, error: NSError?) {
+    fileprivate func processOnResponse(_ data: Data?, response: URLResponse?, error: Error?) {
         func sendError(_ error: String) {
             print("Failed authorize with Flickr. Error: \(error).")
             performOnMain {
-                let error = NSError(domain: "\(BaseErrorDomain).FlickrOAuth", code: 55,
-                    userInfo: [NSLocalizedDescriptionKey : error])
-                self.resultBlock(result: .failure(error: error))
+                let error = NSError(
+                    domain: "\(BaseErrorDomain).FlickrOAuth",
+                    code: 55,
+                    userInfo: [NSLocalizedDescriptionKey : error]
+                )
+                self.resultBlock(.failure(error: error))
             }
         }
         
@@ -299,9 +305,9 @@ class FlickrOAuth {
                 }
             }
         case .accessToken:
-            guard let username = parameters[OAuthResponseKey.Username.rawValue]?.stringByRemovingPercentEncoding,
-                let userID = parameters[OAuthResponseKey.UserID.rawValue]?.stringByRemovingPercentEncoding,
-                let fullname = parameters[OAuthResponseKey.Fullname.rawValue]?.stringByRemovingPercentEncoding, username.characters.count > 0 else {
+            guard let username = parameters[OAuthResponseKey.Username.rawValue]?.removingPercentEncoding,
+                let userID = parameters[OAuthResponseKey.UserID.rawValue]?.removingPercentEncoding,
+                let fullname = parameters[OAuthResponseKey.Fullname.rawValue]?.removingPercentEncoding, username.characters.count > 0 else {
                     sendError("Failed to get an access token.")
                     return
             }
@@ -313,7 +319,7 @@ class FlickrOAuth {
                     tokenSecret: self.tokenSecret!,
                     user: FlickrUser(fullname: fullname, username: username, userID: userID)
                 )
-                self.resultBlock(result: result)
+                self.resultBlock(result)
             }
         default:
             break
@@ -321,7 +327,7 @@ class FlickrOAuth {
     }
     
     fileprivate func parametersFromResponseString(_ responseString: String) -> Parameters {
-        let parameters = responseString.stringByRemovingPercentEncoding!.components(separatedBy: "&")
+        let parameters = responseString.removingPercentEncoding!.components(separatedBy: "&")
         var dictionary = [String: String]()
         parameters.forEach {
             let components = $0.components(separatedBy: "=")

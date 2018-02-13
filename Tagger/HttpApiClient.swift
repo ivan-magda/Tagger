@@ -37,7 +37,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
-typealias MethodParameters = [String: AnyObject]
+typealias MethodParameters = [String: Any]
 typealias TaskCompletionHandler = (_ result: ApiClientResult) -> Void
 
 // MARK: - HttpApiClient -
@@ -98,7 +98,7 @@ class HttpApiClient {
             guard error == nil else {
                 self.debugLog("Received an error from HTTP \(request.httpMethod!) to \(request.url!).")
                 self.debugLog("Error: \(String(describing: error)).")
-                completionHandler(.error(error! as NSError))
+                completionHandler(.error(error!))
                 return
             }
             
@@ -130,7 +130,7 @@ class HttpApiClient {
                 return
             default:
                 print("Received HTTP status code \(statusCode), which was't be handled.")
-                completionHandler(.unexpectedError(statusCode, error! as NSError))
+                completionHandler(.unexpectedError(statusCode, error))
                 return
             }
             self.debugLog("Received HTTP \(httpResponse.statusCode) from \(request.httpMethod!) to \(request.url!)")

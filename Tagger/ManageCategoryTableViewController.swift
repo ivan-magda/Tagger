@@ -143,8 +143,12 @@ extension ManageCategoryTableViewController {
 extension ManageCategoryTableViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        name = (textField.text ?? ("" as NSString) as String).replacingCharacters(in: range, with: string)
+
+        var name = textField.text ?? ""
+        name = (name as NSString).replacingCharacters(in: range, with: string)
+
         updateDoneButtonEnabledState()
+
         return true
     }
     

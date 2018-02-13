@@ -39,7 +39,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
-typealias DeserializedJsonTuple = (json: AnyObject?, error: NSError?)
+typealias DeserializedJsonTuple = (json: AnyObject?, error: Error?)
 
 // MARK: - JsonApiClient: HttpApiClient -
 
@@ -62,9 +62,11 @@ class JsonApiClient: HttpApiClient {
                     let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(String(describing: deserializedJson.json))'"
                     self.debugLog(errorMessage)
                     
-                    let error = NSError(domain: ErrorDomain.JSONDeserializing,
-                                        code: ErrorCode.jsonDeserializing.rawValue,
-                                        userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                    let error = NSError(
+                        domain: ErrorDomain.JSONDeserializing,
+                        code: ErrorCode.jsonDeserializing.rawValue,
+                        userInfo: [NSLocalizedDescriptionKey: errorMessage]
+                    )
                     completionHandler(.error(error))
                     return
                 }

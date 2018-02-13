@@ -125,7 +125,7 @@ extension FlickrUserAccountViewController {
         navigationItem.rightBarButtonItem = spinner
     }
     
-    fileprivate func showError(_ error: NSError) {
+    fileprivate func showError(_ error: Error) {
         let alertController = alert("Error", message: error.localizedDescription, handler: nil)
         present(alertController, animated: true, completion: nil)
     }

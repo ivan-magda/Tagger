@@ -32,7 +32,7 @@ enum Period: String {
 
 // MARK: - Typealiases
 
-typealias FlickrFailureCompletionHandler = (_ error: NSError) -> Void
+typealias FlickrFailureCompletionHandler = (_ error: Error) -> Void
 typealias FlickrTagsSuccessCompletionHandler = (_ tags: [FlickrTag]) -> Void
 typealias FlickrPhotosSearchSuccessCompletionHandler = (_ album: FlickrAlbum) -> Void
 typealias FlickrNumberSuccessCompletionHandler = (_ number: Int) -> Void
@@ -47,7 +47,7 @@ extension FlickrApiClient {
     // MARK: - Tags -
     // MARK: Public
     
-    func tagsHotListForPeriod(_ period: Period, numberOfTags count: Int = 20, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrFailureCompletionHandler) {
+    func tagsHotListForPeriod(_ period: Period, numberOfTags count: Int = 20, successBlock success: @escaping FlickrTagsSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsHotList)
         param[Constants.FlickrParameterKeys.Period] = period.rawValue as AnyObject
         param[Constants.FlickrParameterKeys.Count] = count as AnyObject
@@ -57,7 +57,7 @@ extension FlickrApiClient {
         fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
     }
     
-    func relatedTagsForTag(_ tag: String, successBlock success: FlickrTagsSuccessCompletionHandler, failBlock fail: FlickrFailureCompletionHandler) {
+    func relatedTagsForTag(_ tag: String, successBlock success: @escaping FlickrTagsSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsGetRelated)
         param[Constants.FlickrParameterKeys.Tag] = tag as AnyObject
         
@@ -69,7 +69,7 @@ extension FlickrApiClient {
     // MARK: - Photos -
     // MARK: Public
     
-    func searchPhotosWithTags(_ tags: [String], successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrFailureCompletionHandler) {
+    func searchPhotosWithTags(_ tags: [String], successBlock success: @escaping FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         searchPhotosWithParameters(parametersForPhotosSearchWithTags(tags), successBlock: success, failBlock: fail)
     }
     
@@ -104,7 +104,7 @@ extension FlickrApiClient {
     
     // MARK: Private
     
-    fileprivate func searchPhotosWithParameters(_ param: MethodParameters, successBlock success: FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: FlickrFailureCompletionHandler) {
+    fileprivate func searchPhotosWithParameters(_ param: MethodParameters, successBlock success: @escaping FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         let request = URLRequest(url: urlFromParameters(param))
         fetchResourceForRequest(request, success: success, fail: fail)
     }
@@ -118,7 +118,8 @@ extension FlickrApiClient {
                 let error = NSError(
                     domain: Constants.Error.NumberOfPagesForPhotoSearchErrorDomain,
                     code: Constants.Error.NumberOfPagesForPhotoSearchErrorCode,
-                    userInfo: [NSLocalizedDescriptionKey : error])
+                    userInfo: [NSLocalizedDescriptionKey : error]
+                )
                 fail(error)
             }
             
@@ -140,7 +141,7 @@ extension FlickrApiClient {
     
     // MARK: - User -
     
-    func getPersonInfoWithNSID(_ userID: String, success: FlickrPersonInfoSuccessCompletionHandler, failure: FlickrFailureCompletionHandler) {
+    func getPersonInfoWithNSID(_ userID: String, success: @escaping FlickrPersonInfoSuccessCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
         var parameters = getBaseMethodParameters(Constants.FlickrParameterValues.PeopleGetInfo)
         parameters[Constants.FlickrParameterKeys.UserID] = userID as AnyObject
         
@@ -161,13 +162,14 @@ extension FlickrApiClient {
     
     // MARK: - Authenticated Requests -
     
-    func testLogin(_ completionHandler: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+    func testLogin(_ completionHandler: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         func sendError(_ error: String) {
             self.debugLog("Error: \(error)")
             let error = NSError(
                 domain: Constants.Error.ErrorDomain,
                 code: Constants.Error.DefaultErrorCode,
-                userInfo: [NSLocalizedDescriptionKey : error])
+                userInfo: [NSLocalizedDescriptionKey : error]
+            )
             completionHandler(false, error)
         }
         
@@ -199,7 +201,7 @@ extension FlickrApiClient {
         }
     }
     
-    func getUserPhotos(_ user: FlickrUser, success: FlickrPhotosSuccessCompletionHandler, failure: FlickrFailureCompletionHandler) {
+    func getUserPhotos(_ user: FlickrUser, success: @escaping FlickrPhotosSuccessCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
         var parameters = Parameters()
         getBaseParametersForPhotosSearch().forEach { parameters[$0] = "\($1)" }
         parameters[Constants.FlickrParameterKeys.PerPage] = "\(Constants.FlickrParameterValues.PerPageMax)"

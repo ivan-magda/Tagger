@@ -26,15 +26,15 @@ import Foundation
 
 // MARK: Flickr
 
-let FlickrApplicationKey = "9e42bee98f9d8d12c26072b9793b3562"
-let FlickrApplicationSecret = "2698f58d09b06c20"
-let FlickrOAuthCallbackURL = "tagger://oauth-callback/flickr"
+let FlickrApplicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
+let FlickrApplicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
+let FlickrOAuthCallbackURL = "REPLACE_WITH_YOUR_CALLBACK_URL"
 
 // MARK: Imagga
 
-let ImaggaApplicationKey = "acc_20b0b446e77ecb5"
-let ImaggaApplicationSecret = "6a014ab3021d157ba74260f2c712e068"
-let ImaggaAuthenticationToken = "Basic YWNjXzIwYjBiNDQ2ZTc3ZWNiNTo2YTAxNGFiMzAyMWQxNTdiYTc0MjYwZjJjNzEyZTA2OA=="
+let ImaggaApplicationKey = "REPLACE_WITH_YOUR_IMAGGA_API_KEY"
+let ImaggaApplicationSecret = "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"
+let ImaggaAuthenticationToken = "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
 
 // MARK: - Error Constants
 

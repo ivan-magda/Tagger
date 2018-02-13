@@ -36,11 +36,11 @@ import Foundation
 enum ApiClientResult {
     case rawData(Data)
     case json(JSONDictionary)
-    case error(NSError)
+    case error(Error)
     case notFound
     case serverError(Int)
     case clientError(Int)
-    case unexpectedError(Int, NSError?)
+    case unexpectedError(Int, Error?)
 }
 
 extension ApiClientResult {

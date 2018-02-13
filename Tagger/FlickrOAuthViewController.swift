@@ -123,7 +123,7 @@ extension FlickrOAuthViewController: UIWebViewDelegate {
         }
 
         if url.host == callbackURL.host {
-            successBlock(URL: request.url!)
+            successBlock(request.url!)
             dismiss()
             return false
         }
@@ -157,7 +157,7 @@ extension FlickrOAuthViewController: UIWebViewDelegate {
             return
         }
         
-        failureBlock(error: error)
+        failureBlock(error)
     }
     
 }

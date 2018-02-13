@@ -26,7 +26,7 @@ import UIKit.UIImage
 // MARK: Typealias
 
 typealias ImageDownloadingCompletionHandler = (_ image: UIImage) -> Void
-typealias RequestFailCompletionHandler = (_ error: NSError) -> Void
+typealias RequestFailCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - HttpApiClient (Convenience)
 

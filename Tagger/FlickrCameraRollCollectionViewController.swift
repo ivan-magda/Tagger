@@ -92,7 +92,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     }
     
     fileprivate func configureCell(_ cell: FlickrCameraRollCollectionViewCell, atIndexPath indexPath: IndexPath) {
-        func failedToLoadImageWithError(_ error: NSError) {
+        func failedToLoadImageWithError(_ error: Error) {
             setImage(nil, toCellAtIndexPath: indexPath)
             print("Failed to load an image. Error: \(error.localizedDescription)")
         }
@@ -163,7 +163,17 @@ extension FlickrCameraRollCollectionViewController {
     
     fileprivate func configureUI() {
         title = "Camera Roll"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
+
+        let selector = #selector(
+            ((FlickrCameraRollCollectionViewController.dismiss) as
+                (FlickrCameraRollCollectionViewController) -> (Void) -> Void)
+        )
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: selector
+        )
+
         setupCollectionView()
     }
     

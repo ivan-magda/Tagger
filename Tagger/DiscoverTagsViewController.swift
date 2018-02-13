@@ -232,7 +232,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     
     // TODO: If network is unreachable, then don't try to download the image again.
     fileprivate func loadImageForCellAtIndexPath(_ indexPath: IndexPath) {
-        func handleError(_ error: NSError) {
+        func handleError(_ error: Error) {
             print("Failed to load an image. Error: \(error.localizedDescription)")
             setImage(nil, toCellAtIndexPath: indexPath)
             loadImageForCellAtIndexPath(indexPath)

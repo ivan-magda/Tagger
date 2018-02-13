@@ -55,7 +55,7 @@ extension HttpApiClient {
             files.forEach {
                 body.appendString("--\(boundary)\r\n")
                 body.appendString("Content-Disposition:form-data; name=\"\($0.name)\"; filename=\"\($0.fileName)\"\r\n")
-                body.appendString("Content-Type: \($0.data.mimeType())\r\n\r\n")
+                body.appendString("Content-Type: \($0.data.mimeType)\r\n\r\n")
                 body.append($0.data)
                 body.appendString("\r\n")
             }

@@ -35,7 +35,7 @@ private enum ImaggaApiEndpoint: String {
 
 typealias ImaggaContentIdSuccessCompletionHandler = (_ contentId: String) -> Void
 typealias ImaggaTaggingSuccessCompletionHandler = (_ tags: [ImaggaTag]) -> Void
-typealias ImaggaFailCompletionHandler = (_ error: NSError) -> Void
+typealias ImaggaFailCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - ImaggaApiClient (Calling Api Endpoints)
 
@@ -60,7 +60,7 @@ extension ImaggaApiClient {
         }
         
         let boundary = generateBoundaryString()
-        
+
         let request = NSMutableURLRequest(url: urlFromParameters(nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
         request.httpMethod = HttpMethod.POST.rawValue
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -70,9 +70,9 @@ extension ImaggaApiClient {
             boundary: boundary
         )
         
-        fetchJsonForRequest(request) { [unowned self] result in
+        fetchJsonForRequest(request as URLRequest) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
-                fail(error: error)
+                fail(error)
                 return
             }
             
@@ -90,7 +90,7 @@ extension ImaggaApiClient {
                 }
                 
                 self.debugLog("Content uploaded with ID: \(fileId)")
-                success(contentId: fileId)
+                success(fileId)
             default:
                 self.sendError("An error occured. Please, try again.", toBlock: fail)
             }
@@ -110,7 +110,7 @@ extension ImaggaApiClient {
                 }
                 
                 let tags = ImaggaTag.sanitezedTags(tagsJson)
-                success(tags: tags)
+                success(tags)
             default:
                 self.sendError("An error occured. Please, try again.", toBlock: fail)
             }
@@ -121,7 +121,11 @@ extension ImaggaApiClient {
     
     fileprivate func sendError(_ error: String, toBlock failBlock: @escaping ImaggaFailCompletionHandler) {
         func sendError(_ error: String) {
-            let error = NSError(domain: "\(BaseErrorDomain).ImaggaApiClient", code: 44, userInfo: [NSLocalizedDescriptionKey : error])
+            let error = NSError(
+                domain: "\(BaseErrorDomain).ImaggaApiClient",
+                code: 44,
+                userInfo: [NSLocalizedDescriptionKey : error]
+            )
             failBlock(error)
         }
     }

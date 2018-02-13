@@ -81,7 +81,7 @@ extension MIImagePickerController: UIImagePickerControllerDelegate, UINavigation
             }
             
             picker.dismiss(animated: true, completion: { [unowned self] in
-                self.didFinishPickingImageBlock(image: pickedImage)
+                self.didFinishPickingImageBlock(pickedImage)
                 })
         }
     }

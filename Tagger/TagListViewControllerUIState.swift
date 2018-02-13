@@ -26,5 +26,5 @@ enum TagListViewControllerUIState {
     case `default`
     case downloading
     case successDoneWithDownloading
-    case failureDoneWithDownloading(error: NSError)
+    case failureDoneWithDownloading(error: Error)
 }
