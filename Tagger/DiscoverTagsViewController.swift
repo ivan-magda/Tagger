@@ -103,11 +103,11 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     // MARK: - Public
     
-    func reloadData() {
+    @objc func reloadData() {
         collectionView.reloadData()
     }
     
-    func hideBarGesture(_ recognizer: UIPanGestureRecognizer) {
+    @objc func hideBarGesture(_ recognizer: UIPanGestureRecognizer) {
         updateNavigationBarBackgroundColor(hidden: navigationController!.isNavigationBarHidden)
     }
     

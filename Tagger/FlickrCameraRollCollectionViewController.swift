@@ -134,7 +134,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     // MARK: Actions
     
-    func dismiss() {
+    @objc func dismiss() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -166,7 +166,7 @@ extension FlickrCameraRollCollectionViewController {
 
         let selector = #selector(
             ((FlickrCameraRollCollectionViewController.dismiss) as
-                (FlickrCameraRollCollectionViewController) -> (Void) -> Void)
+                (FlickrCameraRollCollectionViewController) -> () -> Void)
         )
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,

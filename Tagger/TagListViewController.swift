@@ -113,7 +113,7 @@ class TagListViewController: UIViewController, Alertable {
     
     // MARK: Actions
     
-    func moreBarButtonItemDidPressed() {
+    @objc func moreBarButtonItemDidPressed() {
         present(actionSheet, animated: true, completion: nil)
     }
     
@@ -190,7 +190,7 @@ extension TagListViewController {
             self.tagsTextView.setTextViewHidden(false)
         }))
         
-        messageBarButtonItem.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)], for: UIControlState())
+        messageBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)], for: UIControlState())
         setUIState(.default)
     }
     

@@ -57,7 +57,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
         }
     }
     
-    func fetchData() {
+    @objc func fetchData() {
         setUIState(.downloading)
         flickrApiClient.relatedTagsForTag(
             parentCategory!.name,

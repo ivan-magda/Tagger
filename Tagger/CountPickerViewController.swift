@@ -75,12 +75,12 @@ class CountPickerViewController: UIViewController {
     
     // MARK: - Actions
     
-    func cancelButtonDidPressed(_ button: UIButton) {
+    @objc func cancelButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
         cancelBlock?()
     }
     
-    func selectButtonDidPressed(_ button: UIButton) {
+    @objc func selectButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
         doneBlock?(selectedRowIdx, selectedValue)
     }

@@ -90,7 +90,7 @@ class CategoriesTableViewController: UITableViewController {
     
     // MARK: Public
     
-    func reloadData() {
+    @objc func reloadData() {
         tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
     

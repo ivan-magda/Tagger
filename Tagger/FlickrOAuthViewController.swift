@@ -84,7 +84,7 @@ class FlickrOAuthViewController: UIViewController {
     
     // MARK: Actions
     
-    func dismiss() {
+    @objc func dismiss() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -106,7 +106,7 @@ class FlickrOAuthViewController: UIViewController {
         let doneBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done,
             target: self,
-            action: #selector(((FlickrOAuthViewController.dismiss) as (FlickrOAuthViewController) -> (Void) -> Void))
+            action: #selector(((FlickrOAuthViewController.dismiss) as (FlickrOAuthViewController) -> () -> Void))
         )
         navigationItem.rightBarButtonItem = doneBarButtonItem
     }

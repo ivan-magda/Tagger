@@ -70,7 +70,7 @@ class HashtagsTextView: UITextView {
     
     // MARK: Actions
     
-    func didTapOnText() {
+    @objc func didTapOnText() {
         selectedTextRange = textRange(from: beginningOfDocument, to: endOfDocument)
     }
     

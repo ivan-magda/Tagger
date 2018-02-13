@@ -58,7 +58,7 @@ class CoreDataStackManager {
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
 
-            let wrappedError = NSError(domain: BaseErrorDomain, code: 9999, userInfo: dict)
+            let wrappedError = NSError(domain: BaseErrorDomain, code: 9999, userInfo: dict as! [String : Any])
             print("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
 
             abort()

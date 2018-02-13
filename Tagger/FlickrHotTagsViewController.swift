@@ -62,7 +62,7 @@ class FlickrHotTagsViewController: TagListViewController {
         }
     }
     
-    func fetchData() {
+    @objc func fetchData() {
         setUIState(.downloading)
         flickrApiClient.tagsHotListForPeriod(
             period,
