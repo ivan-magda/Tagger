@@ -22,27 +22,25 @@
 
 import Foundation
 
-// Source: http://stackoverflow.com/questions/21789770/determine-mime-type-from-nsdata
-// Author: http://stackoverflow.com/users/2042510/tib
+// MARK: API Constants -
 
-extension Data {
+// MARK: Flickr
 
-    private static let mimeTypeSignatures: [UInt8 : String] = [
-        0xFF : "image/jpeg",
-        0x89 : "image/png",
-        0x47 : "image/gif",
-        0x49 : "image/tiff",
-        0x4D : "image/tiff",
-        0x25 : "application/pdf",
-        0xD0 : "application/vnd",
-        0x46 : "text/plain",
-    ]
+let FlickrApplicationKey = "9e42bee98f9d8d12c26072b9793b3562"
+let FlickrApplicationSecret = "2698f58d09b06c20"
+let FlickrOAuthCallbackURL = "tagger://oauth-callback/flickr"
 
-    var mimeType: String {
-        var c: UInt8 = 0
-        copyBytes(to: &c, count: 1)
+// MARK: Imagga
 
-        return Data.mimeTypeSignatures[c] ?? "application/octet-stream"
-    }
-    
-}
+let ImaggaApplicationKey = "acc_20b0b446e77ecb5"
+let ImaggaApplicationSecret = "6a014ab3021d157ba74260f2c712e068"
+let ImaggaAuthenticationToken = "Basic YWNjXzIwYjBiNDQ2ZTc3ZWNiNTo2YTAxNGFiMzAyMWQxNTdiYTc0MjYwZjJjNzEyZTA2OA=="
+
+// MARK: - Error Constants
+
+let BaseErrorDomain = "com.ivanmagda.Tagger"
+
+// MARK: - URL Schemes
+
+let InstagramAppURL = "instagram://app"
+let FLickrAppURL = "flickr://"
