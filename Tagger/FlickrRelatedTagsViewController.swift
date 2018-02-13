@@ -29,8 +29,8 @@ class FlickrRelatedTagsViewController: TagListViewController {
     
     // MARK: Properties
     
-    private (set) var flickrApiClient: FlickrApiClient!
-    private let refreshControl = UIRefreshControl()
+    fileprivate (set) var flickrApiClient: FlickrApiClient!
+    fileprivate let refreshControl = UIRefreshControl()
     
     // MARK: - View Life Cycle
     
@@ -50,7 +50,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     
     // MARK: - Private
     
-    private func setup() {
+    fileprivate func setup() {
         configureUI()
         if tags.count == 0 {
             fetchData()
@@ -58,7 +58,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     }
     
     func fetchData() {
-        setUIState(.Downloading)
+        setUIState(.downloading)
         flickrApiClient.relatedTagsForTag(
             parentCategory!.name,
             successBlock: { [weak self] tags in
@@ -75,12 +75,12 @@ class FlickrRelatedTagsViewController: TagListViewController {
                 manager.saveContext()
                 strongSelf.tags = mappedTags
                 
-                strongSelf.setUIState(.SuccessDoneWithDownloading)
+                strongSelf.setUIState(.successDoneWithDownloading)
         }) { [weak self] error in
             self?.refreshControl.endRefreshing()
-            self?.setUIState(.FailureDoneWithDownloading(error: error))
+            self?.setUIState(.failureDoneWithDownloading(error: error))
             let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
-            self?.presentViewController(alert!, animated: true, completion: nil)
+            self?.present(alert!, animated: true, completion: nil)
         }
     }
     
@@ -90,9 +90,9 @@ class FlickrRelatedTagsViewController: TagListViewController {
 
 extension FlickrRelatedTagsViewController {
     
-    private func configureUI() {
-        title = parentCategory!.name.capitalizedString
-        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
+    fileprivate func configureUI() {
+        title = parentCategory!.name.capitalized
+        refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
     }
     

@@ -26,14 +26,14 @@ import Foundation
 
 extension String {
     
-    static func urlEncodedStringFromString(string: String) -> String {
-        let ignoredCharacters = NSCharacterSet(charactersInString: "% /'\"?=&+<>;:!").invertedSet
-        return string.stringByAddingPercentEncodingWithAllowedCharacters(ignoredCharacters)!
+    static func urlEncodedStringFromString(_ string: String) -> String {
+        let ignoredCharacters = CharacterSet(charactersIn: "% /'\"?=&+<>;:!").inverted
+        return string.addingPercentEncoding(withAllowedCharacters: ignoredCharacters)!
     }
     
-    static func oauthEncodedStringFromString(string: String) -> String {
-        let ignoredCharacters = NSCharacterSet(charactersInString: "%:/?#[]@!$&'()*+,;=").invertedSet
-        return string.stringByAddingPercentEncodingWithAllowedCharacters(ignoredCharacters)!
+    static func oauthEncodedStringFromString(_ string: String) -> String {
+        let ignoredCharacters = CharacterSet(charactersIn: "%:/?#[]@!$&'()*+,;=").inverted
+        return string.addingPercentEncoding(withAllowedCharacters: ignoredCharacters)!
     }
     
 }

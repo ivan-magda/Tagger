@@ -37,7 +37,7 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     var flickr: MIFlickr!
     var persistenceCentral: PersistenceCentral!
     
-    private var pickedImage: UIImage?
+    fileprivate var pickedImage: UIImage?
     
     // MARK: - View Life Cycle
     
@@ -48,9 +48,9 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifier.TagAnImage.rawValue {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let imageTaggerViewController = navigationController.topViewController as! ImageTaggerViewController
             imageTaggerViewController.taggingImage = pickedImage
             imageTaggerViewController.persistenceCentral = persistenceCentral
@@ -59,48 +59,48 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     
     // MARK: - Actions
     
-    @IBAction func selectImageFromFlickr(sender: AnyObject) {
+    @IBAction func selectImageFromFlickr(_ sender: AnyObject) {
         if let _ = flickr.currentUser {
             presentFlickrUserCameraRoll()
         } else {
-            let alert = UIAlertController(title: "You are not logged in", message: "If you want select photo from your Flickr account, then sign in your account.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Sign In", style: .Default) { action in
+            let alert = UIAlertController(title: "You are not logged in", message: "If you want select photo from your Flickr account, then sign in your account.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Sign In", style: .default) { action in
                 self.flickrAuth()
             })
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
     
-    @IBAction func selectImageFromDevice(sender: AnyObject) {
+    @IBAction func selectImageFromDevice(_ sender: AnyObject) {
         MIImagePickerController.presentInViewController(self, withDidFinishPickingImageBlock: processOnPickedImage)
     }
     
     // MARK: - Private
     
-    private func flickrAuth() {
+    fileprivate func flickrAuth() {
         UIUtils.showNetworkActivityIndicator()
         
         flickr.OAuth.authorizeWithPermission(.Write) { [unowned self] result in
             UIUtils.hideNetworkActivityIndicator()
             switch result {
-            case .Success(let token, let tokenSecret, let user):
+            case .success(let token, let tokenSecret, let user):
                 print("TOKEN: \(token)\nTOKEN_SECRET: \(tokenSecret)\nUSER: \(user)")
                 self.flickr.currentUser = user
                 self.presentFlickrUserCameraRoll()
-            case .Failure(let error):
+            case .failure(let error):
                 let alert = self.alert("Error", message: error.localizedDescription, handler: nil)
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
     
-    private func processOnPickedImage(image: UIImage) {
+    fileprivate func processOnPickedImage(_ image: UIImage) {
         pickedImage = image
-        performSegueWithIdentifier(SegueIdentifier.TagAnImage.rawValue, sender: self)
+        performSegue(withIdentifier: SegueIdentifier.TagAnImage.rawValue, sender: self)
     }
     
-    private func presentFlickrUserCameraRoll() {
+    fileprivate func presentFlickrUserCameraRoll() {
         FlickrCameraRollCollectionViewController.presentInViewController(self, flickr: flickr, didFinishPickingImage: processOnPickedImage)
     }
     

@@ -25,11 +25,11 @@ import Foundation
 // Source: http://stackoverflow.com/questions/21789770/determine-mime-type-from-nsdata
 // Author: http://stackoverflow.com/users/2042510/tib
 
-extension NSData {
+extension Data {
     
     func mimeType() -> String {
         var c: UInt8 = 0
-        getBytes(&c, length: 1)
+        getBytes(c, length: 1)
         
         switch (c) {
         case 0xFF:

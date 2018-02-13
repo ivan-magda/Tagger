@@ -32,13 +32,13 @@ class ImaggaApiClient: MIApiClient {
      *  This class constant provides an easy way to get access
      *  to a shared instance of the ImaggaApiClient class.
      */
-    static let sharedInstance = ImaggaApiClient(configuration: .defaultSessionConfiguration(), baseURL: "https://api.imagga.com/v1")
+    static let sharedInstance = ImaggaApiClient(configuration: .default, baseURL: "https://api.imagga.com/v1")
     
     // MARK: - Init
     
-    override init(configuration: NSURLSessionConfiguration, baseURL: String) {
+    override init(configuration: URLSessionConfiguration, baseURL: String) {
         super.init(configuration: configuration, baseURL: baseURL)
-        configuration.HTTPAdditionalHeaders = [
+        configuration.httpAdditionalHeaders = [
             "Authorization": ImaggaAuthenticationToken,
             "Accept": "application/json"
         ]

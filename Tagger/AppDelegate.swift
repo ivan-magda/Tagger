@@ -25,9 +25,9 @@ import UIKit
 // MARK: Types
 
 private enum TabBarControllerItem: Int {
-    case Discover
-    case Tagging
-    case More
+    case discover
+    case tagging
+    case more
 }
 
 // MARK: - AppDelegate: UIResponder, UIApplicationDelegate
@@ -39,27 +39,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    private let flickr = MIFlickr.sharedInstance
-    private let persistenceCentral = PersistenceCentral.sharedInstance
+    fileprivate let flickr = MIFlickr.sharedInstance
+    fileprivate let persistenceCentral = PersistenceCentral.sharedInstance
     
     // MARK: UIApplicationDelegate
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setup()
         return true
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
     
     // MARK: - Private -
     
-    private func setup() {
+    fileprivate func setup() {
         assert(
                 FlickrApplicationKey      != "REPLACE_WITH_YOUR_FLICKR_API_KEY"       &&
                 FlickrApplicationSecret   != "REPLACE_WITH_YOUR_FLICKR_API_SECRET"    &&
@@ -73,20 +73,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         themeApplication()
     }
     
-    private func shareData() {
+    fileprivate func shareData() {
         let tabBarController = window!.rootViewController as! UITabBarController
         
-        let discoverNavigationController = tabBarController.viewControllers![TabBarControllerItem.Discover.rawValue] as! UINavigationController
+        let discoverNavigationController = tabBarController.viewControllers![TabBarControllerItem.discover.rawValue] as! UINavigationController
         let discoverViewController = discoverNavigationController.topViewController as! DiscoverTagsViewController
         discoverViewController.flickr = flickr
         discoverViewController.persistenceCentral = persistenceCentral
         
-        let taggingNavigationController = tabBarController.viewControllers![TabBarControllerItem.Tagging.rawValue] as! UINavigationController
+        let taggingNavigationController = tabBarController.viewControllers![TabBarControllerItem.tagging.rawValue] as! UINavigationController
         let taggingDataSourceViewController = taggingNavigationController.topViewController as! ImageTaggerDataSourceViewController
         taggingDataSourceViewController.flickr = flickr
         taggingDataSourceViewController.persistenceCentral = persistenceCentral
         
-        let moreInfoNavigationController = tabBarController.viewControllers![TabBarControllerItem.More.rawValue] as! UINavigationController
+        let moreInfoNavigationController = tabBarController.viewControllers![TabBarControllerItem.more.rawValue] as! UINavigationController
         let moreInfoTableViewController = moreInfoNavigationController.topViewController as! MoreInfoTableViewController
         moreInfoTableViewController.flickr = flickr
         moreInfoTableViewController.persistenceCentral = persistenceCentral
@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: UI
     
-    private func themeApplication() {
+    fileprivate func themeApplication() {
         window?.tintColor = UIColor(red:0.34, green:0.70, blue:0.64, alpha:1.00)
     }
     

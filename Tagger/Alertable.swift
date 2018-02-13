@@ -23,14 +23,14 @@
 import UIKit
 
 protocol Alertable {
-    func alert(title: String?, message: String, handler: (UIAlertAction -> Void)?) -> UIAlertController
+    func alert(_ title: String?, message: String, handler: ((UIAlertAction) -> Void)?) -> UIAlertController
 }
 
 extension Alertable {
     
-    func alert(title: String?, message: String, handler: (UIAlertAction -> Void)?) -> UIAlertController {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
+    func alert(_ title: String?, message: String, handler: ((UIAlertAction) -> Void)?) -> UIAlertController {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: handler))
         return alert
     }
     

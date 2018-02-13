@@ -49,14 +49,14 @@ class CategoriesTableViewController: UITableViewController {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifier.EditCategory.rawValue {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
             
@@ -68,12 +68,12 @@ class CategoriesTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return persistenceCentral.categories.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kReuseIdentifier)!
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: kReuseIdentifier)!
         
         let category = persistenceCentral.categories[indexPath.row]
         cell.textLabel?.text = category.name
@@ -81,29 +81,29 @@ class CategoriesTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             deleteCategoryAtIndexPath(indexPath)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     // MARK: Public
     
     func reloadData() {
-        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
     
     // MARK: Private
     
-    private func setup() {
-        navigationItem.rightBarButtonItem = editButtonItem()
+    fileprivate func setup() {
+        navigationItem.rightBarButtonItem = editButtonItem
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(reloadData), name: kManageCategoryTableViewControllerDidDoneOnCategoryNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: kManageCategoryTableViewControllerDidDoneOnCategoryNotification), object: nil)
     }
     
-    private func deleteCategoryAtIndexPath(indexPath: NSIndexPath) {
+    fileprivate func deleteCategoryAtIndexPath(_ indexPath: IndexPath) {
         let category = persistenceCentral.categories[indexPath.row]
         persistenceCentral.deleteCategory(category)
     }

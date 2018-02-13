@@ -28,14 +28,14 @@ class PathUtils {
     
     // MARK: Init
 
-    private init() {
+    fileprivate init() {
     }
 
     // MARK: Functions
     
-    class func applicationDocumentsDirectory() -> NSURL {
-        let fileManager = NSFileManager.defaultManager()
-        let urls = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    class func applicationDocumentsDirectory() -> URL {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }
     

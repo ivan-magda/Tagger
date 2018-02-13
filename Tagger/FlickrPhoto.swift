@@ -63,7 +63,7 @@ struct FlickrPhoto {
     
     // MARK: Static
     
-    static func sanitezedPhotos(json: [JSONDictionary]) -> [FlickrPhoto] {
+    static func sanitezedPhotos(_ json: [JSONDictionary]) -> [FlickrPhoto] {
         return json.flatMap { self.init(json: $0) }
     }
     
@@ -73,7 +73,7 @@ struct FlickrPhoto {
 
 extension FlickrPhoto: JSONParselable {
     
-    static func decode(input: JSONDictionary) -> FlickrPhoto? {
+    static func decode(_ input: JSONDictionary) -> FlickrPhoto? {
         return self.init(json: input)
     }
     

@@ -50,8 +50,8 @@ class MIFlickr {
     
     var currentUser: FlickrUser? {
         get {
-            guard let data = NSUserDefaults.standardUserDefaults().objectForKey(kFlickrCurrentUserKey) as? NSData,
-                let user = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? FlickrUser else {
+            guard let data = UserDefaults.standard.object(forKey: kFlickrCurrentUserKey) as? Data,
+                let user = NSKeyedUnarchiver.unarchiveObject(with: data) as? FlickrUser else {
                     return nil
             }
             
@@ -59,13 +59,13 @@ class MIFlickr {
         }
         
         set {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let userDefaults = UserDefaults.standard
             
             if let newValue = newValue {
-                let data = NSKeyedArchiver.archivedDataWithRootObject(newValue)
-                userDefaults.setObject(data, forKey: kFlickrCurrentUserKey)
+                let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
+                userDefaults.set(data, forKey: kFlickrCurrentUserKey)
             } else {
-                userDefaults.setObject(nil, forKey: kFlickrCurrentUserKey)
+                userDefaults.set(nil, forKey: kFlickrCurrentUserKey)
             }
             
             userDefaults.synchronize()
@@ -74,7 +74,7 @@ class MIFlickr {
     
     // MARK: Init
     
-    private init() {
+    fileprivate init() {
         self.api = FlickrApiClient.sharedInstance
     }
     

@@ -28,13 +28,13 @@ class UUIDUtils {
     
     // MARK: Init
     
-    private init() {
+    fileprivate init() {
     }
 
     // MARK: Functions
     
     class func generateUUIDString() -> String {
-        return NSUUID().UUIDString
+        return UUID().uuidString
     }
     
 }

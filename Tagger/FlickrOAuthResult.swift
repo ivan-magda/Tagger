@@ -23,6 +23,6 @@
 import Foundation
 
 enum FlickrOAuthResult {
-    case Success(token: String, tokenSecret: String, user: FlickrUser)
-    case Failure(error: NSError)
+    case success(token: String, tokenSecret: String, user: FlickrUser)
+    case failure(error: NSError)
 }

@@ -25,8 +25,8 @@ import UIKit
 // MARK: Types
 
 private enum UIState {
-    case Default
-    case Network
+    case `default`
+    case network
 }
 
 // MARK: - FlickrUserAccountViewController: UIViewController, Alertable
@@ -44,8 +44,8 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     
     var flickr: MIFlickr!
     
-    private let activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    fileprivate let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
     }()
@@ -57,16 +57,16 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
         assert(flickr != nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureUI()
-        setUIState(.Default)
+        setUIState(.default)
     }
     
     // MARK: Actions
     
-    @IBAction func actionButtonDidPressed(sender: AnyObject) {
-        setUIState(.Network)
+    @IBAction func actionButtonDidPressed(_ sender: AnyObject) {
+        setUIState(.network)
         if flickr.currentUser == nil {
             signIn()
         } else {
@@ -74,22 +74,22 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
         }
     }
     
-    private func logOut() {
+    fileprivate func logOut() {
         flickr.logOutCurrentUser()
-        setUIState(.Default)
+        setUIState(.default)
         configureUI()
     }
     
-    private func signIn() {
+    fileprivate func signIn() {
         flickr.OAuth.authorizeWithPermission(.Write) { result in
             switch result {
-            case .Success(_, _, let user):
+            case .success(_, _, let user):
                 self.flickr.currentUser = user
                 self.configureUI()
-                self.setUIState(.Default)
-            case .Failure(let error):
+                self.setUIState(.default)
+            case .failure(let error):
                 self.showError(error)
-                self.setUIState(.Default)
+                self.setUIState(.default)
             }
         }
     }
@@ -100,48 +100,48 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
 
 extension FlickrUserAccountViewController {
     
-    private func configureUI() {
+    fileprivate func configureUI() {
         if let user = flickr.currentUser {
             mainLabel.text = user.fullname
             detailLabel.text = user.username
-            actionButton.setTitle("Log Out", forState: .Normal)
+            actionButton.setTitle("Log Out", for: UIControlState())
             
-            setUIState(.Network)
+            setUIState(.network)
             flickr.api.getProfilePictureWithNSID(user.userID, success: {
                 self.imageView.image = $0
-                self.setUIState(.Default)
+                self.setUIState(.default)
                 }, failure: {
                     self.showError($0)
-                    self.setUIState(.Default)
+                    self.setUIState(.default)
             })
         } else {
             imageView.image = UIImage(named: "flickr_rocket_logo")!
             mainLabel.text = "You are not logged in"
             detailLabel.text = "If you want to interact with your account, then sign in"
-            actionButton.setTitle("Sign In", forState: .Normal)
+            actionButton.setTitle("Sign In", for: UIControlState())
         }
         
         let spinner = UIBarButtonItem(customView: activityIndicator)
         navigationItem.rightBarButtonItem = spinner
     }
     
-    private func showError(error: NSError) {
+    fileprivate func showError(_ error: NSError) {
         let alertController = alert("Error", message: error.localizedDescription, handler: nil)
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
-    private func setUIState(state: UIState) {
+    fileprivate func setUIState(_ state: UIState) {
         switch state {
-        case .Default:
+        case .default:
             UIUtils.hideNetworkActivityIndicator()
             activityIndicator.stopAnimating()
-            actionButton.enabled = true
+            actionButton.isEnabled = true
             actionButton.backgroundColor = UIColor(red: 0.0, green: 99.0 / 255.0, blue: 220.0 / 255.0, alpha: 1.0)
-        case .Network:
+        case .network:
             UIUtils.showNetworkActivityIndicator()
             activityIndicator.startAnimating()
-            actionButton.enabled = false
-            actionButton.backgroundColor = .lightGrayColor()
+            actionButton.isEnabled = false
+            actionButton.backgroundColor = .lightGray
         }
     }
     

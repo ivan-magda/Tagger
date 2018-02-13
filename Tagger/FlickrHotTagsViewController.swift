@@ -31,10 +31,10 @@ class FlickrHotTagsViewController: TagListViewController {
     
     var flickrApiClient: FlickrApiClient!
     
-    private var period = Period.Day
-    private var numberOfTags = 20
+    fileprivate var period = Period.Day
+    fileprivate var numberOfTags = 20
     
-    private let refreshControl = UIRefreshControl()
+    fileprivate let refreshControl = UIRefreshControl()
     
     // MARK: - View Life Cycle
     
@@ -55,7 +55,7 @@ class FlickrHotTagsViewController: TagListViewController {
     
     // MARK: - Private
     
-    private func setup() {
+    fileprivate func setup() {
         configureUI()
         if tags.count == 0 {
             fetchData()
@@ -63,7 +63,7 @@ class FlickrHotTagsViewController: TagListViewController {
     }
     
     func fetchData() {
-        setUIState(.Downloading)
+        setUIState(.downloading)
         flickrApiClient.tagsHotListForPeriod(
             period,
             numberOfTags: numberOfTags,
@@ -81,12 +81,12 @@ class FlickrHotTagsViewController: TagListViewController {
                 manager.saveContext()
                 strongSelf.tags = mappedTags
                 
-                strongSelf.setUIState(.SuccessDoneWithDownloading)
+                strongSelf.setUIState(.successDoneWithDownloading)
         }) { [weak self] error in
             self?.refreshControl.endRefreshing()
-            self?.setUIState(.FailureDoneWithDownloading(error: error))
+            self?.setUIState(.failureDoneWithDownloading(error: error))
             let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
-            self?.presentViewController(alert!, animated: true, completion: nil)
+            self?.present(alert!, animated: true, completion: nil)
         }
     }
     
@@ -96,11 +96,11 @@ class FlickrHotTagsViewController: TagListViewController {
 
 extension FlickrHotTagsViewController {
     
-    private func configureUI() {
-        refreshControl.addTarget(self, action: #selector(fetchData), forControlEvents: .ValueChanged)
+    fileprivate func configureUI() {
+        refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
-        actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .Default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .default, handler: { _ in
             CountPickerViewController.showPickerWithTitle(
                 "Number of Tags",
                 rows: 200,

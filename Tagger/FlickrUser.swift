@@ -55,19 +55,19 @@ class FlickrUser: NSObject {
     // MARK: NSCoding
     
     required convenience init?(coder aDecoder: NSCoder) {
-        guard let fullname = aDecoder.decodeObjectForKey(CoderKey.Fullname.rawValue) as? String,
-            let username = aDecoder.decodeObjectForKey(CoderKey.Username.rawValue) as? String,
-            let userID = aDecoder.decodeObjectForKey(CoderKey.UserID.rawValue) as? String else {
+        guard let fullname = aDecoder.decodeObject(forKey: CoderKey.Fullname.rawValue) as? String,
+            let username = aDecoder.decodeObject(forKey: CoderKey.Username.rawValue) as? String,
+            let userID = aDecoder.decodeObject(forKey: CoderKey.UserID.rawValue) as? String else {
                 return nil
         }
         
         self.init(fullname: fullname, username: username, userID: userID)
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(fullname, forKey: CoderKey.Fullname.rawValue)
-        aCoder.encodeObject(username, forKey: CoderKey.Username.rawValue)
-        aCoder.encodeObject(userID, forKey: CoderKey.UserID.rawValue)
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(fullname, forKey: CoderKey.Fullname.rawValue)
+        aCoder.encode(username, forKey: CoderKey.Username.rawValue)
+        aCoder.encode(userID, forKey: CoderKey.UserID.rawValue)
     }
     
 }

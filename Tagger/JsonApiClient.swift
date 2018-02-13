@@ -32,9 +32,9 @@ private struct ErrorDomain {
 }
 
 private enum ErrorCode: Int {
-    case EmptyResponse = 120
-    case JSONDeserializing = 121
-    case NotSuccsessfullResponseStatusCode = 122
+    case emptyResponse = 120
+    case jsonDeserializing = 121
+    case notSuccsessfullResponseStatusCode = 122
 }
 
 // MARK: - Typealiases
@@ -47,40 +47,40 @@ class JsonApiClient: HttpApiClient {
     
     // MARK: Data Tasks
     
-    func fetchJsonForRequest(request: NSURLRequest, completionHandler: TaskCompletionHandler) {
+    func fetchJsonForRequest(_ request: URLRequest, completionHandler: @escaping TaskCompletionHandler) {
         fetchRawDataForRequest(request) { result in
             switch result {
-            case .RawData(let data):
+            case .rawData(let data):
                 let deserializedJson = self.deserializeJsonData(data)
                 
                 guard deserializedJson.error == nil else {
-                    completionHandler(result: .Error(deserializedJson.error!))
+                    completionHandler(.error(deserializedJson.error!))
                     return
                 }
                 
                 guard let json = deserializedJson.json as? JSONDictionary else {
-                    let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(deserializedJson.json)'"
+                    let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(String(describing: deserializedJson.json))'"
                     self.debugLog(errorMessage)
                     
                     let error = NSError(domain: ErrorDomain.JSONDeserializing,
-                                        code: ErrorCode.JSONDeserializing.rawValue,
+                                        code: ErrorCode.jsonDeserializing.rawValue,
                                         userInfo: [NSLocalizedDescriptionKey: errorMessage])
-                    completionHandler(result: .Error(error))
+                    completionHandler(.error(error))
                     return
                 }
-                completionHandler(result: .Json(json))
+                completionHandler(.json(json))
             default:
-                completionHandler(result: result)
+                completionHandler(result)
             }
         }
     }
     
     // MARK: JSON Deserializing
     
-    func deserializeJsonData(data: NSData) -> DeserializedJsonTuple {
+    func deserializeJsonData(_ data: Data) -> DeserializedJsonTuple {
         do {
-            let deserializedJSON = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            return (json: deserializedJSON, error: nil)
+            let deserializedJSON = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            return (json: deserializedJSON as AnyObject, error: nil)
         } catch let error as NSError {
             return (json: nil, error: error)
         }

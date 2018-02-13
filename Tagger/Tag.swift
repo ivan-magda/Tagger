@@ -37,13 +37,13 @@ class Tag: NSManagedObject {
 
     // MARK: Init
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     convenience init(name: String, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName(Tag.type, inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: Tag.type, in: context)!
+        self.init(entity: entity, insertInto: context)
         self.id = UUIDUtils.generateUUIDString()
         self.name = name
     }

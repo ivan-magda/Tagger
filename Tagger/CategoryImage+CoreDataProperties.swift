@@ -25,7 +25,7 @@ import CoreData
 
 extension CategoryImage {
 
-    @NSManaged var data: NSData?
+    @NSManaged var data: Data?
     @NSManaged var category: Category
 
 }

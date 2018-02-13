@@ -29,7 +29,7 @@ protocol EntityType {
 
 extension EntityType {
     static var type: String {
-        return String(self)
+        return String(describing: self)
     }
 }
 

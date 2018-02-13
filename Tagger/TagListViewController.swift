@@ -52,19 +52,19 @@ class TagListViewController: UIViewController, Alertable {
         }
     }
     
-    private var selectedIndexes = Set<Int>()
+    fileprivate var selectedIndexes = Set<Int>()
     
-    private var tagsTextView: HashtagsTextView = {
+    fileprivate var tagsTextView: HashtagsTextView = {
         let textView = HashtagsTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.editable = false
-        textView.font = UIFont.systemFontOfSize(19.0)
-        textView.hidden = true
+        textView.isEditable = false
+        textView.font = UIFont.systemFont(ofSize: 19.0)
+        textView.isHidden = true
         textView.alpha = 0.0
         return textView
     }()
     
-    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
     // MARK: Init
     
@@ -85,39 +85,39 @@ class TagListViewController: UIViewController, Alertable {
         setup()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setTabBarHidden(false)
     }
     
     // MARK: - Private
     
-    private func setup() {
+    fileprivate func setup() {
         if let parentCategory = parentCategory {
             tags = parentCategory.tags
         }
         configureUI()
     }
     
-    private func reloadData() {
+    fileprivate func reloadData() {
         tagsTextView.updateWithNewData(
-            tags.enumerate().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
+            tags.enumerated().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
         )
         
         guard tableView.numberOfSections == 1 else {
             tableView.reloadData()
             return
         }
-        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
     
     // MARK: Actions
     
     func moreBarButtonItemDidPressed() {
-        presentViewController(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
     
-    @IBAction func selectAllDidPressed(sender: AnyObject) {
+    @IBAction func selectAllDidPressed(_ sender: AnyObject) {
         let selectedCount = selectedIndexes.count
         selectedIndexes.removeAll()
         
@@ -129,24 +129,24 @@ class TagListViewController: UIViewController, Alertable {
         updateUI()
     }
     
-    @IBAction func copyToClipboardDidPressed(sender: AnyObject) {
+    @IBAction func copyToClipboardDidPressed(_ sender: AnyObject) {
         PasteboardUtils.copyString(tagsTextView.text)
         
-        let alert = UIAlertController(title: "Copied", message: "Now paste the tags into your Instagram/Flickr picture comments or caption", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        let alert = UIAlertController(title: "Copied", message: "Now paste the tags into your Instagram/Flickr picture comments or caption", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         if URLSchemesUtils.canOpenInstagram() {
-            alert.addAction(UIAlertAction(title: "Instagram", style: .Default, handler: { action in
+            alert.addAction(UIAlertAction(title: "Instagram", style: .default, handler: { action in
                 URLSchemesUtils.openInstagram()
             }))
         }
         
         if URLSchemesUtils.canOpenFlickr() {
-            alert.addAction(UIAlertAction(title: "Flickr", style: .Default, handler: { action in
+            alert.addAction(UIAlertAction(title: "Flickr", style: .default, handler: { action in
                 URLSchemesUtils.openFlickr()
             }))
         }
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
 }
@@ -155,72 +155,72 @@ class TagListViewController: UIViewController, Alertable {
 
 extension TagListViewController {
     
-    private func configureUI() {
+    fileprivate func configureUI() {
         setTabBarHidden(true)
         
         if let parentCategory = parentCategory {
-            title = parentCategory.name.capitalizedString
+            title = parentCategory.name.capitalized
         }
         
         // Configure table view.
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kTableViewCellReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: kTableViewCellReuseIdentifier)
         
         // Configure text view:
         // Add as a subview to a root view and add constraints.
         view.insertSubview(tagsTextView, belowSubview: toolbar)
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[topGuide]-0-[textView]", options: NSLayoutFormatOptions(), metrics: nil, views: ["topGuide": topLayoutGuide, "textView": tagsTextView]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[textView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
-        view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .Bottom, relatedBy: .Equal, toItem: toolbar, attribute: .Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-0-[textView]", options: NSLayoutFormatOptions(), metrics: nil, views: ["topGuide": topLayoutGuide, "textView": tagsTextView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[textView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
+        view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .bottom, relatedBy: .equal, toItem: toolbar, attribute: .top, multiplier: 1.0, constant: 0.0))
         
         // Create more bar button and present action sheet with actions below on click.
-        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"), style: .Plain, target: self, action: #selector(moreBarButtonItemDidPressed))
+        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"), style: .plain, target: self, action: #selector(moreBarButtonItemDidPressed))
         navigationItem.rightBarButtonItem = moreBarButtonItem
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Table View", style: .Default, handler: { action in
-            guard self.tagsTextView.hidden == false else { return }
-            self.tableView.hidden = false
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Table View", style: .default, handler: { action in
+            guard self.tagsTextView.isHidden == false else { return }
+            self.tableView.isHidden = false
             self.tagsTextView.setTextViewHidden(true)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .Default, handler: { action in
-            guard self.tagsTextView.hidden == true else { return }
-            self.tableView.hidden = true
+        actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .default, handler: { action in
+            guard self.tagsTextView.isHidden == true else { return }
+            self.tableView.isHidden = true
             self.tagsTextView.setTextViewHidden(false)
         }))
         
-        messageBarButtonItem.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(14.0)], forState: .Normal)
-        setUIState(.Default)
+        messageBarButtonItem.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)], for: UIControlState())
+        setUIState(.default)
     }
     
-    func setUIState(state: TagListViewControllerUIState) {
-        func setItemsEnabled(enabled: Bool) {
-            navigationItem.rightBarButtonItems?.forEach { $0.enabled = enabled }
-            toolbar.items?.forEach { $0.enabled = enabled }
-            if enabled { messageBarButtonItem.enabled = false }
+    func setUIState(_ state: TagListViewControllerUIState) {
+        func setItemsEnabled(_ enabled: Bool) {
+            navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = enabled }
+            toolbar.items?.forEach { $0.isEnabled = enabled }
+            if enabled { messageBarButtonItem.isEnabled = false }
         }
         
         UIUtils.hideNetworkActivityIndicator()
         
         switch state {
-        case .Default:
+        case .default:
             setItemsEnabled(tags.count > 0)
             updateUI()
-        case .Downloading:
+        case .downloading:
             UIUtils.showNetworkActivityIndicator()
             setItemsEnabled(false)
             messageBarButtonItem.title = "Updating..."
-        case .SuccessDoneWithDownloading:
+        case .successDoneWithDownloading:
             setItemsEnabled(tags.count > 0)
             updateUI()
-        case .FailureDoneWithDownloading(let error):
+        case .failureDoneWithDownloading(let error):
             setItemsEnabled(false)
             messageBarButtonItem.title = error.localizedFailureReason ?? "Failed to fetch tags"
         }
     }
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         let selectedCount = selectedIndexes.count
         
         guard tags.count > 0 else {
@@ -230,7 +230,7 @@ extension TagListViewController {
         messageBarButtonItem.title = selectedCount == tags.count
             ? "All Selected (\(selectedCount))" : "\(selectedCount) Selected"
         
-        copyToClipboardBarButtonItem.enabled = selectedIndexes.count > 0
+        copyToClipboardBarButtonItem.isEnabled = selectedIndexes.count > 0
     }
     
 }
@@ -241,17 +241,17 @@ extension TagListViewController: UITableViewDataSource {
     
     // MARK: UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tags.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCellWithIdentifier(kTableViewCellReuseIdentifier)!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: kTableViewCellReuseIdentifier)!
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.textLabel?.text = tags[indexPath.row].name
-        cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .Checkmark : .None
+        cell.accessoryType = selectedIndexes.contains(indexPath.row) ? .checkmark : .none
     }
     
 }
@@ -260,8 +260,8 @@ extension TagListViewController: UITableViewDataSource {
 
 extension TagListViewController: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if selectedIndexes.contains(indexPath.row) {
             selectedIndexes.remove(indexPath.row)

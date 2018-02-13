@@ -46,24 +46,24 @@ class MoreInfoTableViewController: UITableViewController {
         assert(flickr != nil && persistenceCentral != nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifier.ShowCategories.rawValue {
-            let controller = segue.destinationViewController as! CategoriesTableViewController
+            let controller = segue.destination as! CategoriesTableViewController
             controller.persistenceCentral = persistenceCentral
         } else if segue.identifier == SegueIdentifier.AddCategory.rawValue {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
         } else if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
-            let controller = segue.destinationViewController as! FlickrUserAccountViewController
+            let controller = segue.destination as! FlickrUserAccountViewController
             controller.flickr = flickr
         }
     }
     
     // MARK: UITableViewDelegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }

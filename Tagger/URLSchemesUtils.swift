@@ -28,14 +28,14 @@ class URLSchemesUtils {
     
     // MARK: Properties
     
-    private static let application = UIApplication.sharedApplication()
+    fileprivate static let application = UIApplication.shared
     
-    static let instagramURL = NSURL(string: InstagramAppURL)!
-    static let flickrURL = NSURL(string: FLickrAppURL)!
+    static let instagramURL = URL(string: InstagramAppURL)!
+    static let flickrURL = URL(string: FLickrAppURL)!
     
     // MARK: Init
     
-    private init() {
+    fileprivate init() {
     }
     
     // MARK: Public

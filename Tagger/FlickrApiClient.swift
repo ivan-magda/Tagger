@@ -32,11 +32,11 @@ class FlickrApiClient: MIApiClient {
      *  This class constant provides an easy way to get access
      *  to a shared instance of the FlickrApiClient class.
      */
-    static let sharedInstance = FlickrApiClient(configuration: .defaultSessionConfiguration(), baseURL: "https://api.flickr.com/services/rest")
+    static let sharedInstance = FlickrApiClient(configuration: .default, baseURL: "https://api.flickr.com/services/rest")
     
     // MARK: - Init
     
-    override init(configuration: NSURLSessionConfiguration, baseURL: String) {
+    override init(configuration: URLSessionConfiguration, baseURL: String) {
         super.init(configuration: configuration, baseURL: baseURL)
         configuration.timeoutIntervalForRequest  = 30.0
         configuration.timeoutIntervalForResource = 60.0

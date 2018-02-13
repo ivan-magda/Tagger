@@ -60,7 +60,7 @@ struct FlickrAlbum {
 
 extension FlickrAlbum: JSONParselable {
     
-    static func decode(input: JSONDictionary) -> FlickrAlbum? {
+    static func decode(_ input: JSONDictionary) -> FlickrAlbum? {
         return FlickrAlbum.init(json: input)
     }
     

@@ -38,7 +38,7 @@ class ManageCategoryTableViewController: UITableViewController, Alertable {
     var persistenceCentral: PersistenceCentral!
     var category: Category?
     
-    private var name = String()
+    fileprivate var name = String()
     
     // MARK: View Life Cycle
     
@@ -48,71 +48,71 @@ class ManageCategoryTableViewController: UITableViewController, Alertable {
         setup()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         textField.becomeFirstResponder()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textField.resignFirstResponder()
     }
     
     // MARK: Actions
     
-    @IBAction func cancelDidPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelDidPressed(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func doneDidPressed(sender: AnyObject) {
+    @IBAction func doneDidPressed(_ sender: AnyObject) {
         textField.resignFirstResponder()
         
-        name = name.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         if category != nil {
             editCategory()
         } else {
             createCategory()
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(kManageCategoryTableViewControllerDidDoneOnCategoryNotification, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: kManageCategoryTableViewControllerDidDoneOnCategoryNotification), object: nil)
     }
     
     // MARK: Private
     
-    private func setup() {
+    fileprivate func setup() {
         configureUI()
         textField.delegate = self
     }
     
-    private func shouldDoneOnCategory() -> Bool {
+    fileprivate func shouldDoneOnCategory() -> Bool {
         guard let category = category else {
             return true
         }
         return name != category.name
     }
     
-    private func createCategory() {
+    fileprivate func createCategory() {
         persistenceCentral.saveCategoryWithName(name)
         
         let alert = self.alert("Success", message: "Category created") { _ in
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
-    private func editCategory() {
+    fileprivate func editCategory() {
         let manager = persistenceCentral.coreDataStackManager
         
         category!.name = name
         if let image = category!.image {
-            manager.managedObjectContext.deleteObject(image)
+            manager.managedObjectContext.delete(image)
         }
         manager.saveContext()
         
         let alert = self.alert("Success", message: "Category edited", handler: { _ in
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         })
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
 }
@@ -121,7 +121,7 @@ class ManageCategoryTableViewController: UITableViewController, Alertable {
 
 extension ManageCategoryTableViewController {
     
-    private func configureUI() {
+    fileprivate func configureUI() {
         if let category = category {
             title = "Edit Category"
             textField.text = category.name
@@ -132,8 +132,8 @@ extension ManageCategoryTableViewController {
         updateDoneButtonEnabledState()
     }
     
-    private func updateDoneButtonEnabledState() {
-        doneBarButtonItem.enabled = name.characters.count > 0 && shouldDoneOnCategory()
+    fileprivate func updateDoneButtonEnabledState() {
+        doneBarButtonItem.isEnabled = name.characters.count > 0 && shouldDoneOnCategory()
     }
     
 }
@@ -142,17 +142,17 @@ extension ManageCategoryTableViewController {
 
 extension ManageCategoryTableViewController: UITextFieldDelegate {
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        name = (textField.text ?? "" as NSString).stringByReplacingCharactersInRange(range, withString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        name = (textField.text ?? ("" as NSString) as String).replacingCharacters(in: range, with: string)
         updateDoneButtonEnabledState()
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         name = textField.text ?? ""
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if shouldDoneOnCategory() {
             doneDidPressed(textField)
             return true

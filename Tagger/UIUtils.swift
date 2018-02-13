@@ -28,44 +28,44 @@ class UIUtils {
     
     // MARK: Init
     
-    private init() {
+    fileprivate init() {
     }
 
     // MARK: - Class Functions -
     // MARK: Screen Sizes
     
     class func screenBounds() -> CGRect {
-        return UIScreen.mainScreen().bounds
+        return UIScreen.main.bounds
     }
     
     class func screenSize() -> CGSize {
-        return UIScreen.mainScreen().bounds.size
+        return UIScreen.main.bounds.size
     }
     
     class func statusBarHeight() -> CGFloat {
-        return UIApplication.sharedApplication().statusBarFrame.height
+        return UIApplication.shared.statusBarFrame.height
     }
     
     // MARK: Network Indicator
     
     class func showNetworkActivityIndicator() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     class func hideNetworkActivityIndicator() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     // MARK: View Controller
     
     class func getRootViewController() -> UIViewController? {
-        return UIApplication.sharedApplication().keyWindow?.rootViewController
+        return UIApplication.shared.keyWindow?.rootViewController
     }
     
     // MARK: Status Bar
     
-    class func setStatusBarBackgroundColor(color: UIColor) {
-        guard let statusBar = UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as? UIView else {
+    class func setStatusBarBackgroundColor(_ color: UIColor) {
+        guard let statusBar = (UIApplication.shared.value(forKey: "statusBarWindow") as AnyObject).value(forKey: "statusBar") as? UIView else {
             return
         }
         statusBar.backgroundColor = color

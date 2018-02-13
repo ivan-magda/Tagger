@@ -37,11 +37,11 @@ class PersistenceCentral: NSObject {
     static let sharedInstance = PersistenceCentral()
     let coreDataStackManager = CoreDataStackManager.sharedInstance
     
-    private (set) var trendingCategories: [Category]!
-    private (set) var categories: [Category]!
+    fileprivate (set) var trendingCategories: [Category]!
+    fileprivate (set) var categories: [Category]!
     
-    private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest(entityName: Category.type)
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
+        let request = NSFetchRequest<Category>(entityName: Category.type)
         request.sortDescriptors = [
             NSSortDescriptor(key: Category.Key.Trending.rawValue, ascending: true),
             NSSortDescriptor(key: Category.Key.Name.rawValue, ascending: true,
@@ -62,7 +62,7 @@ class PersistenceCentral: NSObject {
     
     // MARK: Init
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         setup()
     }
@@ -70,15 +70,15 @@ class PersistenceCentral: NSObject {
     // MARK: - Private Methods -
     // MARK: Setup
     
-    private func setup() {
+    fileprivate func setup() {
         seedInitialDataIfNeeded()
         _ = try! fetchedResultsController.performFetch()
         updateCategories()
     }
     
-    private func seedInitialDataIfNeeded() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        guard userDefaults.boolForKey(kSeedInitialDataKey) == false else { return }
+    fileprivate func seedInitialDataIfNeeded() {
+        let userDefaults = UserDefaults.standard
+        guard userDefaults.bool(forKey: kSeedInitialDataKey) == false else { return }
         
         let context = coreDataStackManager.managedObjectContext
         
@@ -102,28 +102,28 @@ class PersistenceCentral: NSObject {
         }
         coreDataStackManager.saveContext()
         
-        userDefaults.setBool(true, forKey: kSeedInitialDataKey)
+        userDefaults.set(true, forKey: kSeedInitialDataKey)
     }
     
     // MARK: - Convenience -
     // MARK: Category
     
-    func deleteCategory(category: Category) {
-        coreDataStackManager.managedObjectContext.deleteObject(category)
+    func deleteCategory(_ category: Category) {
+        coreDataStackManager.managedObjectContext.delete(category)
         coreDataStackManager.saveContext()
     }
     
     func deleteAllCategories() {
-        categories.forEach { coreDataStackManager.managedObjectContext.deleteObject($0) }
+        categories.forEach { coreDataStackManager.managedObjectContext.delete($0) }
         coreDataStackManager.saveContext()
     }
     
-    func deleteAllTagsInCategory(category: Category) {
+    func deleteAllTagsInCategory(_ category: Category) {
         category.deleteAllTags()
         coreDataStackManager.saveContext()
     }
     
-    func saveCategoryWithName(name: String) {
+    func saveCategoryWithName(_ name: String) {
         let _ = Category(name: name, context: coreDataStackManager.managedObjectContext)
         coreDataStackManager.saveContext()
     }
@@ -136,24 +136,24 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
     
     // MARK: NSFetchedResultsControllerDelegate
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         updateCategories()
         PersistenceCentral.postDidChangeContentNotification()
     }
     
     // MARK: Helpers
     
-    private func updateCategories() {
-        func objectsForSection(section: Int) -> [Category] {
+    fileprivate func updateCategories() {
+        func objectsForSection(_ section: Int) -> [Category] {
             return fetchedResultsController.sections?[section].objects as? [Category] ?? [Category]()
         }
         categories = objectsForSection(0)
         trendingCategories = objectsForSection(1)
     }
     
-    private class func postDidChangeContentNotification() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(kPersistenceCentralDidChangeContentNotification, object: self)
+    fileprivate class func postDidChangeContentNotification() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.post(name: Notification.Name(rawValue: kPersistenceCentralDidChangeContentNotification), object: self)
     }
     
 }

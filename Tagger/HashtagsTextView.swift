@@ -26,7 +26,7 @@ import UIKit
 
 class HashtagsTextView: UITextView {
     
-    private var tapGestureRecognizer: UITapGestureRecognizer!
+    fileprivate var tapGestureRecognizer: UITapGestureRecognizer!
     
     // MARK: Init
     
@@ -42,8 +42,8 @@ class HashtagsTextView: UITextView {
     
     // MARK: Public
     
-    func updateWithNewData(tags: [String]) {
-        let tagsText = tags.joinWithSeparator(" #")
+    func updateWithNewData(_ tags: [String]) {
+        let tagsText = tags.joined(separator: " #")
         
         if tagsText.characters.count > 0 {
             text = "#\(tagsText)"
@@ -52,31 +52,31 @@ class HashtagsTextView: UITextView {
         }
     }
     
-    func setTextViewHidden(hidden: Bool) {
+    func setTextViewHidden(_ hidden: Bool) {
         let duration = 0.25
         if hidden {
-            UIView.animateWithDuration(duration, animations: {
+            UIView.animate(withDuration: duration, animations: {
                 self.alpha = 0.0
                 }, completion: { finish in
-                    if finish { self.hidden = true }
+                    if finish { self.isHidden = true }
             })
         } else {
-            self.hidden = false
-            UIView.animateWithDuration(duration) {
+            self.isHidden = false
+            UIView.animate(withDuration: duration, animations: {
                 self.alpha = 1.0
-            }
+            }) 
         }
     }
     
     // MARK: Actions
     
     func didTapOnText() {
-        selectedTextRange = textRangeFromPosition(beginningOfDocument, toPosition: endOfDocument)
+        selectedTextRange = textRange(from: beginningOfDocument, to: endOfDocument)
     }
     
     // MARK: Private
     
-    private func setup() {
+    fileprivate func setup() {
         updateWithNewData([])
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnText))
         addGestureRecognizer(tapGestureRecognizer)

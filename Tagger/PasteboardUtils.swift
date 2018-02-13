@@ -28,13 +28,13 @@ class PasteboardUtils {
     
     // MARK: Init
     
-    private init() {
+    fileprivate init() {
     }
     
     // MARK: Functions
     
-    class func copyString(string: String) {
-        UIPasteboard.generalPasteboard().string = string
+    class func copyString(_ string: String) {
+        UIPasteboard.general.string = string
     }
     
 }

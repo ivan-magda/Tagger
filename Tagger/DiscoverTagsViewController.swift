@@ -25,12 +25,12 @@ import UIKit
 // MARK: Types
 
 private enum SectionType: Int, CaseCountable {
-    case Trends
-    case Categories
+    case trends
+    case categories
     
     enum TrendingTags: Int, CaseCountable {
-        case Today
-        case Week
+        case today
+        case week
         static let sectionTitle = "Trending Tags"
     }
     
@@ -56,20 +56,20 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     var flickr: MIFlickr!
     var persistenceCentral: PersistenceCentral!
     
-    private var categories: [Category] {
+    fileprivate var categories: [Category] {
         get {
             return persistenceCentral.categories
         }
     }
-    private var trendingCategories: [Category] {
+    fileprivate var trendingCategories: [Category] {
         get {
             return persistenceCentral.trendingCategories
         }
     }
-    private var imagesIsInLoading = Set<NSIndexPath>()
+    fileprivate var imagesIsInLoading = Set<IndexPath>()
     
-    private var numberOfColumns = 2
-    private var maxNumberOfColumns = 3
+    fileprivate var numberOfColumns = 2
+    fileprivate var maxNumberOfColumns = 3
     
     // MARK: - View Life Cycle
     
@@ -79,17 +79,17 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         setup()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavigationController()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNavigationBarHidden(false)
     }
     
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
         if numberOfColumns > maxNumberOfColumns {
             numberOfColumns = maxNumberOfColumns
@@ -98,7 +98,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Public
@@ -107,17 +107,17 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         collectionView.reloadData()
     }
     
-    func hideBarGesture(recognizer: UIPanGestureRecognizer) {
-        updateNavigationBarBackgroundColor(hidden: navigationController!.navigationBarHidden)
+    func hideBarGesture(_ recognizer: UIPanGestureRecognizer) {
+        updateNavigationBarBackgroundColor(hidden: navigationController!.isNavigationBarHidden)
     }
     
     // MARK: - Private
     
-    private func setup() {
+    fileprivate func setup() {
         configureUI()
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(reloadData), name: kPersistenceCentralDidChangeContentNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: kPersistenceCentralDidChangeContentNotification), object: nil)
     }
     
 }
@@ -126,7 +126,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
 
 extension DiscoverTagsViewController {
     
-    private func configureUI() {
+    fileprivate func configureUI() {
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -137,25 +137,25 @@ extension DiscoverTagsViewController {
         collectionView.contentInset.top += layout.sectionInset.top
     }
     
-    private func updateTitleColorForCell(cell: TagCollectionViewCell) {
-        cell.title.textColor = cell.imageView.image != nil ? .whiteColor() : .blackColor()
+    fileprivate func updateTitleColorForCell(_ cell: TagCollectionViewCell) {
+        cell.title.textColor = cell.imageView.image != nil ? .white : .black
     }
     
     // MARK: Navigation Controller
     
-    private func configureNavigationController() {
+    fileprivate func configureNavigationController() {
         navigationController?.hidesBarsOnSwipe = true
         navigationController?.barHideOnSwipeGestureRecognizer.addTarget(self, action: #selector(hideBarGesture))
     }
     
-    private func setNavigationBarHidden(hidden: Bool, animated: Bool = false) {
+    fileprivate func setNavigationBarHidden(_ hidden: Bool, animated: Bool = false) {
         navigationController?.setNavigationBarHidden(hidden, animated: animated)
         navigationController?.hidesBarsOnSwipe = hidden
         updateNavigationBarBackgroundColor(hidden: hidden)
     }
     
-    private func updateNavigationBarBackgroundColor(hidden hidden: Bool) {
-        let color = hidden ? UIColor.whiteColor() : UIColor.clearColor()
+    fileprivate func updateNavigationBarBackgroundColor(hidden: Bool) {
+        let color = hidden ? UIColor.white : UIColor.clear
         UIUtils.setStatusBarBackgroundColor(color)
     }
     
@@ -167,30 +167,30 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     
     // MARK: UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return SectionType.countCases()
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let section = SectionType(rawValue: section) else { return 0 }
         switch section {
-        case .Trends:
+        case .trends:
             return trendingCategories.count
-        case .Categories:
+        case .categories:
             return categories.count
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TagCollectionViewCell.reuseIdentifier, forIndexPath: indexPath) as! TagCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCollectionViewCell.reuseIdentifier, for: indexPath) as! TagCollectionViewCell
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionElementKindSectionHeader:
-            let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: SectionHeaderCollectionReusableView.reuseIdentifier, forIndexPath: indexPath) as! SectionHeaderCollectionReusableView
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderCollectionReusableView.reuseIdentifier, for: indexPath) as! SectionHeaderCollectionReusableView
             configureSectionHeaderView(headerView, forIndexPath: indexPath)
             return headerView
         default:
@@ -200,18 +200,18 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
     
     // MARK: Helpers
     
-    private func configureSectionHeaderView(view: SectionHeaderCollectionReusableView, forIndexPath indexPath: NSIndexPath) {
+    fileprivate func configureSectionHeaderView(_ view: SectionHeaderCollectionReusableView, forIndexPath indexPath: IndexPath) {
         switch SectionType(rawValue: indexPath.section)! {
-        case .Trends:
-            view.title.text = SectionType.TrendingTags.sectionTitle.uppercaseString
-        case .Categories:
-            view.title.text = SectionType.TagCategories.sectionTitle.uppercaseString
+        case .trends:
+            view.title.text = SectionType.TrendingTags.sectionTitle.uppercased()
+        case .categories:
+            view.title.text = SectionType.TagCategories.sectionTitle.uppercased()
         }
     }
     
-    private func configureCell(cell: TagCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+    fileprivate func configureCell(_ cell: TagCollectionViewCell, atIndexPath indexPath: IndexPath) {
         let category = categoryForIndexPath(indexPath)
-        cell.title.text = category.name.lowercaseString
+        cell.title.text = category.name.lowercased()
         updateTitleColorForCell(cell)
         
         if let image = category.image?.image  {
@@ -224,15 +224,15 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         }
     }
     
-    private func categoryForIndexPath(indexPath: NSIndexPath) -> Category {
-        return indexPath.section == SectionType.Trends.rawValue
+    fileprivate func categoryForIndexPath(_ indexPath: IndexPath) -> Category {
+        return indexPath.section == SectionType.trends.rawValue
             ? trendingCategories[indexPath.row]
             : categories[indexPath.row]
     }
     
     // TODO: If network is unreachable, then don't try to download the image again.
-    private func loadImageForCellAtIndexPath(indexPath: NSIndexPath) {
-        func handleError(error: NSError) {
+    fileprivate func loadImageForCellAtIndexPath(_ indexPath: IndexPath) {
+        func handleError(_ error: NSError) {
             print("Failed to load an image. Error: \(error.localizedDescription)")
             setImage(nil, toCellAtIndexPath: indexPath)
             loadImageForCellAtIndexPath(indexPath)
@@ -242,8 +242,8 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         let category = categoryForIndexPath(indexPath)
         UIUtils.showNetworkActivityIndicator()
         
-        if indexPath.section == SectionType.Trends.rawValue {
-            let period: Period = indexPath.row == SectionType.TrendingTags.Today.rawValue ? .Day : .Week
+        if indexPath.section == SectionType.trends.rawValue {
+            let period: Period = indexPath.row == SectionType.TrendingTags.today.rawValue ? .Day : .Week
             flickr.api.tagsHotListForPeriod(
                 period,
                 successBlock: {
@@ -262,7 +262,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         }
     }
     
-    private func setImage(image: UIImage?, toCellAtIndexPath indexPath: NSIndexPath) {
+    fileprivate func setImage(_ image: UIImage?, toCellAtIndexPath indexPath: IndexPath) {
         imagesIsInLoading.remove(indexPath)
         UIUtils.hideNetworkActivityIndicator()
         
@@ -271,8 +271,8 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
             persistenceCentral.setImage(image, toCategory: categoryForIndexPath(indexPath))
         }
         
-        guard collectionView.indexPathsForVisibleItems().contains(indexPath) == true else { return }
-        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCollectionViewCell else { return }
+        guard collectionView.indexPathsForVisibleItems.contains(indexPath) == true else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TagCollectionViewCell else { return }
         
         cell.imageView.image = image
         updateTitleColorForCell(cell)
@@ -284,9 +284,9 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
 
 extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
-            return CGSizeZero
+            return CGSize.zero
         }
         
         let sectionInsets = layout.sectionInset
@@ -301,8 +301,8 @@ extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: width)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        guard collectionView.numberOfItemsInSection(section) > 0 else { return CGSizeZero }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        guard collectionView.numberOfItems(inSection: section) > 0 else { return CGSize.zero }
         return CGSize(width: collectionView.bounds.width, height: SectionHeaderCollectionReusableView.height)
     }
     
@@ -312,19 +312,19 @@ extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
 
 extension DiscoverTagsViewController: UICollectionViewDelegate {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
         
         let category = categoryForIndexPath(indexPath)
         let flickrApi = flickr.api
         
         switch SectionType(rawValue: indexPath.section)! {
-        case .Trends:
+        case .trends:
             let period = indexPath.row == 0 ? Period.Day : Period.Week
             let hotTagsViewController = FlickrHotTagsViewController(flickrApiClient: flickrApi, period: period, category: category)
             hotTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(hotTagsViewController, animated: true)
-        case .Categories:
+        case .categories:
             let relatedTagsViewController = FlickrRelatedTagsViewController(flickrApiClient: flickr.api, category: category)
             relatedTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(relatedTagsViewController, animated: true)

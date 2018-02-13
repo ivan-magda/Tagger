@@ -37,7 +37,7 @@ class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     }()
     
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         indicator.hidesWhenStopped = true
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
@@ -63,18 +63,18 @@ class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     
     // MARK: ConfigureUI
     
-    private func setupViews() {
+    fileprivate func setupViews() {
         backgroundColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.00)
         
         // Setup image view.
         addSubview(photoImageView)
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": photoImageView]))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : photoImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": photoImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : photoImageView]))
         
         // Setup activity indicator.
         addSubview(activityIndicator)
-        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0.0))
-        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0.0))
+        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0.0))
+        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0.0))
     }
     
 }

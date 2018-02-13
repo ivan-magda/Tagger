@@ -43,19 +43,19 @@ class CategoryImage: NSManagedObject {
         }
     }
     
-    private lazy var _image: UIImage? = {
-        return UIImage(data: self.data!)
+    fileprivate lazy var _image: UIImage? = {
+        return UIImage(data: self.data! as Data)
     }()
     
     // MARK: Init
 
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
-    convenience init(data: NSData, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName(CategoryImage.type, inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+    convenience init(data: Data, context: NSManagedObjectContext) {
+        let entity = NSEntityDescription.entity(forEntityName: CategoryImage.type, in: context)!
+        self.init(entity: entity, insertInto: context)
         self.data = data
     }
     

@@ -34,30 +34,30 @@ import Foundation
     - UnexpectedError: Failed wit unexpected error.
 */
 enum ApiClientResult {
-    case RawData(NSData)
-    case Json(JSONDictionary)
-    case Error(NSError)
-    case NotFound
-    case ServerError(Int)
-    case ClientError(Int)
-    case UnexpectedError(Int, NSError?)
+    case rawData(Data)
+    case json(JSONDictionary)
+    case error(NSError)
+    case notFound
+    case serverError(Int)
+    case clientError(Int)
+    case unexpectedError(Int, NSError?)
 }
 
 extension ApiClientResult {
     
     func defaultErrorMessage() -> String? {
         switch self {
-        case .Error(let error):
+        case .error(let error):
             return error.localizedDescription
-        case .NotFound:
+        case .notFound:
             return NSLocalizedString("Not found.",
                                      comment: "Requested URL not found")
-        case .ServerError(let code):
+        case .serverError(let code):
             return NSLocalizedString("Server error.",
                                      comment: "Server error occured with code: \(code)")
-        case .ClientError(let code):
+        case .clientError(let code):
             return NSLocalizedString("Client error.", comment: "Client error occured with code: \(code)")
-        case .UnexpectedError(let code, let error):
+        case .unexpectedError(let code, let error):
             return (error == nil
                 ? NSLocalizedString("Unexpected error occured with code: \(code).",
                     comment: "Unexpected error default template")

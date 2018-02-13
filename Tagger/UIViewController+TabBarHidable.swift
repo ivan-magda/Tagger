@@ -24,8 +24,8 @@ import UIKit
 
 extension UIViewController {
     
-    func setTabBarHidden(hidden: Bool) {
-        tabBarController?.tabBar.hidden = hidden
+    func setTabBarHidden(_ hidden: Bool) {
+        tabBarController?.tabBar.isHidden = hidden
     }
     
 }

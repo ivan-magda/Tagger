@@ -27,19 +27,19 @@ import Foundation
 extension String {
     
     func generateHMACSHA1EncriptedString(secretKey key: String) -> String {
-        let secretData = key.dataUsingEncoding(NSUTF8StringEncoding)!
-        let stringData = dataUsingEncoding(NSUTF8StringEncoding)!
+        let secretData = key.data(using: String.Encoding.utf8)!
+        let stringData = data(using: String.Encoding.utf8)!
         
-        let keyBytes = secretData.bytes
-        let dataBytes = stringData.bytes
+        let keyBytes = (secretData as NSData).bytes
+        let dataBytes = (stringData as NSData).bytes
         
         let digestLength = Int(CC_SHA1_DIGEST_LENGTH)
-        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(digestLength)
+        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLength)
         
-        CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), keyBytes, secretData.length, dataBytes, stringData.length, result)
-        let signatureData = NSData(bytes: result, length: digestLength)
+        CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), keyBytes, secretData.count, dataBytes, stringData.count, result)
+        let signatureData = Data(bytes: UnsafePointer<UInt8>(result), count: digestLength)
         
-        return signatureData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions())
+        return signatureData.base64EncodedString(options: NSData.Base64EncodingOptions())
     }
     
 }

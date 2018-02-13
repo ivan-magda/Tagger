@@ -33,7 +33,7 @@ public typealias JSONDictionary = [String: AnyObject]
 // MARK: - Private Functions
 
 /// Takes a double optional and removes one level of optional-ness.
-private func flatten<A>(x: A??) -> A? {
+private func flatten<A>(_ x: A??) -> A? {
     if let y = x { return y }
     return nil
 }
@@ -41,8 +41,8 @@ private func flatten<A>(x: A??) -> A? {
 // The custom operator >>>= takes an optional of type A to the left,
 // and a function that takes an A as a parameter and returns an optional B to the right.
 // Basically, it says "apply."
-infix operator >>>= {}
-private func >>>= <A, B> (optional: A?, f: A -> B?) -> B? {
+infix operator >>>=
+private func >>>= <A, B> (optional: A?, f: (A) -> B?) -> B? {
     return flatten(optional.map(f))
 }
 
@@ -52,7 +52,7 @@ class JSON {
     
     // MARK: - Init
     
-    private init() {
+    fileprivate init() {
     }
     
     // MARK: - Decode
@@ -60,27 +60,27 @@ class JSON {
     // These functions retrieve data from JSON structures in a type-safe manner,
     // and they're the building blocks.
     
-    class func number(input: [NSObject: AnyObject], key: String) -> NSNumber? {
+    class func number(_ input: [AnyHashable: Any], key: String) -> NSNumber? {
         return input[key] >>>= { $0 as? NSNumber }
     }
     
-    class func int(input: [NSObject: AnyObject], key: String) -> Int? {
-        return number(input, key: key).map { $0.integerValue }
+    class func int(_ input: [AnyHashable: Any], key: String) -> Int? {
+        return number(input, key: key).map { $0.intValue }
     }
     
-    class func float(input: [NSObject: AnyObject], key: String) -> Float? {
+    class func float(_ input: [AnyHashable: Any], key: String) -> Float? {
         return number(input, key: key).map { $0.floatValue }
     }
     
-    class func double(input: [NSObject: AnyObject], key: String) -> Double? {
+    class func double(_ input: [AnyHashable: Any], key: String) -> Double? {
         return number(input, key: key).map { $0.doubleValue }
     }
     
-    class func string(input: [String: AnyObject], key: String) -> String? {
+    class func string(_ input: [String: AnyObject], key: String) -> String? {
         return input[key] >>>= { $0 as? String }
     }
     
-    class func bool(input: [String: AnyObject], key: String) -> Bool? {
+    class func bool(_ input: [String: AnyObject], key: String) -> Bool? {
         return number(input, key: key).map { $0.boolValue }
     }
     

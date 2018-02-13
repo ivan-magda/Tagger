@@ -28,12 +28,12 @@ class RandomNumberUtils {
     
     // MARK: - Init
     
-    private init() {
+    fileprivate init() {
     }
     
     // MARK: Static
     
-    class func numberFromZeroTo(number: Int) -> Int {
+    class func numberFromZeroTo(_ number: Int) -> Int {
         return Int(arc4random_uniform(UInt32(number)))
     }
     

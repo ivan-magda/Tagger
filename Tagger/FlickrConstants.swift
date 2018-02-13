@@ -84,9 +84,9 @@ extension FlickrApiClient {
             static let PerPageMax = 500
             
             enum ContentType: Int {
-                case Photos = 1
-                case Screenshots
-                case Other
+                case photos = 1
+                case screenshots
+                case other
             }
         }
         

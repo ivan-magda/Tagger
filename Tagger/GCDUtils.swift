@@ -24,20 +24,20 @@ import Foundation
 
 typealias Block = () -> Void
 
-func performOnMain(block: Block) {
-    dispatch_async(dispatch_get_main_queue()) {
+func performOnMain(_ block: @escaping Block) {
+    DispatchQueue.main.async {
         block()
     }
 }
 
-func performAfterOnMain(time: Double, block: Block) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+func performAfterOnMain(_ time: Double, block: @escaping Block) {
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
         block()
     }
 }
 
-func performOnBackgroud(block: Block) {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+func performOnBackgroud(_ block: @escaping Block) {
+    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
         block()
     }
 }

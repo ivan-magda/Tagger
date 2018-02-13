@@ -25,8 +25,8 @@ import UIKit.UIImage
 
 // MARK: Typealias
 
-typealias ImageDownloadingCompletionHandler = (image: UIImage) -> Void
-typealias RequestFailCompletionHandler = (error: NSError) -> Void
+typealias ImageDownloadingCompletionHandler = (_ image: UIImage) -> Void
+typealias RequestFailCompletionHandler = (_ error: NSError) -> Void
 
 // MARK: - HttpApiClient (Convenience)
 
@@ -34,22 +34,22 @@ extension HttpApiClient {
     
     // MARK: Methods
     
-    func downloadImageWithURL(url: NSURL, successBlock success: ImageDownloadingCompletionHandler, failBlock fail: RequestFailCompletionHandler) {
-        fetchRawDataForRequest(NSURLRequest(URL: url)) { result in
-            func sendError(error: String) {
+    func downloadImageWithURL(_ url: URL, successBlock success: @escaping ImageDownloadingCompletionHandler, failBlock fail: @escaping RequestFailCompletionHandler) {
+        fetchRawDataForRequest(URLRequest(url: url)) { result in
+            func sendError(_ error: String) {
                 self.debugLog("Error: \(error)")
                 let error = NSError(
                     domain: FlickrApiClient.Constants.Error.LoadImageErrorDomain,
                     code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
                     userInfo: [NSLocalizedDescriptionKey : error]
                 )
-                fail(error: error)
+                fail(error)
             }
             
             switch result {
-            case .Error(let error):
+            case .error(let error):
                 sendError(error.localizedDescription)
-            case .RawData(let data):
+            case .rawData(let data):
                 performOnBackgroud {
                     guard let image = UIImage(data: data) else {
                         performOnMain {
@@ -58,7 +58,7 @@ extension HttpApiClient {
                         return
                     }
                     performOnMain {
-                        success(image: image)
+                        success(image)
                     }
                 }
             default:

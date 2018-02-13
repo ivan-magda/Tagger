@@ -24,7 +24,7 @@ import UIKit
 
 // MARK: Typealias
 
-typealias MIImagePickerDidFinishPickingImageCompletionHandler = (image: UIImage) -> Void
+typealias MIImagePickerDidFinishPickingImageCompletionHandler = (_ image: UIImage) -> Void
 
 // MARK: - MIImagePickerController: UIImagePickerController
 
@@ -40,28 +40,28 @@ class MIImagePickerController: UIImagePickerController, Alertable {
     
     // MARK: - Presenting
     
-    class func presentInViewController(rootViewController: UIViewController, withDidFinishPickingImageBlock block: MIImagePickerDidFinishPickingImageCompletionHandler) {
+    class func presentInViewController(_ rootViewController: UIViewController, withDidFinishPickingImageBlock block: @escaping MIImagePickerDidFinishPickingImageCompletionHandler) {
         let picker = MIImagePickerController()
         picker.rootViewController = rootViewController
         picker.didFinishPickingImageBlock = block
         picker.delegate = picker
         
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler: { _ in
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
             picker.photoFromLibrary()
         })
-        photoLibraryAction.setValue(UIImage(named: "iOS-photos")?.imageWithRenderingMode(.AlwaysOriginal), forKey: "image")
+        photoLibraryAction.setValue(UIImage(named: "iOS-photos")?.withRenderingMode(.alwaysOriginal), forKey: "image")
         actionSheet.addAction(photoLibraryAction)
         
-        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: { _ in
+        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
             picker.takePhoto()
         })
-        takePhotoAction.setValue(UIImage(named: "compact-camera")?.imageWithRenderingMode(.AlwaysOriginal), forKey: "image")
+        takePhotoAction.setValue(UIImage(named: "compact-camera")?.withRenderingMode(.alwaysOriginal), forKey: "image")
         actionSheet.addAction(takePhotoAction)
         
-        rootViewController.presentViewController(actionSheet, animated: true, completion: nil)
+        rootViewController.present(actionSheet, animated: true, completion: nil)
     }
     
 }
@@ -72,52 +72,52 @@ extension MIImagePickerController: UIImagePickerControllerDelegate, UINavigation
     
     // MARK: UIImagePickerControllerDelegate
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         performOnMain { [unowned self] in
             guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
                 let alertViewController = self.alert("An error occured", message: "Failed to select an image. Please, try again.", handler: nil)
-                self.rootViewController.presentViewController(alertViewController, animated: true, completion: nil)
+                self.rootViewController.present(alertViewController, animated: true, completion: nil)
                 return
             }
             
-            picker.dismissViewControllerAnimated(true, completion: { [unowned self] in
+            picker.dismiss(animated: true, completion: { [unowned self] in
                 self.didFinishPickingImageBlock(image: pickedImage)
                 })
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Private Helper Methods
     
-    private func noCameraAlert() {
-        let alert = UIAlertController(title: "No Camera", message: "Sorry, this device has no camera", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        rootViewController.presentViewController(alert, animated: true, completion: nil)
+    fileprivate func noCameraAlert() {
+        let alert = UIAlertController(title: "No Camera", message: "Sorry, this device has no camera", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        rootViewController.present(alert, animated: true, completion: nil)
     }
     
     /// Get a photo from the library.
     func photoFromLibrary() {
         allowsEditing = false
-        sourceType = .PhotoLibrary
-        modalPresentationStyle = .FullScreen
-        rootViewController.presentViewController(self, animated: true, completion: nil)
+        sourceType = .photoLibrary
+        modalPresentationStyle = .fullScreen
+        rootViewController.present(self, animated: true, completion: nil)
     }
     
     /// Take a picture, check if we have a camera first.
     func takePhoto() {
-        guard UIImagePickerController.availableCaptureModesForCameraDevice(.Rear) != nil else {
+        guard UIImagePickerController.availableCaptureModes(for: .rear) != nil else {
             noCameraAlert()
             return
         }
         
         allowsEditing = false
-        sourceType = .Camera
-        cameraCaptureMode = .Photo
-        modalPresentationStyle = .FullScreen
-        rootViewController.presentViewController(self, animated: true, completion: nil)
+        sourceType = .camera
+        cameraCaptureMode = .photo
+        modalPresentationStyle = .fullScreen
+        rootViewController.present(self, animated: true, completion: nil)
     }
     
 }

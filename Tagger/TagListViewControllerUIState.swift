@@ -23,8 +23,8 @@
 import Foundation
 
 enum TagListViewControllerUIState {
-    case Default
-    case Downloading
-    case SuccessDoneWithDownloading
-    case FailureDoneWithDownloading(error: NSError)
+    case `default`
+    case downloading
+    case successDoneWithDownloading
+    case failureDoneWithDownloading(error: NSError)
 }

@@ -32,14 +32,14 @@ private struct ErrorDomain {
 }
 
 private enum ErrorCode: Int {
-    case FailureApiRequestReason = 130
-    case UnexpectedResponse = 131
-    case UnexpectedSituation = 132
+    case failureApiRequestReason = 130
+    case unexpectedResponse = 131
+    case unexpectedSituation = 132
 }
 
 // MARK: Typealias
 
-typealias MIFailureCompletionHandler = (error: NSError) -> Void
+typealias MIFailureCompletionHandler = (_ error: NSError) -> Void
 
 // MARK: - MIApiClient: JsonApiClient -
 
@@ -48,13 +48,13 @@ class MIApiClient: JsonApiClient {
     // MARK: - Requests -
     // MARK: Public
     
-    func fetchResourceForRequest<T: JSONParselable>(request: NSURLRequest, success: T -> Void, fail: MIFailureCompletionHandler) {
+    func fetchResourceForRequest<T: JSONParselable>(_ request: URLRequest, success: (T) -> Void, fail: MIFailureCompletionHandler) {
         fetchForResource(request, parseBlock: { json -> T? in
             return T.decode(json)
             }, success: success, fail: fail)
     }
     
-    func fetchCollectionForRequest<T: JSONParselable>(request: NSURLRequest, rootKeys: [String], success: [T] -> Void, fail: MIFailureCompletionHandler) {
+    func fetchCollectionForRequest<T: JSONParselable>(_ request: URLRequest, rootKeys: [String], success: ([T]) -> Void, fail: MIFailureCompletionHandler) {
         fetchForCollection(request, rootKeys: rootKeys, parseBlock: { (json) -> [T]? in
             return json.flatMap { T.decode($0) }
             }, success: success, failure: fail)
@@ -62,22 +62,22 @@ class MIApiClient: JsonApiClient {
     
     // MARK: Private
     
-    private func fetchForResource<T>(request: NSURLRequest, parseBlock: JSONDictionary -> T?, success: T -> Void, fail: MIFailureCompletionHandler) {
+    fileprivate func fetchForResource<T>(_ request: URLRequest, parseBlock: @escaping (JSONDictionary) -> T?, success: @escaping (T) -> Void, fail: @escaping MIFailureCompletionHandler) {
         fetchJsonForRequest(request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
-                fail(error: error)
+                fail(error)
                 return
             }
             
             switch result {
-            case .Json(let json):
+            case .json(let json):
                 performOnBackgroud {
                     guard let resource = parseBlock(json) else {
                         self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.debugLog("\(json)")
                         performOnMain {
-                            fail(error: NSError(domain: ErrorDomain.UnexpectedResponse,
-                                code: ErrorCode.UnexpectedResponse.rawValue,
+                            fail(NSError(domain: ErrorDomain.UnexpectedResponse,
+                                code: ErrorCode.unexpectedResponse.rawValue,
                                 userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
                         }
                         return
@@ -87,33 +87,33 @@ class MIApiClient: JsonApiClient {
                     }
                 }
             default:
-                fail(error: NSError(domain: ErrorDomain.UnexpectedSituation,
-                    code: ErrorCode.UnexpectedSituation.rawValue,
+                fail(NSError(domain: ErrorDomain.UnexpectedSituation,
+                    code: ErrorCode.unexpectedSituation.rawValue,
                     userInfo: [NSLocalizedDescriptionKey : "Unexpected error."]))
             }
         }
     }
     
-    private func fetchForCollection<T>(request: NSURLRequest, rootKeys: [String], parseBlock: [JSONDictionary] -> [T]?, success: [T] -> Void, failure: MIFailureCompletionHandler) {
+    fileprivate func fetchForCollection<T>(_ request: URLRequest, rootKeys: [String], parseBlock: @escaping ([JSONDictionary]) -> [T]?, success: @escaping ([T]) -> Void, failure: @escaping MIFailureCompletionHandler) {
         func parsingJsonError() -> NSError {
             return NSError(domain: ErrorDomain.UnexpectedResponse,
-                           code: ErrorCode.UnexpectedResponse.rawValue,
+                           code: ErrorCode.unexpectedResponse.rawValue,
                            userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."])
         }
         
         fetchJsonForRequest(request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
-                failure(error: error)
+                failure(error)
                 return
             }
             
             switch result {
-            case .Json(let json):
+            case .json(let json):
                 performOnBackgroud {
-                    let keyPath = rootKeys.joinWithSeparator(".")
-                    guard let jsonArray = (json as NSDictionary).valueForKeyPath(keyPath) as? [JSONDictionary] else {
+                    let keyPath = rootKeys.joined(separator: ".")
+                    guard let jsonArray = (json as NSDictionary).value(forKeyPath: keyPath) as? [JSONDictionary] else {
                         performOnMain {
-                            failure(error: parsingJsonError())
+                            failure(parsingJsonError())
                         }
                         return
                     }
@@ -122,7 +122,7 @@ class MIApiClient: JsonApiClient {
                         self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.debugLog("\(json)")
                         performOnMain {
-                            failure(error: parsingJsonError())
+                            failure(parsingJsonError())
                         }
                         return
                     }
@@ -131,8 +131,8 @@ class MIApiClient: JsonApiClient {
                     }
                 }
             default:
-                failure(error: NSError(domain: ErrorDomain.UnexpectedSituation,
-                    code: ErrorCode.UnexpectedSituation.rawValue,
+                failure(NSError(domain: ErrorDomain.UnexpectedSituation,
+                    code: ErrorCode.unexpectedSituation.rawValue,
                     userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
             }
         }
@@ -140,20 +140,20 @@ class MIApiClient: JsonApiClient {
     
     // MARK: - Helpers
     
-    func checkApiClientResultForAnError(result: ApiClientResult) -> NSError? {
+    func checkApiClientResultForAnError(_ result: ApiClientResult) -> NSError? {
         switch result {
-        case .Error, .NotFound, .ServerError, .ClientError, .UnexpectedError:
+        case .error, .notFound, .serverError, .clientError, .unexpectedError:
             let message = result.defaultErrorMessage()!
             self.debugLog("Failed to perform api request. Message: \(message).")
             
             switch result {
-            case .RawData(let data):
+            case .rawData(let data):
                 debugResponseData(data)
             default:
                 break
             }
             return NSError(domain: ErrorDomain.ApiRequest,
-                           code: ErrorCode.FailureApiRequestReason.rawValue,
+                           code: ErrorCode.failureApiRequestReason.rawValue,
                            userInfo: [NSLocalizedDescriptionKey : message])
         default:
             return nil

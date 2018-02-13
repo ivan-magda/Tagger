@@ -24,7 +24,7 @@ import UIKit
 
 // MARK: Typealiases
 
-typealias CountPickerDoneBlock = (selectedIndex: Int, selectedValue: Int) -> Void
+typealias CountPickerDoneBlock = (_ selectedIndex: Int, _ selectedValue: Int) -> Void
 typealias CountPickerCancelBlock = () -> Void
 
 // MARK: - Constants
@@ -49,15 +49,15 @@ class CountPickerViewController: UIViewController {
     var initialSelection = 0
     var numberOfRows = 20
     
-    private var selectedRowIdx = 0
-    private var selectedValue: Int {
+    fileprivate var selectedRowIdx = 0
+    fileprivate var selectedValue: Int {
         get {
             return selectedRowIdx + 1
         }
     }
     
-    private var doneBlock: CountPickerDoneBlock?
-    private var cancelBlock: CountPickerCancelBlock?
+    fileprivate var doneBlock: CountPickerDoneBlock?
+    fileprivate var cancelBlock: CountPickerCancelBlock?
     
     // MARK: - View Life Cycle
     
@@ -75,26 +75,26 @@ class CountPickerViewController: UIViewController {
     
     // MARK: - Actions
     
-    func cancelButtonDidPressed(button: UIButton) {
+    func cancelButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
         cancelBlock?()
     }
     
-    func selectButtonDidPressed(button: UIButton) {
+    func selectButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
-        doneBlock?(selectedIndex: selectedRowIdx, selectedValue: selectedValue)
+        doneBlock?(selectedRowIdx, selectedValue)
     }
     
     // MARK: - Private
     
-    private func configureUI() {
+    fileprivate func configureUI() {
         containerView.layer.masksToBounds = true
         containerView.layer.cornerRadius = 8.0
     }
     
-    private func setup() {
-        cancelButton.addTarget(self, action: #selector(cancelButtonDidPressed(_:)), forControlEvents: .TouchUpInside)
-        selectButton.addTarget(self, action: #selector(selectButtonDidPressed(_:)), forControlEvents: .TouchUpInside)
+    fileprivate func setup() {
+        cancelButton.addTarget(self, action: #selector(cancelButtonDidPressed(_:)), for: .touchUpInside)
+        selectButton.addTarget(self, action: #selector(selectButtonDidPressed(_:)), for: .touchUpInside)
         
         pickerView.dataSource = self
         pickerView.delegate = self
@@ -107,7 +107,7 @@ class CountPickerViewController: UIViewController {
 
 extension CountPickerViewController {
     
-    class func showPickerWithTitle(title: String, rows: Int, initialSelection: Int, doneBlock: CountPickerDoneBlock, cancelBlock: CountPickerCancelBlock?) -> Bool {
+    @discardableResult class func showPickerWithTitle(_ title: String, rows: Int, initialSelection: Int, doneBlock: @escaping CountPickerDoneBlock, cancelBlock: CountPickerCancelBlock?) -> Bool {
         guard let rootViewController = UIUtils.getRootViewController() else { return false }
         
         let picker = CountPickerViewController()
@@ -123,18 +123,18 @@ extension CountPickerViewController {
     }
     
     func dismissFromParentViewController() {
-        willMoveToParentViewController(nil)
-        UIView.animateWithDuration(0.3, animations: {
+        willMove(toParentViewController: nil)
+        UIView.animate(withDuration: 0.3, animations: {
             self.containerView.frame.origin.y += self.view.bounds.height
             self.view.alpha = 0.0
-        }) { finished in
+        }, completion: { finished in
             guard finished == true else { return }
             self.view.removeFromSuperview()
             self.removeFromParentViewController()
-        }
+        }) 
     }
     
-    func presentInParentViewController(parentViewController: UIViewController) {
+    func presentInParentViewController(_ parentViewController: UIViewController) {
         view.frame = parentViewController.view.bounds
         
         parentViewController.addChildViewController(self)
@@ -142,7 +142,7 @@ extension CountPickerViewController {
         
         view.alpha = 0.0
         containerView.frame.origin.y += containerView.bounds.height
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.view.alpha = 1.0
             self.containerView.frame.origin.y = 0
             }, completion: nil)
@@ -154,11 +154,11 @@ extension CountPickerViewController {
 
 extension CountPickerViewController: UIPickerViewDataSource {
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return numberOfRows
     }
     
@@ -168,11 +168,11 @@ extension CountPickerViewController: UIPickerViewDataSource {
 
 extension CountPickerViewController: UIPickerViewDelegate {
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return "\(row + 1)"
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRowIdx = row
     }
     

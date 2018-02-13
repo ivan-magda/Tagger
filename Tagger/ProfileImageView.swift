@@ -40,11 +40,11 @@ class ProfileImageView: UIImageView {
     
     // MARK: Theme
     
-    private func themeImageView() {
+    fileprivate func themeImageView() {
         layer.masksToBounds = true
         layer.cornerRadius = bounds.size.height / 2.0
         layer.borderWidth = 2.0
-        layer.borderColor = UIColor(red: 255.0 / 255.0, green: 0.0, blue: 132.0 / 255.0, alpha: 1.0).CGColor
+        layer.borderColor = UIColor(red: 255.0 / 255.0, green: 0.0, blue: 132.0 / 255.0, alpha: 1.0).cgColor
     }
 
 }

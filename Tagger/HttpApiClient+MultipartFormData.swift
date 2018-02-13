@@ -27,7 +27,7 @@ import Foundation
 /// - parameter data: Data to uploaded
 /// - parameter name: The optional field name to be used when uploading files. If you supply paths, you must supply filePathKey, too.
 /// - parameter fileName: Name of the uploading file
-typealias MultipartData = (data: NSData, name: String, fileName: String)
+typealias MultipartData = (data: Data, name: String, fileName: String)
 
 // MARK: - HttpApiClient (multipart/form-data)
 
@@ -40,7 +40,7 @@ extension HttpApiClient {
     /// - parameter boundary:     The multipart/form-data boundary
     ///
     /// - returns: The NSData of the body of the request
-    func createMultipartBodyWithParameters(parameters: MethodParameters?, files: [MultipartData]?, boundary: String) -> NSData {
+    func createMultipartBodyWithParameters(_ parameters: MethodParameters?, files: [MultipartData]?, boundary: String) -> Data {
         let body = NSMutableData()
         
         if let parameters = parameters {
@@ -56,20 +56,20 @@ extension HttpApiClient {
                 body.appendString("--\(boundary)\r\n")
                 body.appendString("Content-Disposition:form-data; name=\"\($0.name)\"; filename=\"\($0.fileName)\"\r\n")
                 body.appendString("Content-Type: \($0.data.mimeType())\r\n\r\n")
-                body.appendData($0.data)
+                body.append($0.data)
                 body.appendString("\r\n")
             }
         }
         body.appendString("--\(boundary)--\r\n")
         
-        return body
+        return body as Data
     }
     
     /// Create boundary string for multipart/form-data request
     ///
     /// - returns: The boundary string that consists of "Boundary-" followed by a UUID string.
     func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().UUIDString)"
+        return "Boundary-\(UUID().uuidString)"
     }
     
 }
@@ -83,9 +83,9 @@ extension NSMutableData {
     /// Rather than littering my code with calls to `dataUsingEncoding` to convert strings to NSData, and then add that data to the NSMutableData, this wraps it in a nice convenient little extension to NSMutableData. This converts using UTF-8.
     ///
     /// - parameter string:       The string to be added to the `NSMutableData`.
-    func appendString(string: String) {
-        let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
-        appendData(data!)
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
     }
     
 }

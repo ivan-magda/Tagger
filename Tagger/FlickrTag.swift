@@ -29,8 +29,8 @@ struct FlickrTag {
     
     // MARK: - Properties
     
-    private (set) var content: String
-    private (set) var score: Int? = nil
+    fileprivate (set) var content: String
+    fileprivate (set) var score: Int? = nil
     
     // MARK: - Init
     
@@ -57,11 +57,11 @@ struct FlickrTag {
     
     // MARK: Core Data
     
-    func convertToTagInContext(context: NSManagedObjectContext) -> Tag {
+    func convertToTagInContext(_ context: NSManagedObjectContext) -> Tag {
         return Tag(name: content, context: context)
     }
     
-    static func mapFlickrTags(tags: [FlickrTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
+    static func mapFlickrTags(_ tags: [FlickrTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
         return tags.map {
             let tag = $0.convertToTagInContext(context)
             
@@ -79,7 +79,7 @@ struct FlickrTag {
 
 extension FlickrTag: JSONParselable {
     
-    static func decode(input: JSONDictionary) -> FlickrTag? {
+    static func decode(_ input: JSONDictionary) -> FlickrTag? {
         return FlickrTag.init(json: input)
     }
     

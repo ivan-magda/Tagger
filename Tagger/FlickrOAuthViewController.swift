@@ -24,8 +24,8 @@ import UIKit
 
 // MARK: Typealiases
 
-typealias FlickrOAuthViewControllerSuccessCompletionHandler = (URL: NSURL) -> Void
-typealias FlickrOAuthViewControllerFailureCompletionHandler = (error: NSError) -> Void
+typealias FlickrOAuthViewControllerSuccessCompletionHandler = (_ URL: URL) -> Void
+typealias FlickrOAuthViewControllerFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - FlickrOAuthViewController: UIViewController
 
@@ -33,24 +33,24 @@ class FlickrOAuthViewController: UIViewController {
     
     // MARK: Properties
     
-    private var webView = UIWebView()
+    fileprivate var webView = UIWebView()
     
-    private var authorizationURLString: String!
-    private var callbackURLString: String!
+    fileprivate var authorizationURLString: String!
+    fileprivate var callbackURLString: String!
 
-    private var authorizationURL: NSURL {
+    fileprivate var authorizationURL: URL {
         get {
-            return NSURL(string: authorizationURLString)!
+            return URL(string: authorizationURLString)!
         }
     }
-    private var callbackURL: NSURL {
+    fileprivate var callbackURL: URL {
         get {
-            return NSURL(string: callbackURLString)!
+            return URL(string: callbackURLString)!
         }
     }
     
-    private var successBlock: FlickrOAuthViewControllerSuccessCompletionHandler!
-    private var failureBlock: FlickrOAuthViewControllerFailureCompletionHandler!
+    fileprivate var successBlock: FlickrOAuthViewControllerSuccessCompletionHandler!
+    fileprivate var failureBlock: FlickrOAuthViewControllerFailureCompletionHandler!
     
     // MARK: Init
     
@@ -73,37 +73,41 @@ class FlickrOAuthViewController: UIViewController {
     
     // MARK: Public
     
-    func authorize(success success: FlickrOAuthViewControllerSuccessCompletionHandler, failure: FlickrOAuthViewControllerFailureCompletionHandler) {
+    func authorize(success: @escaping FlickrOAuthViewControllerSuccessCompletionHandler, failure: @escaping FlickrOAuthViewControllerFailureCompletionHandler) {
         successBlock = success
         failureBlock = failure
         
         let rootViewController = UIUtils.getRootViewController()!
         let navigationController = UINavigationController(rootViewController: self)
-        rootViewController.presentViewController(navigationController, animated: true, completion: nil)
+        rootViewController.present(navigationController, animated: true, completion: nil)
     }
     
     // MARK: Actions
     
     func dismiss() {
-        dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Private
     
-    private func configure() {
+    fileprivate func configure() {
         title = "Flickr Auth"
         
         webView.delegate = self
         webView.frame = view.bounds
-        webView.backgroundColor = .whiteColor()
+        webView.backgroundColor = .white
         webView.scalesPageToFit = true
-        webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .FlexibleWidth, .FlexibleHeight)
+        webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .flexibleWidth, .flexibleHeight)
         view.addSubview(webView)
         
-        let request = NSURLRequest(URL: authorizationURL)
+        let request = URLRequest(url: authorizationURL)
         webView.loadRequest(request)
-        
-        let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(dismiss))
+
+        let doneBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(((FlickrOAuthViewController.dismiss) as (FlickrOAuthViewController) -> (Void) -> Void))
+        )
         navigationItem.rightBarButtonItem = doneBarButtonItem
     }
     
@@ -113,20 +117,20 @@ class FlickrOAuthViewController: UIViewController {
 
 extension FlickrOAuthViewController: UIWebViewDelegate {
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.URL else {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.url else {
             return false
         }
 
         if url.host == callbackURL.host {
-            successBlock(URL: request.URL!)
+            successBlock(URL: request.url!)
             dismiss()
             return false
         }
 
         if url.scheme != "http" && url.scheme != "https" {
-            if UIApplication.sharedApplication().canOpenURL(url) {
-                UIApplication.sharedApplication().openURL(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.openURL(url)
                 return false
             }
         }
@@ -134,31 +138,22 @@ extension FlickrOAuthViewController: UIWebViewDelegate {
         return true
     }
     
-    func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(_ webView: UIWebView) {
         UIUtils.showNetworkActivityIndicator()
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         UIUtils.hideNetworkActivityIndicator()
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         // Ignore NSURLErrorDomain error -999.
-        if (error?.code == NSURLErrorCancelled) {
+        if (error._code == NSURLErrorCancelled) {
             return
         }
 
         // Ignore "Fame Load Interrupted" errors. Seen after app store links.
-        if (error?.code == 102 && error?.domain == "WebKitErrorDomain") {
-            return
-        }
-
-        guard let error = error else {
-            let error = NSError(domain: "\(BaseErrorDomain).FlickrOAuthViewController",
-                                code: 66,
-                                userInfo: [NSLocalizedDescriptionKey : "Failed promts for a user authorization."]
-            )
-            failureBlock(error: error)
+        if (error._code == 102 && error._domain == "WebKitErrorDomain") {
             return
         }
         

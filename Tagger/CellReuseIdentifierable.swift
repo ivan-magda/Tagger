@@ -29,7 +29,7 @@ protocol CellReuseIdentifierable {
 extension CellReuseIdentifierable {
     
     static var reuseIdentifier: String {
-        return String(Self)
+        return String(describing: self)
     }
     
 }

@@ -27,7 +27,7 @@ import CoreData
 
 extension PersistenceCentral {
     
-    func setImage(image: UIImage, toCategory category: Category) {
+    func setImage(_ image: UIImage, toCategory category: Category) {
         let categoryImage = CategoryImage(image: image, context: coreDataStackManager.managedObjectContext)
         category.image = categoryImage
         categoryImage.category = category
@@ -35,12 +35,12 @@ extension PersistenceCentral {
     }
     
     func deleteAllCategoriesImages() {
-        let request = NSFetchRequest(entityName: CategoryImage.type)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: CategoryImage.type)
         do {
-            guard let results = try coreDataStackManager.managedObjectContext.executeFetchRequest(request) as? [CategoryImage] else {
+            guard let results = try coreDataStackManager.managedObjectContext.fetch(request) as? [CategoryImage] else {
                 return
             }
-            results.forEach { self.coreDataStackManager.managedObjectContext.deleteObject($0) }
+            results.forEach { self.coreDataStackManager.managedObjectContext.delete($0) }
             coreDataStackManager.saveContext()
         } catch let error as NSError {
             print("Failed to delete all images: \(error.localizedDescription)")
