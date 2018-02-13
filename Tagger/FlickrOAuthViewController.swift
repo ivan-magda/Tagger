@@ -35,8 +35,19 @@ class FlickrOAuthViewController: UIViewController {
     
     private var webView = UIWebView()
     
-    private var authorizationURL: String!
-    private var callbackURL: String!
+    private var authorizationURLString: String!
+    private var callbackURLString: String!
+
+    private var authorizationURL: NSURL {
+        get {
+            return NSURL(string: authorizationURLString)!
+        }
+    }
+    private var callbackURL: NSURL {
+        get {
+            return NSURL(string: callbackURLString)!
+        }
+    }
     
     private var successBlock: FlickrOAuthViewControllerSuccessCompletionHandler!
     private var failureBlock: FlickrOAuthViewControllerFailureCompletionHandler!
@@ -44,8 +55,8 @@ class FlickrOAuthViewController: UIViewController {
     // MARK: Init
     
     init(authorizationURL: String, callbackURL: String) {
-        self.authorizationURL = authorizationURL
-        self.callbackURL = callbackURL
+        self.authorizationURLString = authorizationURL
+        self.callbackURLString = callbackURL
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -89,7 +100,7 @@ class FlickrOAuthViewController: UIViewController {
         webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .FlexibleWidth, .FlexibleHeight)
         view.addSubview(webView)
         
-        let request = NSURLRequest(URL: NSURL(string: authorizationURL)!)
+        let request = NSURLRequest(URL: authorizationURL)
         webView.loadRequest(request)
         
         let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(dismiss))
