@@ -30,9 +30,9 @@ private enum CoderKey: String {
     case UserID
 }
 
-// MARK: - FlickrUser: NSObject
+// MARK: - FlickrUser: NSObject, NSCoding
 
-class FlickrUser: NSObject {
+class FlickrUser: NSObject, NSCoding {
     
     // MARK: - Properties
     
@@ -64,7 +64,7 @@ class FlickrUser: NSObject {
         self.init(fullname: fullname, username: username, userID: userID)
     }
     
-    func encodeWithCoder(_ aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(fullname, forKey: CoderKey.Fullname.rawValue)
         aCoder.encode(username, forKey: CoderKey.Username.rawValue)
         aCoder.encode(userID, forKey: CoderKey.UserID.rawValue)
