@@ -22,6 +22,8 @@
 
 import Foundation
 
+// MARK: ApiClientResult
+
 /**
     Represents ApiClient task response in one of many cases, that would have.
  
@@ -43,6 +45,8 @@ enum ApiClientResult {
     case unexpectedError(Int, Error?)
 }
 
+// MARK: - ApiClientResult (Error Message) -
+
 extension ApiClientResult {
     
     func defaultErrorMessage() -> String? {
@@ -56,7 +60,8 @@ extension ApiClientResult {
             return NSLocalizedString("Server error.",
                                      comment: "Server error occured with code: \(code)")
         case .clientError(let code):
-            return NSLocalizedString("Client error.", comment: "Client error occured with code: \(code)")
+            return NSLocalizedString("Client error.",
+                                     comment: "Client error occured with code: \(code)")
         case .unexpectedError(let code, let error):
             return (error == nil
                 ? NSLocalizedString("Unexpected error occured with code: \(code).",
