@@ -112,7 +112,7 @@ extension FlickrApiClient {
     /// Returns number of pages for a photos search.
     fileprivate func countPagesForPhotoSearchWithParameters(_ param: MethodParameters, successBlock success: @escaping FlickrNumberSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         let request = URLRequest(url: url(from: param))
-        fetchJsonForRequest(request) { result in
+        fetchJson(for: request) { result in
             func sendError(_ error: String) {
                 self.log("Error: \(error)")
                 let error = NSError(
@@ -184,7 +184,7 @@ extension FlickrApiClient {
             return
         }
         
-        fetchJsonForRequest(URLRequest(url: URL)) { result in
+        fetchJson(for: URLRequest(url: URL)) { result in
             switch result {
             case .error(let error):
                 sendError(error.localizedDescription)

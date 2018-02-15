@@ -22,7 +22,7 @@
 
 import Foundation
 
-// MARK: Types -
+// MARK: Types
 
 private struct ErrorDomain {
     static let Base = "\(BaseErrorDomain).JsonApiClient"
@@ -45,10 +45,11 @@ typealias DeserializedJsonTuple = (json: AnyObject?, error: Error?)
 
 class JsonApiClient: HttpApiClient {
     
-    // MARK: Data Tasks
+    // MARK: Public
     
-    func fetchJsonForRequest(_ request: URLRequest, completionHandler: @escaping TaskCompletionHandler) {
-        fetchRawData(for: request) { result in
+    func fetchJson(for request: URLRequest,
+                   with completionHandler: @escaping TaskCompletionHandler) {
+        fetchRawData(for: request) { [unowned self] result in
             switch result {
             case .rawData(let data):
                 let deserializedJson = self.deserializeJsonData(data)
@@ -67,17 +68,17 @@ class JsonApiClient: HttpApiClient {
                         code: ErrorCode.jsonDeserializing.rawValue,
                         userInfo: [NSLocalizedDescriptionKey: errorMessage]
                     )
+
                     completionHandler(.error(error))
                     return
                 }
+
                 completionHandler(.json(json))
             default:
                 completionHandler(result)
             }
         }
     }
-    
-    // MARK: JSON Deserializing
     
     func deserializeJsonData(_ data: Data) -> DeserializedJsonTuple {
         do {

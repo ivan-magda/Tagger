@@ -70,7 +70,7 @@ extension ImaggaApiClient {
             boundary: boundary
         )
         
-        fetchJsonForRequest(request as URLRequest) { [unowned self] result in
+        fetchJson(for: request as URLRequest) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
                 fail(error)
                 return
@@ -100,7 +100,7 @@ extension ImaggaApiClient {
     fileprivate func taggingByContentId(_ id: String, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failBlock fail: @escaping ImaggaFailCompletionHandler) {
         let URL = url(from: [Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
         let request = URLRequest(url: URL)
-        fetchJsonForRequest(request) { result in
+        fetchJson(for: request) { result in
             switch result {
             case .json(let json):
                 guard let results = json[Constants.ResponseKeys.Results] as? [JSONDictionary],

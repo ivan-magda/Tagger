@@ -63,7 +63,7 @@ class IMApiClient: JsonApiClient {
     // MARK: Private
     
     fileprivate func fetchForResource<T>(_ request: URLRequest, parseBlock: @escaping (JSONDictionary) -> T?, success: @escaping (T) -> Void, fail: @escaping MIFailureCompletionHandler) {
-        fetchJsonForRequest(request) { [unowned self] result in
+        fetchJson(for: request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
                 fail(error)
                 return
@@ -105,7 +105,7 @@ class IMApiClient: JsonApiClient {
             )
         }
         
-        fetchJsonForRequest(request) { [unowned self] result in
+        fetchJson(for: request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
                 failure(error)
                 return
