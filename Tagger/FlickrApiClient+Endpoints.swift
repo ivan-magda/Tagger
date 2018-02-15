@@ -53,7 +53,7 @@ extension FlickrApiClient {
         param[Constants.FlickrParameterKeys.Count] = count as AnyObject
         
         let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
-        let request = URLRequest(url: urlFromParameters(param))
+        let request = URLRequest(url: url(from: param))
         fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
     }
     
@@ -62,7 +62,7 @@ extension FlickrApiClient {
         param[Constants.FlickrParameterKeys.Tag] = tag as AnyObject
         
         let keys = [Constants.FlickrResponseKeys.Tags, Constants.FlickrResponseKeys.Tag]
-        let request = URLRequest(url: urlFromParameters(param))
+        let request = URLRequest(url: url(from: param))
         fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
     }
     
@@ -105,16 +105,16 @@ extension FlickrApiClient {
     // MARK: Private
     
     fileprivate func searchPhotosWithParameters(_ param: MethodParameters, successBlock success: @escaping FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
-        let request = URLRequest(url: urlFromParameters(param))
+        let request = URLRequest(url: url(from: param))
         fetchResourceForRequest(request, success: success, fail: fail)
     }
     
     /// Returns number of pages for a photos search.
     fileprivate func countPagesForPhotoSearchWithParameters(_ param: MethodParameters, successBlock success: @escaping FlickrNumberSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
-        let request = URLRequest(url: urlFromParameters(param))
+        let request = URLRequest(url: url(from: param))
         fetchJsonForRequest(request) { result in
             func sendError(_ error: String) {
-                self.debugLog("Error: \(error)")
+                self.log("Error: \(error)")
                 let error = NSError(
                     domain: Constants.Error.NumberOfPagesForPhotoSearchErrorDomain,
                     code: Constants.Error.NumberOfPagesForPhotoSearchErrorCode,
@@ -145,7 +145,7 @@ extension FlickrApiClient {
         var parameters = getBaseMethodParameters(Constants.FlickrParameterValues.PeopleGetInfo)
         parameters[Constants.FlickrParameterKeys.UserID] = userID as AnyObject
         
-        let request = URLRequest(url: urlFromParameters(parameters))
+        let request = URLRequest(url: url(from: parameters))
         fetchResourceForRequest(request, success: success, fail: failure)
     }
     
@@ -164,7 +164,7 @@ extension FlickrApiClient {
     
     func testLogin(_ completionHandler: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         func sendError(_ error: String) {
-            self.debugLog("Error: \(error)")
+            self.log("Error: \(error)")
             let error = NSError(
                 domain: Constants.Error.ErrorDomain,
                 code: Constants.Error.DefaultErrorCode,

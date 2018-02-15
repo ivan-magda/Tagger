@@ -61,7 +61,7 @@ extension ImaggaApiClient {
         
         let boundary = generateBoundaryString()
 
-        let request = NSMutableURLRequest(url: urlFromParameters(nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
+        let request = NSMutableURLRequest(url: url(from: nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
         request.httpMethod = HttpMethod.post.rawValue
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = createMultipartBodyWithParameters(
@@ -89,7 +89,7 @@ extension ImaggaApiClient {
                         return
                 }
                 
-                self.debugLog("Content uploaded with ID: \(fileId)")
+                self.log("Content uploaded with ID: \(fileId)")
                 success(fileId)
             default:
                 self.sendError("An error occured. Please, try again.", toBlock: fail)
@@ -98,8 +98,8 @@ extension ImaggaApiClient {
     }
     
     fileprivate func taggingByContentId(_ id: String, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failBlock fail: @escaping ImaggaFailCompletionHandler) {
-        let url = urlFromParameters([Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
-        let request = URLRequest(url: url)
+        let URL = url(from: [Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
+        let request = URLRequest(url: URL)
         fetchJsonForRequest(request) { result in
             switch result {
             case .json(let json):

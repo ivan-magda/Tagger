@@ -57,7 +57,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        flickr.api.cancelAllRequests()
+        flickr.api.cancelAll()
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {

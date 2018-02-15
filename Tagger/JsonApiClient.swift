@@ -48,7 +48,7 @@ class JsonApiClient: HttpApiClient {
     // MARK: Data Tasks
     
     func fetchJsonForRequest(_ request: URLRequest, completionHandler: @escaping TaskCompletionHandler) {
-        fetchRawDataForRequest(request) { result in
+        fetchRawData(for: request) { result in
             switch result {
             case .rawData(let data):
                 let deserializedJson = self.deserializeJsonData(data)
@@ -60,7 +60,7 @@ class JsonApiClient: HttpApiClient {
                 
                 guard let json = deserializedJson.json as? JSONDictionary else {
                     let errorMessage = "Could not cast the JSON object as JSONDictionary: '\(String(describing: deserializedJson.json))'"
-                    self.debugLog(errorMessage)
+                    self.log(errorMessage)
                     
                     let error = NSError(
                         domain: ErrorDomain.JSONDeserializing,

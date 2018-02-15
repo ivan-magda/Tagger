@@ -73,8 +73,8 @@ class MIApiClient: JsonApiClient {
             case .json(let json):
                 performOnBackgroud {
                     guard let resource = parseBlock(json) else {
-                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                        self.debugLog("\(json)")
+                        self.log("WARNING: Couldn't parse the following JSON as a \(T.self)")
+                        self.log("\(json)")
                         performOnMain {
                             fail(NSError(domain: ErrorDomain.UnexpectedResponse,
                                          code: ErrorCode.unexpectedResponse.rawValue,
@@ -123,8 +123,8 @@ class MIApiClient: JsonApiClient {
                     }
                     
                     guard let collection = parseBlock(jsonArray) else {
-                        self.debugLog("WARNING: Couldn't parse the following JSON as a \(T.self)")
-                        self.debugLog("\(json)")
+                        self.log("WARNING: Couldn't parse the following JSON as a \(T.self)")
+                        self.log("\(json)")
                         performOnMain {
                             failure(parsingJsonError())
                         }
@@ -149,11 +149,11 @@ class MIApiClient: JsonApiClient {
         switch result {
         case .error, .notFound, .serverError, .clientError, .unexpectedError:
             let message = result.defaultErrorMessage()!
-            self.debugLog("Failed to perform api request. Message: \(message).")
+            self.log("Failed to perform api request. Message: \(message).")
             
             switch result {
             case .rawData(let data):
-                debugResponseData(data)
+                log(data)
             default:
                 break
             }

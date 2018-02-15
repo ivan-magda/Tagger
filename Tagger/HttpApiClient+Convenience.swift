@@ -35,9 +35,9 @@ extension HttpApiClient {
     // MARK: Methods
     
     func downloadImageWithURL(_ url: URL, successBlock success: @escaping ImageDownloadingCompletionHandler, failBlock fail: @escaping RequestFailCompletionHandler) {
-        fetchRawDataForRequest(URLRequest(url: url)) { result in
+        fetchRawData(for: URLRequest(url: url)) { result in
             func sendError(_ error: String) {
-                self.debugLog("Error: \(error)")
+                self.log("Error: \(error)")
                 let error = NSError(
                     domain: FlickrApiClient.Constants.Error.LoadImageErrorDomain,
                     code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
