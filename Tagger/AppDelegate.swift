@@ -34,68 +34,83 @@ private enum TabBarControllerItem: Int {
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    // MARK: Properties
-    
+
+    // MARK: Instance Variables
+
     var window: UIWindow?
-    
-    
+
     private let flickr = IMFlickr.shared
     private let persistenceCentral = PersistenceCentral.shared
+
     // MARK: UIApplicationDelegate
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setup()
+
         return true
     }
-    
+
     func applicationWillResignActive(_ application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
-    
+
     func applicationDidEnterBackground(_ application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
-    
-    // MARK: - Private -
-    
-    fileprivate func setup() {
+
+}
+
+// MARK: - AppDelegate (Setup) -
+
+extension AppDelegate {
+
+    private func setup() {
+        checkConstants()
+        shareData()
+        themeApplication()
+    }
+
+    private func checkConstants() {
         assert(
                 FlickrApplicationKey      != "REPLACE_WITH_YOUR_FLICKR_API_KEY"       &&
                 FlickrApplicationSecret   != "REPLACE_WITH_YOUR_FLICKR_API_SECRET"    &&
                 FlickrOAuthCallbackURL    != "REPLACE_WITH_YOUR_CALLBACK_URL"         &&
                 ImaggaApplicationKey      != "REPLACE_WITH_YOUR_IMAGGA_API_KEY"       &&
                 ImaggaApplicationSecret   != "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"    &&
-                ImaggaAuthenticationToken != "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
-            , "Change the constants properties with your own instances."
+                ImaggaAuthenticationToken != "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION",
+                "Change the constants properties with your own instances."
         )
-        shareData()
-        themeApplication()
     }
-    
-    fileprivate func shareData() {
+
+    private func shareData() {
         let tabBarController = window!.rootViewController as! UITabBarController
-        
+
         let discoverNavigationController = tabBarController.viewControllers![TabBarControllerItem.discover.rawValue] as! UINavigationController
         let discoverViewController = discoverNavigationController.topViewController as! DiscoverTagsViewController
         discoverViewController.flickr = flickr
         discoverViewController.persistenceCentral = persistenceCentral
-        
+
         let taggingNavigationController = tabBarController.viewControllers![TabBarControllerItem.tagging.rawValue] as! UINavigationController
         let taggingDataSourceViewController = taggingNavigationController.topViewController as! ImageTaggerDataSourceViewController
         taggingDataSourceViewController.flickr = flickr
         taggingDataSourceViewController.persistenceCentral = persistenceCentral
-        
+
         let moreInfoNavigationController = tabBarController.viewControllers![TabBarControllerItem.more.rawValue] as! UINavigationController
         let moreInfoTableViewController = moreInfoNavigationController.topViewController as! MoreInfoTableViewController
         moreInfoTableViewController.flickr = flickr
         moreInfoTableViewController.persistenceCentral = persistenceCentral
     }
-    
-    // MARK: UI
-    
-    fileprivate func themeApplication() {
+
+}
+
+// MARK: - AppDelegate (UI) -
+
+extension AppDelegate {
+
+    // TODO: Create constant or extension on UIColor for the priamary color.
+    private func themeApplication() {
         window?.tintColor = UIColor(red:0.34, green:0.70, blue:0.64, alpha:1.00)
     }
-    
+
 }
