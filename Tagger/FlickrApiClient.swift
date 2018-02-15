@@ -26,20 +26,23 @@ import Foundation
 
 class FlickrApiClient: IMApiClient {
     
-    // MARK: - Properties
+    // MARK: Instance Variables
     
     /**
      *  This class constant provides an easy way to get access
      *  to a shared instance of the FlickrApiClient class.
      */
-    static let sharedInstance = FlickrApiClient(configuration: .default, baseURL: "https://api.flickr.com/services/rest")
+    static let shared = FlickrApiClient(configuration: .default,
+                                        baseURL: Constants.Flickr.baseURL)
     
-    // MARK: - Init
+    // MARK: Init
     
     override init(configuration: URLSessionConfiguration, baseURL: String) {
         super.init(configuration: configuration, baseURL: baseURL)
+
         configuration.timeoutIntervalForRequest  = 30.0
         configuration.timeoutIntervalForResource = 60.0
+
         loggingEnabled = true
     }
     

@@ -75,7 +75,7 @@ class IMFlickr {
     // MARK: Init
     
     private init() {
-        self.api = FlickrApiClient.sharedInstance
+        self.api = FlickrApiClient.shared
     }
     
     // MARK: Public

@@ -33,6 +33,7 @@ extension FlickrApiClient {
     struct Constants {
         
         struct Flickr {
+            static let baseURL = "https://api.flickr.com/services/rest"
             static let searchBBoxHalfWidth = 1.0
             static let searchBBoxHalfHeight = 1.0
             static let searchLatRange = SearchCoordinateRange(start: -90.0, end: 90.0)
