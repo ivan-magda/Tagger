@@ -127,7 +127,7 @@ extension FlickrApiClient {
         parameters[Constants.Params.Keys.perPage] = "\(Constants.Params.Values.perPageMax)"
         parameters[Constants.Response.Keys.userID] = user.userID
 
-        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.get, baseURL: baseURL, requestParameters: parameters) else {
+        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURL(for: .get, baseURL: baseURL, requestParameters: parameters) else {
             return
         }
 
@@ -230,7 +230,7 @@ extension FlickrApiClient {
             Constants.Params.Keys.format: Constants.Params.Values.responseFormat
         ]
 
-        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.get, baseURL: baseURL, requestParameters: params) else {
+        guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURL(for: .get, baseURL: baseURL, requestParameters: params) else {
             sendError("Could not build HMAC-SHA1 encrypted URL. Try to login in your Flickr account.")
             return
         }

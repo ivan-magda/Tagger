@@ -81,7 +81,7 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     fileprivate func flickrAuth() {
         UIUtils.showNetworkActivityIndicator()
         
-        flickr.OAuth.authorizeWithPermission(.Write) { [unowned self] result in
+        flickr.OAuth.auth(with: .write) { [unowned self] result in
             UIUtils.hideNetworkActivityIndicator()
             switch result {
             case .success(let token, let tokenSecret, let user):

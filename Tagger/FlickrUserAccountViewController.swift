@@ -81,7 +81,7 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     }
     
     fileprivate func signIn() {
-        flickr.OAuth.authorizeWithPermission(.Write) { result in
+        flickr.OAuth.auth(with: .write) { result in
             switch result {
             case .success(_, _, let user):
                 self.flickr.currentUser = user

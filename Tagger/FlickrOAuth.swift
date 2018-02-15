@@ -49,30 +49,30 @@ enum FlickrOAuthPermission: String {
 }
 
 private enum OAuthParameterKey: String {
-    case Nonce = "oauth_nonce"
-    case Timestamp = "oauth_timestamp"
-    case ConsumerKey = "oauth_consumer_key"
-    case SignatureMethod = "oauth_signature_method"
-    case Version = "oauth_version"
-    case Callback = "oauth_callback"
-    case Signature = "oauth_signature"
-    case Token = "oauth_token"
-    case Permissions = "perms"
-    case Verifier = "oauth_verifier"
+    case nonce = "oauth_nonce"
+    case timestamp = "oauth_timestamp"
+    case consumerKey = "oauth_consumer_key"
+    case signatureMethod = "oauth_signature_method"
+    case version = "oauth_version"
+    case callback = "oauth_callback"
+    case signature = "oauth_signature"
+    case token = "oauth_token"
+    case permissions = "perms"
+    case verifier = "oauth_verifier"
 }
 
 private enum OAuthParameterValue: String {
-    case SignatureMethod = "HMAC-SHA1"
-    case Version = "1.0"
+    case signatureMethod = "HMAC-SHA1"
+    case version = "1.0"
 }
 
 private enum OAuthResponseKey: String {
-    case CallbackConfirmed = "oauth_callback_confirmed"
-    case Token = "oauth_token"
-    case TokenSecret = "oauth_token_secret"
-    case Username = "username"
-    case UserID = "user_nsid"
-    case Fullname = "fullname"
+    case callbackConfirmed = "oauth_callback_confirmed"
+    case token = "oauth_token"
+    case tokenSecret = "oauth_token_secret"
+    case userId = "user_nsid"
+    case username
+    case fullname
 }
 
 private enum FlickrOAuthState {
@@ -83,14 +83,14 @@ private enum FlickrOAuthState {
 
 // MARK: - Constants
 
-private let kRequestTokenBaseURL = "https://www.flickr.com/services/oauth/request_token"
-private let kAuthorizeBaseURL = "https://www.flickr.com/services/oauth/authorize"
-private let kAccessTokenBaseURL = "https://www.flickr.com/services/oauth/access_token"
+private let requestTokenBaseURL = "https://www.flickr.com/services/oauth/request_token"
+private let authorizeBaseURL = "https://www.flickr.com/services/oauth/authorize"
+private let accessTokenBaseURL = "https://www.flickr.com/services/oauth/access_token"
 
-private let kAccessTokenKeychainKey = "flickr_access_token"
-private let kTokenSecretKeychainKey = "flickr_token_secret"
+private let accessTokenKeychainKey = "flickr_access_token"
+private let tokenSecretKeychainKey = "flickr_token_secret"
 
-private let kKeychainServiceName = "com.flickr.oauth-token"
+private let keychainServiceName = "com.flickr.oauth-token"
 
 // MARK: - FlickrOAuth -
 
@@ -98,19 +98,19 @@ class FlickrOAuth {
     
     // MARK: Properties
     
-    fileprivate let consumerKey: String
-    fileprivate let consumerSecret: String
-    fileprivate let callbackURL: String
+    private let consumerKey: String
+    private let consumerSecret: String
+    private let callbackURL: String
     
-    fileprivate var authenticationPermission: FlickrOAuthPermission!
-    fileprivate var currentState: FlickrOAuthState = .default
+    private var authenticationPermission: FlickrOAuthPermission!
+    private var currentState: FlickrOAuthState = .default
     
-    fileprivate var resultBlock: FlickrOAuthCompletionHandler!
+    private var resultBlock: FlickrOAuthCompletionHandler!
     
-    fileprivate var token: String?
-    fileprivate var tokenSecret: String?
+    private var token: String?
+    private var tokenSecret: String?
     
-    fileprivate let authSession = URLSession(configuration: .default)
+    private let authSession = URLSession(configuration: .default)
     
     // MARK: - Init
     
@@ -122,13 +122,16 @@ class FlickrOAuth {
     
     // MARK: - Public -
     
-    func authorizeWithPermission(_ permission: FlickrOAuthPermission, result: @escaping FlickrOAuthCompletionHandler) {
+    func auth(with permission: FlickrOAuthPermission,
+              result: @escaping FlickrOAuthCompletionHandler) {
         authenticationPermission = permission
         resultBlock = result
         getRequestToken()
     }
     
-    func buildSHAEncryptedURLForHTTPMethod(_ httpMethod: HttpMethod, baseURL url: String, requestParameters parameters: FlickrOAuthMethodParams) -> URL? {
+    func buildSHAEncryptedURL(for httpMethod: HttpMethod,
+                              baseURL url: String,
+                              requestParameters parameters: FlickrOAuthMethodParams) -> URL? {
         currentState = .default
         
         getTokensFromKeychain()
@@ -137,9 +140,10 @@ class FlickrOAuth {
                 return nil
         }
         
-        var parameters = getRequestParametersWithAdditionalParameters(parameters)
-        parameters[OAuthParameterKey.Token.rawValue] = token
-        let urlString = encriptedURLWithBaseURL(url, requestParameters: parameters, httpMethod: httpMethod)
+        var parameters = getRequestParams(with: parameters)
+        parameters[OAuthParameterKey.token.rawValue] = token
+        let urlString = getEncriptedURL(with: url,requestParams: parameters,
+                                                httpMethod: httpMethod)
         
         return URL(string: urlString)
     }
@@ -147,104 +151,118 @@ class FlickrOAuth {
     // MARK: - Private -
     // MARK: Request Token
     
-    fileprivate func getRequestToken() {
+    private func getRequestToken() {
         FlickrOAuth.removeTokensFromKeychain()
         currentState = .requestToken
         
-        let urlString = encriptedURLWithBaseURL(kRequestTokenBaseURL, requestParameters: getBaseRequestParameters())
-        let urlWithSignature = URL(string: urlString)!
-        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse)
-        task.resume()
+        let urlString = getEncriptedURL(with: requestTokenBaseURL,
+                                                requestParams: getBaseRequestParams())
+        authSession
+            .dataTask(with: URL(string: urlString)!, completionHandler: processResponse)
+            .resume()
     }
     
     // MARK: User Authorization
     
-    fileprivate func promtsUserForAuthorization(_ success: @escaping (_ callbackURL: URL) -> Void) {
-        let authorizationURL = "\(kAuthorizeBaseURL)?\(OAuthParameterKey.Token.rawValue)=\(token!)&\(OAuthParameterKey.Permissions.rawValue)=\(authenticationPermission.rawValue)"
-        
-        let authViewController = FlickrOAuthViewController(authorizationURL: authorizationURL, callbackURL: callbackURL)
+    private func promtsUserForAuth(_ success: @escaping (_ callbackURL: URL) -> Void) {
+        let authURL = "\(authorizeBaseURL)?\(OAuthParameterKey.token.rawValue)=\(token!)&\(OAuthParameterKey.permissions.rawValue)=\(authenticationPermission.rawValue)"
+        let authVC = FlickrOAuthViewController(authorizationURL: authURL,
+                                               callbackURL: callbackURL)
 
-
-
-        authViewController.authorize(success: { success($0 as URL) },
-                                     failure: { self.resultBlock(.failure(error: $0)) })
+        authVC.authorize(success: { success($0 as URL) },
+                         failure: { self.resultBlock(.failure(error: $0)) })
     }
     
     // MARK: Access Token
     
-    fileprivate func getAccessTokenFromAuthorizationCallbackURL(_ url: URL) {
+    private func getAccessToken(from authorizationCallbackURL: URL) {
         currentState = .accessToken
         
-        var parameters = getBaseRequestParameters()
-        parameters[OAuthParameterKey.Verifier.rawValue] = extractVerifierFromCallbackURL(url)
+        var parameters = getBaseRequestParams()
+        parameters[OAuthParameterKey.verifier.rawValue] = extractVerifier(from: authorizationCallbackURL)
         
-        let urlString = encriptedURLWithBaseURL(kAccessTokenBaseURL, requestParameters: parameters)
+        let urlString = getEncriptedURL(with: accessTokenBaseURL, requestParams: parameters)
         let urlWithSignature = URL(string: urlString)!
-        let task = authSession.dataTask(with: urlWithSignature, completionHandler: processOnResponse)
-        task.resume()
+        authSession
+            .dataTask(with: urlWithSignature, completionHandler: processResponse)
+            .resume()
     }
     
-    fileprivate func extractVerifierFromCallbackURL(_ url: URL) -> String {
-        let parameters = url.absoluteString.components(separatedBy: "&")
+    private func extractVerifier(from callbackURL: URL) -> String {
+        let parameters = callbackURL.absoluteString.components(separatedBy: "&")
         let keyValue = parameters[1].components(separatedBy: "=")
+
         return keyValue[1]
     }
     
     // MARK: Build Destination URL
     
-    fileprivate func getBaseRequestParameters() -> FlickrOAuthMethodParams {
+    private func getBaseRequestParams() -> FlickrOAuthMethodParams {
         let timestamp = (floor(Date().timeIntervalSince1970) as NSNumber).stringValue
         let nonce = UUID().uuidString
-        let signatureMethod = OAuthParameterValue.SignatureMethod.rawValue
-        let version = OAuthParameterValue.Version.rawValue
+        let signatureMethod = OAuthParameterValue.signatureMethod.rawValue
+        let version = OAuthParameterValue.version.rawValue
         
-        var parameters = [
-            OAuthParameterKey.Nonce.rawValue: nonce,
-            OAuthParameterKey.Timestamp.rawValue: timestamp,
-            OAuthParameterKey.ConsumerKey.rawValue: consumerKey,
-            OAuthParameterKey.SignatureMethod.rawValue: signatureMethod,
-            OAuthParameterKey.Version.rawValue: version
+        var params = [
+            OAuthParameterKey.nonce.rawValue: nonce,
+            OAuthParameterKey.timestamp.rawValue: timestamp,
+            OAuthParameterKey.consumerKey.rawValue: consumerKey,
+            OAuthParameterKey.signatureMethod.rawValue: signatureMethod,
+            OAuthParameterKey.version.rawValue: version
         ]
         
         switch currentState {
         case .requestToken:
-            parameters[OAuthParameterKey.Callback.rawValue] = callbackURL
+            params[OAuthParameterKey.callback.rawValue] = callbackURL
         case .accessToken:
-            parameters[OAuthParameterKey.Token.rawValue] = token!
+            params[OAuthParameterKey.token.rawValue] = token!
         case .default:
             break
         }
         
-        return parameters
+        return params
     }
     
-    fileprivate func getRequestParametersWithAdditionalParameters(_ param: FlickrOAuthMethodParams) -> FlickrOAuthMethodParams {
-        var parameters = getBaseRequestParameters()
-        param.forEach { parameters[$0] = $1 }
-        return parameters
+    private func getRequestParams(with params: FlickrOAuthMethodParams) -> FlickrOAuthMethodParams {
+        var resParams = getBaseRequestParams()
+        params.forEach { resParams[$0] = $1 }
+
+        return resParams
     }
     
-    fileprivate func encriptedURLWithBaseURL(_ url: String, requestParameters parameters: FlickrOAuthMethodParams, httpMethod: HttpMethod = .get) -> String {
+    private func getEncriptedURL(with baseURL: String,
+                                 requestParams parameters: FlickrOAuthMethodParams,
+                                 httpMethod: HttpMethod = .get) -> String {
         var parameters = parameters
-        let urlStringBeforeSignature = sortedURLString(url, requestParameters: parameters, urlEscape: true)
+        let urlBeforeSignature = getSortedURLString(baseURL,
+                                                 requestParams: parameters,
+                                                 urlEscape: true)
         
         let secretKey = "\(consumerSecret)&\(tokenSecret ?? "")"
-        let signatureString = "\(httpMethod.rawValue)&\(urlStringBeforeSignature)"
+        let signatureString = "\(httpMethod.rawValue)&\(urlBeforeSignature)"
         let signature = signatureString.generateHMACSHA1EncriptedString(secretKey: secretKey)
         
-        parameters[OAuthParameterKey.Signature.rawValue] = signature
-        let urlStringWithSignature = sortedURLString(url, requestParameters: parameters, urlEscape: false)
+        parameters[OAuthParameterKey.signature.rawValue] = signature
+        let urlWithSignature = getSortedURLString(baseURL,
+                                               requestParams: parameters,
+                                               urlEscape: false)
         
-        return urlStringWithSignature
+        return urlWithSignature
     }
     
-    fileprivate func sortedURLString(_ url: String, requestParameters dictionary: FlickrOAuthMethodParams, urlEscape: Bool) -> String {
-        func urlEscapingIfNeeded(_ string: inout String) {
-            if urlEscape { string = String.urlEncodedStringFromString(string) }
+    private func getSortedURLString(_ url: String,
+                                    requestParams dictionary: FlickrOAuthMethodParams,
+                                    urlEscape: Bool) -> String {
+        func doUrlEscaping(_ string: inout String) {
+            if urlEscape {
+                string = String.urlEncodedStringFromString(string)
+            }
         }
         
         var pairs = [String]()
-        let keys = Array(dictionary.keys).sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+        let keys = Array(dictionary.keys).sorted {
+            $0.localizedCaseInsensitiveCompare($1) == .orderedAscending
+        }
         
         keys.forEach { key in
             let value = dictionary[key]!
@@ -253,11 +271,11 @@ class FlickrOAuth {
         }
         
         var urlString = url
-        urlEscapingIfNeeded(&urlString)
+        doUrlEscaping(&urlString)
         urlString += (urlEscape ? "&" : "?")
         
         var args = pairs.joined(separator: "&")
-        urlEscapingIfNeeded(&args)
+        doUrlEscaping(&args)
         urlString += args
         
         return urlString
@@ -265,8 +283,8 @@ class FlickrOAuth {
     
     // MARK: Process on Response
     
-    fileprivate func processOnResponse(_ data: Data?, response: URLResponse?, error: Error?) {
-        func sendError(_ error: String) {
+    private func processResponse(data: Data?, response: URLResponse?, error: Error?) {
+        func returnError(_ error: String) {
             print("Failed authorize with Flickr. Error: \(error).")
             performOnMain {
                 let error = NSError(
@@ -279,58 +297,61 @@ class FlickrOAuth {
         }
         
         guard error == nil else {
-            sendError(error!.localizedDescription)
+            returnError(error!.localizedDescription)
             return
         }
         
         guard let data = data,
             let responseString = String(data: data, encoding: String.Encoding.utf8) else {
-                sendError("Could not get response string.")
+                returnError("Could not get response string.")
                 return
         }
         
-        let parameters = parametersFromResponseString(responseString)
+        let params = buildParams(from: responseString)
         
         switch currentState {
         case .requestToken:
-            guard let oauthStatus = parameters[OAuthResponseKey.CallbackConfirmed.rawValue], (oauthStatus as NSString).boolValue == true else {
-                    sendError("Failed to get a request token. OAuth status is not confirmed.")
+            guard let oauthStatus = params[OAuthResponseKey.callbackConfirmed.rawValue],
+                (oauthStatus as NSString).boolValue == true else {
+                    returnError("Failed to get a request token. OAuth status is not confirmed.")
                     return
             }
-            updateTokensFromResponseParameters(parameters)
+            updateTokens(from: params)
             
             performOnMain {
-                self.promtsUserForAuthorization { [unowned self] callbackURL in
-                    self.getAccessTokenFromAuthorizationCallbackURL(callbackURL)
+                self.promtsUserForAuth { [unowned self] callbackURL in
+                    self.getAccessToken(from: callbackURL)
                 }
             }
         case .accessToken:
-            guard let username = parameters[OAuthResponseKey.Username.rawValue]?.removingPercentEncoding,
-                let userID = parameters[OAuthResponseKey.UserID.rawValue]?.removingPercentEncoding,
-                let fullname = parameters[OAuthResponseKey.Fullname.rawValue]?.removingPercentEncoding,
+            guard let username = params[OAuthResponseKey.username.rawValue]?.removingPercentEncoding,
+                let userID = params[OAuthResponseKey.userId.rawValue]?.removingPercentEncoding,
+                let fullname = params[OAuthResponseKey.fullname.rawValue]?.removingPercentEncoding,
                 !username.isEmpty else {
-                    sendError("Failed to get an access token.")
+                    returnError("Failed to get an access token.")
                     return
             }
-            updateTokensFromResponseParameters(parameters)
+            updateTokens(from: params)
             
             performOnMain {
-                let result = FlickrOAuthResult.success(
-                    token: self.token!,
-                    tokenSecret: self.tokenSecret!,
-                    user: FlickrUser(fullname: fullname, username: username, userID: userID)
+                self.resultBlock(
+                    FlickrOAuthResult.success(
+                        token: self.token!,
+                        tokenSecret: self.tokenSecret!,
+                        user: FlickrUser(fullname: fullname, username: username, userID: userID)
+                    )
                 )
-                self.resultBlock(result)
             }
         default:
             break
         }
     }
     
-    fileprivate func parametersFromResponseString(_ responseString: String) -> FlickrOAuthMethodParams {
-        let parameters = responseString.removingPercentEncoding!.components(separatedBy: "&")
+    private func buildParams(from responseString: String) -> FlickrOAuthMethodParams {
+        let params = responseString.removingPercentEncoding!.components(separatedBy: "&")
         var dictionary = [String: String]()
-        parameters.forEach {
+
+        params.forEach {
             let components = $0.components(separatedBy: "=")
             let key = components[0]
             let value = components[1]
@@ -340,47 +361,58 @@ class FlickrOAuth {
         return dictionary
     }
     
-    fileprivate func updateTokensFromResponseParameters(_ parameters: FlickrOAuthMethodParams) {
-        token = parameters[OAuthResponseKey.Token.rawValue]
-        tokenSecret = parameters[OAuthResponseKey.TokenSecret.rawValue]
-        if currentState == .accessToken { storeTokensInKeychain() }
+    private func updateTokens(from responseParams: FlickrOAuthMethodParams) {
+        token = responseParams[OAuthResponseKey.token.rawValue]
+        tokenSecret = responseParams[OAuthResponseKey.tokenSecret.rawValue]
+
+        if currentState == .accessToken {
+            storeTokensInKeychain()
+        }
     }
     
-    // MARK: Keychain Support
-    
-    class func removeTokensFromKeychain() {
-        let keychain = FlickrOAuth.getKeychain()
-        keychain.delete(kAccessTokenKeychainKey)
-        keychain.delete(kTokenSecretKeychainKey)
+}
+
+// MARK: - FlickrOAuth (Keychain Support) -
+
+extension FlickrOAuth {
+
+    // MARK: Instance Variables
+
+    private static let keychain = KeychainSwift(keyPrefix: keychainServiceName)
+
+    // MARK: Public
+
+    static func removeTokensFromKeychain() {
+        keychain.delete(accessTokenKeychainKey)
+        keychain.delete(tokenSecretKeychainKey)
     }
-    
-    class func getTokensFromKeychain() -> (accessToken: String?, tokenSecret: String?) {
-        let keychain = FlickrOAuth.getKeychain()
-        let token = keychain.get(kAccessTokenKeychainKey)
-        let tokenSecret = keychain.get(kTokenSecretKeychainKey)
-        
+
+    static func getTokensFromKeychain() -> (accessToken: String?, tokenSecret: String?) {
+        let token = keychain.get(accessTokenKeychainKey)
+        let tokenSecret = keychain.get(tokenSecretKeychainKey)
+
         return (token, tokenSecret)
     }
-    
-    fileprivate class func getKeychain() -> KeychainSwift {
-        return KeychainSwift(keyPrefix: kKeychainServiceName)
+
+    // MARK: Private
+
+    private func storeTokensInKeychain() {
+        FlickrOAuth.keychain.set(token!, forKey: accessTokenKeychainKey)
+        FlickrOAuth.keychain.set(tokenSecret!, forKey: tokenSecretKeychainKey)
     }
-    
-    fileprivate func storeTokensInKeychain() {
-        let keychain = FlickrOAuth.getKeychain()
-        keychain.set(token!, forKey: kAccessTokenKeychainKey)
-        keychain.set(tokenSecret!, forKey: kTokenSecretKeychainKey)
-    }
-    
-    @discardableResult fileprivate func getTokensFromKeychain() -> Bool {
+
+    @discardableResult private func getTokensFromKeychain() -> Bool {
         let data = FlickrOAuth.getTokensFromKeychain()
+
         guard let token = data.accessToken,
-            let tokenSecret = data.tokenSecret else { return false }
-        
+            let tokenSecret = data.tokenSecret else {
+                return false
+        }
+
         self.token = token
         self.tokenSecret = tokenSecret
-        
+
         return true
     }
-    
+
 }
