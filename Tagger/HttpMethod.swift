@@ -23,12 +23,7 @@
 import Foundation
 
 enum HttpMethod: String {
-    case GET = "GET"
-    case HEAD = "HEAD"
-    case POST = "POST"
-    case PUT = "PUT"
-    case PATCH = "PATCH"
-    case DELETE = "DELETE"
-    case TRACE = "TRACE"
-    case CONNECT = "CONNECT"
+    case get = "GET"
+    case post = "POST"
+    case delete = "DELETE"
 }

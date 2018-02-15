@@ -62,7 +62,7 @@ extension ImaggaApiClient {
         let boundary = generateBoundaryString()
 
         let request = NSMutableURLRequest(url: urlFromParameters(nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
-        request.httpMethod = HttpMethod.POST.rawValue
+        request.httpMethod = HttpMethod.post.rawValue
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = createMultipartBodyWithParameters(
             nil,

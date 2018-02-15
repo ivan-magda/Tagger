@@ -224,7 +224,7 @@ class FlickrOAuth {
         return parameters
     }
     
-    fileprivate func encriptedURLWithBaseURL(_ url: String, requestParameters parameters: Parameters, httpMethod: HttpMethod = .GET) -> String {
+    fileprivate func encriptedURLWithBaseURL(_ url: String, requestParameters parameters: Parameters, httpMethod: HttpMethod = .get) -> String {
         var parameters = parameters
         let urlStringBeforeSignature = sortedURLString(url, requestParameters: parameters, urlEscape: true)
         
