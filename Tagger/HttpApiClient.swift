@@ -37,7 +37,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealiases
 
-typealias MethodParameters = [String: Any]
+typealias HttpMethodParams = [String: Any]
 typealias TaskCompletionHandler = (_ result: ApiClientResult) -> Void
 
 // MARK: - HttpApiClient -
@@ -171,7 +171,7 @@ extension HttpApiClient {
 
 extension HttpApiClient {
 
-    func url(from parameters: MethodParameters?,
+    func url(from parameters: HttpMethodParams?,
              withPathExtension pathExtension: String = "") -> URL {
         var components = URLComponents(string: baseURL)!
         components.path = components.path + pathExtension

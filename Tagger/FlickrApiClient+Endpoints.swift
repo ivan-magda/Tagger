@@ -98,7 +98,7 @@ extension FlickrApiClient {
             }, fail: fail)
     }
 
-    func getRandomPhoto(for parameters: MethodParameters,
+    func getRandomPhoto(for parameters: HttpMethodParams,
                         success: @escaping FlickrPhotoSuccessCompletionHandler,
                         fail: @escaping FlickrFailCompletionHandler) {
         countPages(with: parameters, success: { pages in
@@ -139,7 +139,7 @@ extension FlickrApiClient {
 
     // MARK: Private
 
-    private func searchPhotos(with params: MethodParameters,
+    private func searchPhotos(with params: HttpMethodParams,
                               success: @escaping FlickrPhotosSearchSuccessCompletionHandler,
                               fail: @escaping FlickrFailCompletionHandler) {
         getResource(for: URLRequest(url: url(from: params)),
@@ -148,7 +148,7 @@ extension FlickrApiClient {
     }
 
     /// Returns number of pages for a photos search.
-    private func countPages(with param: MethodParameters,
+    private func countPages(with param: HttpMethodParams,
                             success: @escaping FlickrNumericSuccessCompletionHandler,
                             fail: @escaping FlickrFailCompletionHandler) {
         let request = URLRequest(url: url(from: param))
@@ -266,7 +266,7 @@ extension FlickrApiClient {
 
 extension FlickrApiClient {
 
-    private func getBaseMethodParams(_ method: String? = nil) -> MethodParameters {
+    private func getBaseMethodParams(_ method: String? = nil) -> HttpMethodParams {
         var parameters = [
             Constants.Params.Keys.apiKey: Constants.Params.Values.apiKey,
             Constants.Params.Keys.format: Constants.Params.Values.responseFormat,
@@ -277,10 +277,10 @@ extension FlickrApiClient {
             parameters[Constants.Params.Keys.method] = method
         }
 
-        return parameters as MethodParameters
+        return parameters as HttpMethodParams
     }
 
-    private func getBaseParamsForPhotosSearch() -> MethodParameters {
+    private func getBaseParamsForPhotosSearch() -> HttpMethodParams {
         var params = getBaseMethodParams(Constants.Params.Values.searchMethod)
         params[Constants.Params.Keys.extras] = "\(Constants.Params.Values.thumbnailURL),\(Constants.Params.Values.smallURL),\(Constants.Params.Values.mediumURL)"
         params[Constants.Params.Keys.contentType] = Constants.Params.Values.ContentType.photos.rawValue
@@ -291,7 +291,7 @@ extension FlickrApiClient {
         return params
     }
 
-    private func getParamsForPhotosSearch(for tags: [String]) -> MethodParameters {
+    private func getParamsForPhotosSearch(for tags: [String]) -> HttpMethodParams {
         var params = getBaseParamsForPhotosSearch()
         params[Constants.Params.Keys.tags] = tags.joined(separator: ",")
 

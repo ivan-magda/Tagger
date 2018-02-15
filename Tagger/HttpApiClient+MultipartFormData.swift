@@ -40,7 +40,7 @@ extension HttpApiClient {
     /// - parameter boundary:     The multipart/form-data boundary
     ///
     /// - returns: The NSData of the body of the request
-    func createMultipartBody(params parameters: MethodParameters?,
+    func createMultipartBody(params parameters: HttpMethodParams?,
                              files: [MultipartData]?,
                              boundary: String) -> Data {
         let body = NSMutableData()
