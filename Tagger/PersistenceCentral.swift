@@ -34,7 +34,7 @@ class PersistenceCentral: NSObject {
     
     // MARK: Properties
     
-    static let sharedInstance = PersistenceCentral()
+    static let shared = PersistenceCentral()
     let coreDataStackManager = CoreDataStackManager.sharedInstance
     
     fileprivate (set) var trendingCategories: [Category]!
