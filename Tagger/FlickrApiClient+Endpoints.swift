@@ -79,7 +79,7 @@ extension FlickrApiClient {
                 fail(Constants.Error.DefaultError)
                 return
             }
-            self.downloadImageWithURL(url, successBlock: success, failBlock: fail)
+            self.getImage(for: url, success: success, fail: fail)
             }, failBlock: fail)
     }
     
@@ -151,7 +151,7 @@ extension FlickrApiClient {
     
     func getProfilePictureFromUserInfo(_ info: FlickrPersonInfo, success: @escaping ImageDownloadingCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
         let URL = Foundation.URL(string: "https://farm\(info.iconFarm).staticflickr.com/\(info.iconServer)/buddyicons/\(info.nsid)_l.jpg")!
-        downloadImageWithURL(URL, successBlock: success, failBlock: failure)
+        getImage(for: URL, success: success, fail: failure)
     }
     
     func getProfilePictureWithNSID(_ nsid: String, success: @escaping ImageDownloadingCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {

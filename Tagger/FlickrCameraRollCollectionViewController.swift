@@ -108,10 +108,12 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
         
         guard let URL = URL(string: photo.urlSmall) else { return }
         cell.activityIndicator.startAnimating()
-        
-        flickr.api.downloadImageWithURL(URL, successBlock: { [weak self] image in
-            self?.setImage(image, toCellAtIndexPath: indexPath)
-            }, failBlock: failedToLoadImageWithError)
+
+        flickr.api.getImage(for: URL,
+                            success: { [weak self] image in
+                                self?.setImage(image, toCellAtIndexPath: indexPath)
+                            },
+                            fail: failedToLoadImageWithError)
     }
     
     fileprivate func setImage(_ image: UIImage?, toCellAtIndexPath indexPath: IndexPath) {

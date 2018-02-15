@@ -26,17 +26,17 @@ import UIKit.UIImage
 // MARK: Typealias
 
 typealias ImageDownloadingCompletionHandler = (_ image: UIImage) -> Void
-typealias RequestFailCompletionHandler = (_ error: Error) -> Void
+typealias FailCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - HttpApiClient (Convenience)
 
 extension HttpApiClient {
-    
-    // MARK: Methods
-    
-    func downloadImageWithURL(_ url: URL, successBlock success: @escaping ImageDownloadingCompletionHandler, failBlock fail: @escaping RequestFailCompletionHandler) {
+
+    func getImage(for url: URL,
+                  success: @escaping ImageDownloadingCompletionHandler,
+                  fail: @escaping FailCompletionHandler) {
         fetchRawData(for: URLRequest(url: url)) { result in
-            func sendError(_ error: String) {
+            func returnError(_ error: String) {
                 self.log("Error: \(error)")
                 let error = NSError(
                     domain: FlickrApiClient.Constants.Error.LoadImageErrorDomain,
@@ -48,12 +48,12 @@ extension HttpApiClient {
             
             switch result {
             case .error(let error):
-                sendError(error.localizedDescription)
+                returnError(error.localizedDescription)
             case .rawData(let data):
                 performOnBackgroud {
                     guard let image = UIImage(data: data) else {
                         performOnMain {
-                            sendError("Could not initialize the image from the specified data.")
+                            returnError("Could not initialize the image from the specified data.")
                         }
                         return
                     }
@@ -62,7 +62,7 @@ extension HttpApiClient {
                     }
                 }
             default:
-                sendError(result.defaultErrorMessage()!)
+                returnError(result.defaultErrorMessage()!)
             }
         }
     }
