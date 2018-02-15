@@ -37,9 +37,9 @@ private enum ErrorCode: Int {
     case unexpectedSituation = 132
 }
 
-// MARK: Typealias
+// MARK: - Typealias
 
-typealias MIFailureCompletionHandler = (_ error: Error) -> Void
+typealias IMFailCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - IMApiClient: JsonApiClient -
 
@@ -48,13 +48,13 @@ class IMApiClient: JsonApiClient {
     // MARK: - Requests -
     // MARK: Public
     
-    func fetchResourceForRequest<T: JSONParselable>(_ request: URLRequest, success: @escaping (T) -> Void, fail: @escaping MIFailureCompletionHandler) {
+    func fetchResourceForRequest<T: JSONParselable>(_ request: URLRequest, success: @escaping (T) -> Void, fail: @escaping IMFailCompletionHandler) {
         fetchForResource(request, parseBlock: { json -> T? in
             return T.decode(json)
             }, success: success, fail: fail)
     }
 
-    func fetchCollectionForRequest<T: JSONParselable>(_ request: URLRequest, rootKeys: [String], success: @escaping ([T]) -> Void, fail: @escaping MIFailureCompletionHandler) {
+    func fetchCollectionForRequest<T: JSONParselable>(_ request: URLRequest, rootKeys: [String], success: @escaping ([T]) -> Void, fail: @escaping IMFailCompletionHandler) {
         fetchForCollection(request, rootKeys: rootKeys, parseBlock: { (json) -> [T]? in
             return json.flatMap { T.decode($0) }
             }, success: success, failure: fail)
@@ -62,7 +62,7 @@ class IMApiClient: JsonApiClient {
     
     // MARK: Private
     
-    fileprivate func fetchForResource<T>(_ request: URLRequest, parseBlock: @escaping (JSONDictionary) -> T?, success: @escaping (T) -> Void, fail: @escaping MIFailureCompletionHandler) {
+    fileprivate func fetchForResource<T>(_ request: URLRequest, parseBlock: @escaping (JSONDictionary) -> T?, success: @escaping (T) -> Void, fail: @escaping IMFailCompletionHandler) {
         fetchJson(for: request) { [unowned self] result in
             if let error = self.checkApiClientResultForAnError(result) {
                 fail(error)
@@ -96,7 +96,7 @@ class IMApiClient: JsonApiClient {
         }
     }
     
-    fileprivate func fetchForCollection<T>(_ request: URLRequest, rootKeys: [String], parseBlock: @escaping ([JSONDictionary]) -> [T]?, success: @escaping ([T]) -> Void, failure: @escaping MIFailureCompletionHandler) {
+    fileprivate func fetchForCollection<T>(_ request: URLRequest, rootKeys: [String], parseBlock: @escaping ([JSONDictionary]) -> [T]?, success: @escaping ([T]) -> Void, failure: @escaping IMFailCompletionHandler) {
         func parsingJsonError() -> Error {
             return NSError(
                 domain: ErrorDomain.UnexpectedResponse,
