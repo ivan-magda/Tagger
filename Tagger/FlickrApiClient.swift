@@ -24,7 +24,7 @@ import Foundation
 
 // MARK: FlickrApiClient: MIApiClient
 
-class FlickrApiClient: MIApiClient {
+class FlickrApiClient: IMApiClient {
     
     // MARK: - Properties
     

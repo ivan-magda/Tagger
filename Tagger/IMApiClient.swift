@@ -41,9 +41,9 @@ private enum ErrorCode: Int {
 
 typealias MIFailureCompletionHandler = (_ error: Error) -> Void
 
-// MARK: - MIApiClient: JsonApiClient -
+// MARK: - IMApiClient: JsonApiClient -
 
-class MIApiClient: JsonApiClient {
+class IMApiClient: JsonApiClient {
     
     // MARK: - Requests -
     // MARK: Public

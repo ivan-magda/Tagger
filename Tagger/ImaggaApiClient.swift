@@ -24,7 +24,7 @@ import Foundation
 
 // MARK: ImaggaApiClient: MIApiClient
 
-class ImaggaApiClient: MIApiClient {
+class ImaggaApiClient: IMApiClient {
     
     // MARK: - Properties
     
