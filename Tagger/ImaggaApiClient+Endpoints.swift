@@ -71,7 +71,7 @@ extension ImaggaApiClient {
         )
         
         fetchJson(for: request as URLRequest) { [unowned self] result in
-            if let error = self.checkApiClientResultForAnError(result) {
+            if let error = self.isContainsError(result: result) {
                 fail(error)
                 return
             }

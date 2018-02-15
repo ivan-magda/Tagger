@@ -54,7 +54,7 @@ extension FlickrApiClient {
         
         let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
         let request = URLRequest(url: url(from: param))
-        fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
+        getCollection(for: request, rootKeys: keys, success: success, fail: fail)
     }
     
     func relatedTagsForTag(_ tag: String, successBlock success: @escaping FlickrTagsSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
@@ -63,7 +63,7 @@ extension FlickrApiClient {
         
         let keys = [Constants.FlickrResponseKeys.Tags, Constants.FlickrResponseKeys.Tag]
         let request = URLRequest(url: url(from: param))
-        fetchCollectionForRequest(request, rootKeys: keys, success: success, fail: fail)
+        getCollection(for: request, rootKeys: keys, success: success, fail: fail)
     }
     
     // MARK: - Photos -
@@ -106,7 +106,7 @@ extension FlickrApiClient {
     
     fileprivate func searchPhotosWithParameters(_ param: MethodParameters, successBlock success: @escaping FlickrPhotosSearchSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
         let request = URLRequest(url: url(from: param))
-        fetchResourceForRequest(request, success: success, fail: fail)
+        getResource(for: request, success: success, fail: fail)
     }
     
     /// Returns number of pages for a photos search.
@@ -146,7 +146,7 @@ extension FlickrApiClient {
         parameters[Constants.FlickrParameterKeys.UserID] = userID as AnyObject
         
         let request = URLRequest(url: url(from: parameters))
-        fetchResourceForRequest(request, success: success, fail: failure)
+        getResource(for: request, success: success, fail: failure)
     }
     
     func getProfilePictureFromUserInfo(_ info: FlickrPersonInfo, success: @escaping ImageDownloadingCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
@@ -212,7 +212,7 @@ extension FlickrApiClient {
         }
         
         let request = URLRequest(url: URL)
-        fetchCollectionForRequest(request, rootKeys: ["photos", "photo"], success: success, fail: failure)
+        getCollection(for: request, rootKeys: ["photos", "photo"], success: success, fail: failure)
     }
     
     // MARK: Private
