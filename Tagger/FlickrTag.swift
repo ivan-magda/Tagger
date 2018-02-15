@@ -44,12 +44,12 @@ struct FlickrTag {
     }
     
     init?(json: JSONDictionary) {
-        guard let content = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
+        guard let content = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.content) else {
             return nil
         }
         self.init(content: content)
         
-        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Score),
+        if let scoreString = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.score),
             let score = Int(scoreString) {
             self.score = score
         }

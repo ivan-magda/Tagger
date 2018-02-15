@@ -40,14 +40,14 @@ struct FlickrPhoto {
     // MARK: Init
     
     init?(json: JSONDictionary) {
-        guard let id = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Id),
-            let owner = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Owner),
-            let secret = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Secret),
-            let server = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Server),
-            let farm = JSON.int(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Farm),
-            let title = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.Title),
-            let urlThumbnail = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.ThumbnailURL),
-            let urlSmall = JSON.string(json, key: FlickrApiClient.Constants.FlickrResponseKeys.SmallURL) else {
+        guard let id = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.id),
+            let owner = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.owner),
+            let secret = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.secret),
+            let server = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.server),
+            let farm = JSON.int(json, key: FlickrApiClient.Constants.Response.Keys.farm),
+            let title = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.title),
+            let urlThumbnail = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.thumbnailURL),
+            let urlSmall = JSON.string(json, key: FlickrApiClient.Constants.Response.Keys.smallURL) else {
                 return nil
         }
         

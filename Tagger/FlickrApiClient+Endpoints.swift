@@ -48,20 +48,20 @@ extension FlickrApiClient {
     // MARK: Public
     
     func tagsHotListForPeriod(_ period: Period, numberOfTags count: Int = 20, successBlock success: @escaping FlickrTagsSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
-        var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsHotList)
-        param[Constants.FlickrParameterKeys.Period] = period.rawValue as AnyObject
-        param[Constants.FlickrParameterKeys.Count] = count as AnyObject
+        var params = getBaseMethodParameters(Constants.Params.Values.tagsHotList)
+        params[Constants.Params.Keys.period] = period.rawValue
+        params[Constants.Params.Keys.count] = count
         
-        let keys = [Constants.FlickrResponseKeys.HotTags, Constants.FlickrResponseKeys.Tag]
-        let request = URLRequest(url: url(from: param))
+        let keys = [Constants.Response.Keys.hotTags, Constants.Response.Keys.tag]
+        let request = URLRequest(url: url(from: params))
         getCollection(for: request, rootKeys: keys, success: success, fail: fail)
     }
     
     func relatedTagsForTag(_ tag: String, successBlock success: @escaping FlickrTagsSuccessCompletionHandler, failBlock fail: @escaping FlickrFailureCompletionHandler) {
-        var param = getBaseMethodParameters(Constants.FlickrParameterValues.TagsGetRelated)
-        param[Constants.FlickrParameterKeys.Tag] = tag as AnyObject
+        var param = getBaseMethodParameters(Constants.Params.Values.tagsGetRelated)
+        param[Constants.Params.Keys.tag] = tag
         
-        let keys = [Constants.FlickrResponseKeys.Tags, Constants.FlickrResponseKeys.Tag]
+        let keys = [Constants.Response.Keys.tags, Constants.Response.Keys.tag]
         let request = URLRequest(url: url(from: param))
         getCollection(for: request, rootKeys: keys, success: success, fail: fail)
     }
@@ -89,7 +89,7 @@ extension FlickrApiClient {
             let randomPage = RandomNumberUtils.numberFromZeroTo(pageLimit) + 1
             
             var parameters = parameters
-            parameters[Constants.FlickrParameterKeys.Page] = randomPage
+            parameters[Constants.Params.Keys.page] = randomPage
             self.searchPhotosWithParameters(parameters, successBlock: { album in
                 guard album.photos.count > 0 else {
                     fail(Constants.Error.EmptyResponseError)
@@ -127,8 +127,8 @@ extension FlickrApiClient {
             case .error(let error):
                 sendError(error.localizedDescription)
             case .json(let json):
-                guard let photosDictionary = json[Constants.FlickrResponseKeys.Photos] as? JSONDictionary,
-                    let numberOfPages = photosDictionary[Constants.FlickrResponseKeys.Pages] as? Int else {
+                guard let photosDictionary = json[Constants.Response.Keys.photos] as? JSONDictionary,
+                    let numberOfPages = photosDictionary[Constants.Response.Keys.pages] as? Int else {
                         sendError("Could't parse recieved JSON object")
                         return
                 }
@@ -142,8 +142,8 @@ extension FlickrApiClient {
     // MARK: - User -
     
     func getPersonInfoWithNSID(_ userID: String, success: @escaping FlickrPersonInfoSuccessCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
-        var parameters = getBaseMethodParameters(Constants.FlickrParameterValues.PeopleGetInfo)
-        parameters[Constants.FlickrParameterKeys.UserID] = userID as AnyObject
+        var parameters = getBaseMethodParameters(Constants.Params.Values.peopleGetInfo)
+        parameters[Constants.Params.Keys.userId] = userID
         
         let request = URLRequest(url: url(from: parameters))
         getResource(for: request, success: success, fail: failure)
@@ -174,9 +174,9 @@ extension FlickrApiClient {
         }
         
         let params = [
-            Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.TestLogin,
-            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
-            Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat
+            Constants.Params.Keys.method: Constants.Params.Values.testLogin,
+            Constants.Params.Keys.noJSONCallback: Constants.Params.Values.disableJSONCallback,
+            Constants.Params.Keys.format: Constants.Params.Values.responseFormat
         ]
         
         guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.get, baseURL: baseURL, requestParameters: params) else {
@@ -204,8 +204,8 @@ extension FlickrApiClient {
     func getUserPhotos(_ user: FlickrUser, success: @escaping FlickrPhotosSuccessCompletionHandler, failure: @escaping FlickrFailureCompletionHandler) {
         var parameters = Parameters()
         getBaseParametersForPhotosSearch().forEach { parameters[$0] = "\($1)" }
-        parameters[Constants.FlickrParameterKeys.PerPage] = "\(Constants.FlickrParameterValues.PerPageMax)"
-        parameters[Constants.FlickrResponseKeys.UserID] = user.userID
+        parameters[Constants.Params.Keys.perPage] = "\(Constants.Params.Values.perPageMax)"
+        parameters[Constants.Response.Keys.userID] = user.userID
         
         guard let URL = FlickrApiClient.getTempOAuth().buildSHAEncryptedURLForHTTPMethod(.get, baseURL: baseURL, requestParameters: parameters) else {
             return
@@ -225,34 +225,38 @@ extension FlickrApiClient {
     
     func getBaseMethodParameters(_ method: String? = nil) -> MethodParameters {
         var parameters = [
-            Constants.FlickrParameterKeys.APIKey: Constants.FlickrParameterValues.APIKey,
-            Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
-            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
+            Constants.Params.Keys.apiKey: Constants.Params.Values.apiKey,
+            Constants.Params.Keys.format: Constants.Params.Values.responseFormat,
+            Constants.Params.Keys.noJSONCallback: Constants.Params.Values.disableJSONCallback
         ]
-        if let method = method { parameters[Constants.FlickrParameterKeys.Method] = method }
+        if let method = method { parameters[Constants.Params.Keys.method] = method }
         return parameters as MethodParameters
     }
     
     fileprivate func getBaseParametersForPhotosSearch() -> MethodParameters {
-        var methodParameters = getBaseMethodParameters(Constants.FlickrParameterValues.SearchMethod)
-        methodParameters[Constants.FlickrParameterKeys.Extras] = "\(Constants.FlickrParameterValues.ThumbnailURL),\(Constants.FlickrParameterValues.SmallURL),\(Constants.FlickrParameterValues.MediumURL)" as AnyObject
-        methodParameters[Constants.FlickrParameterKeys.ContentType] = Constants.FlickrParameterValues.ContentType.photos.rawValue
-        methodParameters[Constants.FlickrParameterKeys.SafeSearch] = Constants.FlickrParameterValues.UseSafeSearch as AnyObject
-        methodParameters[Constants.FlickrParameterKeys.Page] = 1 as AnyObject
-        methodParameters[Constants.FlickrParameterKeys.PerPage] = Constants.FlickrParameterValues.PerPageDefault as AnyObject
-        return methodParameters
+        var params = getBaseMethodParameters(Constants.Params.Values.searchMethod)
+        params[Constants.Params.Keys.extras] = "\(Constants.Params.Values.thumbnailURL),\(Constants.Params.Values.smallURL),\(Constants.Params.Values.mediumURL)"
+        params[Constants.Params.Keys.contentType] = Constants.Params.Values.ContentType.photos.rawValue
+        params[Constants.Params.Keys.safeSearch] = Constants.Params.Values.useSafeSearch
+        params[Constants.Params.Keys.page] = 1
+        params[Constants.Params.Keys.perPage] = Constants.Params.Values.perPageDefault
+
+        return params
     }
     
     fileprivate func parametersForPhotosSearchWithTags(_ tags: [String]) -> MethodParameters {
-        var methodParameters = getBaseParametersForPhotosSearch()
-        methodParameters[Constants.FlickrParameterKeys.Tags] = tags.joined(separator: ",") as AnyObject
-        return methodParameters
+        var params = getBaseParametersForPhotosSearch()
+        params[Constants.Params.Keys.tags] = tags.joined(separator: ",")
+
+        return params
     }
     
     fileprivate func checkFlickrResponse(_ json: JSONDictionary) -> Bool {
-        guard let flickrStatus = json[Constants.FlickrResponseKeys.Status] as? String, flickrStatus == Constants.FlickrResponseValues.OKStatus else {
+        guard let flickrStatus = json[Constants.Response.Keys.status] as? String,
+            flickrStatus == Constants.Response.Values.okStatus else {
             return false
         }
+
         return true
     }
     

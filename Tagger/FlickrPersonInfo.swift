@@ -38,15 +38,15 @@ struct FlickrPersonInfo {
     // MARK: Init
     
     init?(json: JSONDictionary) {
-        guard let person = json[FlickrApiClient.Constants.FlickrResponseKeys.Person] as? JSONDictionary,
-            let id = JSON.string(person, key: FlickrApiClient.Constants.FlickrResponseKeys.Id),
-            let nsid = JSON.string(person, key: FlickrApiClient.Constants.FlickrResponseKeys.NSID),
-            let iconServer = JSON.string(person, key: FlickrApiClient.Constants.FlickrResponseKeys.IconServer),
-            let iconFarm = JSON.int(person, key: FlickrApiClient.Constants.FlickrResponseKeys.IconFarm),
-            let usernameDict = person[FlickrApiClient.Constants.FlickrResponseKeys.Username] as? JSONDictionary,
-            let username = JSON.string(usernameDict, key: FlickrApiClient.Constants.FlickrResponseKeys.Content),
-            let realNameDict = person[FlickrApiClient.Constants.FlickrResponseKeys.RealName] as? JSONDictionary,
-            let realName = JSON.string(realNameDict, key: FlickrApiClient.Constants.FlickrResponseKeys.Content) else {
+        guard let person = json[FlickrApiClient.Constants.Response.Keys.person] as? JSONDictionary,
+            let id = JSON.string(person, key: FlickrApiClient.Constants.Response.Keys.id),
+            let nsid = JSON.string(person, key: FlickrApiClient.Constants.Response.Keys.NSID),
+            let iconServer = JSON.string(person, key: FlickrApiClient.Constants.Response.Keys.iconServer),
+            let iconFarm = JSON.int(person, key: FlickrApiClient.Constants.Response.Keys.iconFarm),
+            let usernameDict = person[FlickrApiClient.Constants.Response.Keys.username] as? JSONDictionary,
+            let username = JSON.string(usernameDict, key: FlickrApiClient.Constants.Response.Keys.content),
+            let realNameDict = person[FlickrApiClient.Constants.Response.Keys.realName] as? JSONDictionary,
+            let realName = JSON.string(realNameDict, key: FlickrApiClient.Constants.Response.Keys.content) else {
                 return nil
         }
         

@@ -37,13 +37,13 @@ struct FlickrAlbum {
     // MARK: Init
     
     init?(json: JSONDictionary) {
-        guard let photosJson = json[FlickrApiClient.Constants.FlickrResponseKeys.Photos] as? JSONDictionary,
-            let page = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Page),
-            let pages = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Pages),
-            let perpage = JSON.int(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.PerPage),
-            let totalString = JSON.string(photosJson, key: FlickrApiClient.Constants.FlickrResponseKeys.Total),
+        guard let photosJson = json[FlickrApiClient.Constants.Response.Keys.photos] as? JSONDictionary,
+            let page = JSON.int(photosJson, key: FlickrApiClient.Constants.Response.Keys.page),
+            let pages = JSON.int(photosJson, key: FlickrApiClient.Constants.Response.Keys.pages),
+            let perpage = JSON.int(photosJson, key: FlickrApiClient.Constants.Response.Keys.perPage),
+            let totalString = JSON.string(photosJson, key: FlickrApiClient.Constants.Response.Keys.total),
             let total = Int(totalString),
-            let photoJsonArray = photosJson[FlickrApiClient.Constants.FlickrResponseKeys.Photo] as? [JSONDictionary] else {
+            let photoJsonArray = photosJson[FlickrApiClient.Constants.Response.Keys.photo] as? [JSONDictionary] else {
                 return nil
         }
         
