@@ -243,21 +243,21 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         UIUtils.showNetworkActivityIndicator()
         
         if indexPath.section == SectionType.trends.rawValue {
-            let period: Period = indexPath.row == SectionType.TrendingTags.today.rawValue ? .Day : .Week
-            flickr.api.tagsHotListForPeriod(
-                period,
-                successBlock: {
-                    self.flickr.api.randomImageFromTags(
-                        $0.map { $0.content },
-                        successBlock: { self.setImage($0, toCellAtIndexPath: indexPath) },
-                        failBlock: handleError)
+            let period: Period = indexPath.row == SectionType.TrendingTags.today.rawValue ? .day : .week
+            flickr.api.getTagsHotList(
+                for: period,
+                success: {
+                    self.flickr.api.getRandomPhoto(
+                        for: $0.map { $0.content },
+                        success: { self.setImage($0, toCellAtIndexPath: indexPath) },
+                        fail: handleError)
                 },
-                failBlock: handleError)
+                fail: handleError)
         } else {
-            flickr.api.randomImageFromTags(
-                [category.name],
-                successBlock: { self.setImage($0, toCellAtIndexPath: indexPath) },
-                failBlock: handleError
+            flickr.api.getRandomPhoto(
+                for: [category.name],
+                success: { self.setImage($0, toCellAtIndexPath: indexPath) },
+                fail: handleError
             )
         }
     }
@@ -320,7 +320,7 @@ extension DiscoverTagsViewController: UICollectionViewDelegate {
         
         switch SectionType(rawValue: indexPath.section)! {
         case .trends:
-            let period = indexPath.row == 0 ? Period.Day : Period.Week
+            let period = indexPath.row == 0 ? Period.day : Period.week
             let hotTagsViewController = FlickrHotTagsViewController(flickrApiClient: flickrApi, period: period, category: category)
             hotTagsViewController.persistenceCentral = persistenceCentral
             navigationController?.pushViewController(hotTagsViewController, animated: true)

@@ -107,10 +107,10 @@ extension FlickrUserAccountViewController {
             actionButton.setTitle("Log Out", for: UIControlState())
             
             setUIState(.network)
-            flickr.api.getProfilePictureWithNSID(user.userID, success: {
+            flickr.api.getProfilePhotoWithNSID(user.userID, success: {
                 self.imageView.image = $0
                 self.setUIState(.default)
-                }, failure: {
+                }, fail: {
                     self.showError($0)
                     self.setUIState(.default)
             })

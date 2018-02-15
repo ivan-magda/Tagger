@@ -31,7 +31,7 @@ class FlickrHotTagsViewController: TagListViewController {
     
     var flickrApiClient: FlickrApiClient!
     
-    fileprivate var period = Period.Day
+    fileprivate var period = Period.day
     fileprivate var numberOfTags = 20
     
     fileprivate let refreshControl = UIRefreshControl()
@@ -64,10 +64,10 @@ class FlickrHotTagsViewController: TagListViewController {
     
     @objc func fetchData() {
         setUIState(.downloading)
-        flickrApiClient.tagsHotListForPeriod(
-            period,
+        flickrApiClient.getTagsHotList(
+            for: period,
             numberOfTags: numberOfTags,
-            successBlock: { [weak self] tags in
+            success: { [weak self] tags in
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
                 

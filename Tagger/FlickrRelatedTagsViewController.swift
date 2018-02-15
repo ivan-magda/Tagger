@@ -59,9 +59,9 @@ class FlickrRelatedTagsViewController: TagListViewController {
     
     @objc func fetchData() {
         setUIState(.downloading)
-        flickrApiClient.relatedTagsForTag(
-            parentCategory!.name,
-            successBlock: { [weak self] tags in
+        flickrApiClient.getRelatedTags(
+            for: parentCategory!.name,
+            success: { [weak self] tags in
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
                 
