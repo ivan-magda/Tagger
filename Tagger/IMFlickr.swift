@@ -24,13 +24,13 @@ import Foundation
 
 // MARK: Constants
 
-private let kFlickrCurrentUserKey = "FLICKR_CURRENT_USER_KEY"
+private let currentUserKey = "FLICKR_CURRENT_USER_KEY"
 
-// MARK: - MIFlickr
+// MARK: - IMFlickr
 
 class IMFlickr {
     
-    // MARK: - Properties
+    // MARK: - Instance Variables
     
     /**
      *  This class constant provides an easy way to get access
@@ -50,7 +50,7 @@ class IMFlickr {
     
     var currentUser: FlickrUser? {
         get {
-            guard let data = UserDefaults.standard.object(forKey: kFlickrCurrentUserKey) as? Data,
+            guard let data = UserDefaults.standard.object(forKey: currentUserKey) as? Data,
                 let user = NSKeyedUnarchiver.unarchiveObject(with: data) as? FlickrUser else {
                     return nil
             }
@@ -63,9 +63,9 @@ class IMFlickr {
             
             if let newValue = newValue {
                 let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
-                userDefaults.set(data, forKey: kFlickrCurrentUserKey)
+                userDefaults.set(data, forKey: currentUserKey)
             } else {
-                userDefaults.set(nil, forKey: kFlickrCurrentUserKey)
+                userDefaults.set(nil, forKey: currentUserKey)
             }
             
             userDefaults.synchronize()
@@ -74,13 +74,13 @@ class IMFlickr {
     
     // MARK: Init
     
-    fileprivate init() {
+    private init() {
         self.api = FlickrApiClient.sharedInstance
     }
     
     // MARK: Public
     
-    func logOutCurrentUser() {
+    func logOut() {
         currentUser = nil
         FlickrOAuth.removeTokensFromKeychain()
     }
