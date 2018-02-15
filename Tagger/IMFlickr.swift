@@ -28,7 +28,7 @@ private let kFlickrCurrentUserKey = "FLICKR_CURRENT_USER_KEY"
 
 // MARK: - MIFlickr
 
-class MIFlickr {
+class IMFlickr {
     
     // MARK: - Properties
     
@@ -36,7 +36,7 @@ class MIFlickr {
      *  This class constant provides an easy way to get access
      *  to a shared instance of the MIFlickr class.
      */
-    static let sharedInstance = MIFlickr()
+    static let shared = IMFlickr()
     
     let api: FlickrApiClient
     var OAuth: FlickrOAuth {

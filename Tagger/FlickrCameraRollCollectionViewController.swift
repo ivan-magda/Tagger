@@ -32,7 +32,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     // MARK: Properties
     
-    var flickr: MIFlickr!
+    var flickr: IMFlickr!
     
     /// Did finish picking image completion handler.
     var didFinishPickingImageBlock: FlickrCameraRollDidPickImageCompletionHandler?
@@ -70,7 +70,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     // MARK: Presenting
     
-    class func presentInViewController(_ viewController: UIViewController, flickr: MIFlickr, didFinishPickingImage block: @escaping FlickrCameraRollDidPickImageCompletionHandler) {
+    class func presentInViewController(_ viewController: UIViewController, flickr: IMFlickr, didFinishPickingImage block: @escaping FlickrCameraRollDidPickImageCompletionHandler) {
         let flowLayout = UICollectionViewFlowLayout()
         let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
         cameraRollViewController.flickr = flickr

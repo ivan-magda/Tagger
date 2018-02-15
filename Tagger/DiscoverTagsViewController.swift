@@ -53,7 +53,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
     
     // MARK: Properties
     
-    var flickr: MIFlickr!
+    var flickr: IMFlickr!
     var persistenceCentral: PersistenceCentral!
     
     fileprivate var categories: [Category] {

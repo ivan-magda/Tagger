@@ -39,9 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    fileprivate let flickr = MIFlickr.sharedInstance
     fileprivate let persistenceCentral = PersistenceCentral.sharedInstance
     
+    private let flickr = IMFlickr.shared
     // MARK: UIApplicationDelegate
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

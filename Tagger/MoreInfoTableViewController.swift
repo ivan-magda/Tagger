@@ -36,7 +36,7 @@ class MoreInfoTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    var flickr: MIFlickr!
+    var flickr: IMFlickr!
     var persistenceCentral: PersistenceCentral!
 
     // MARK: View Life Cycle

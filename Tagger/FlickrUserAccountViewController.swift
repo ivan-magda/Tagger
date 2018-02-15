@@ -42,7 +42,7 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
     
     // MARK: Properties
     
-    var flickr: MIFlickr!
+    var flickr: IMFlickr!
     
     fileprivate let activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
