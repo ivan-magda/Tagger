@@ -42,10 +42,10 @@ private typealias FlickrOAuthFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - Types
 
-enum FlickrAuthenticationPermission: String {
-    case Read = "read"
-    case Write = "write"
-    case Delete = "delete"
+enum FlickrOAuthPermission: String {
+    case read
+    case write
+    case delete
 }
 
 private enum OAuthParameterKey: String {
@@ -102,7 +102,7 @@ class FlickrOAuth {
     fileprivate let consumerSecret: String
     fileprivate let callbackURL: String
     
-    fileprivate var authenticationPermission: FlickrAuthenticationPermission!
+    fileprivate var authenticationPermission: FlickrOAuthPermission!
     fileprivate var currentState: FlickrOAuthState = .default
     
     fileprivate var resultBlock: FlickrOAuthCompletionHandler!
@@ -122,7 +122,7 @@ class FlickrOAuth {
     
     // MARK: - Public -
     
-    func authorizeWithPermission(_ permission: FlickrAuthenticationPermission, result: @escaping FlickrOAuthCompletionHandler) {
+    func authorizeWithPermission(_ permission: FlickrOAuthPermission, result: @escaping FlickrOAuthCompletionHandler) {
         authenticationPermission = permission
         resultBlock = result
         getRequestToken()
