@@ -33,33 +33,33 @@ typealias MultipartData = (data: Data, name: String, fileName: String)
 
 extension HttpApiClient {
     
-    /// Create body of the multipart/form-data request
+    /// Creates body of the multipart/form-data request
     ///
     /// - parameter parameters: The optional dictionary containing keys and values to be passed to web service
     /// - parameter files: An optional array containing multipart/form-data parts
     /// - parameter boundary:     The multipart/form-data boundary
     ///
     /// - returns: The NSData of the body of the request
-    func createMultipartBodyWithParameters(_ parameters: MethodParameters?, files: [MultipartData]?, boundary: String) -> Data {
+    func createMultipartBody(params parameters: MethodParameters?,
+                             files: [MultipartData]?,
+                             boundary: String) -> Data {
         let body = NSMutableData()
         
-        if let parameters = parameters {
-            parameters.forEach { (key, value) in
-                body.appendString("--\(boundary)\r\n")
-                body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-                body.appendString("\(value)\r\n")
-            }
+
+        parameters?.forEach { (key, value) in
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
         }
-        
-        if let files = files {
-            files.forEach {
-                body.appendString("--\(boundary)\r\n")
-                body.appendString("Content-Disposition:form-data; name=\"\($0.name)\"; filename=\"\($0.fileName)\"\r\n")
-                body.appendString("Content-Type: \($0.data.mimeType)\r\n\r\n")
-                body.append($0.data)
-                body.appendString("\r\n")
-            }
+
+        files?.forEach {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition:form-data; name=\"\($0.name)\"; filename=\"\($0.fileName)\"\r\n")
+            body.appendString("Content-Type: \($0.data.mimeType)\r\n\r\n")
+            body.append($0.data)
+            body.appendString("\r\n")
         }
+
         body.appendString("--\(boundary)--\r\n")
         
         return body as Data
