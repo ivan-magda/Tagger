@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-import UIKit
+import Foundation
 import KeychainSwift
 
 /**
@@ -36,7 +36,7 @@ import KeychainSwift
 
 // MARK: Typealiases
 
-typealias Parameters = [String: String]
+typealias FlickrOAuthMethodParams = [String: String]
 typealias FlickrOAuthCompletionHandler = (_ result: FlickrOAuthResult) -> Void
 private typealias FlickrOAuthFailureCompletionHandler = (_ error: Error) -> Void
 
@@ -128,7 +128,7 @@ class FlickrOAuth {
         getRequestToken()
     }
     
-    func buildSHAEncryptedURLForHTTPMethod(_ httpMethod: HttpMethod, baseURL url: String, requestParameters parameters: Parameters) -> URL? {
+    func buildSHAEncryptedURLForHTTPMethod(_ httpMethod: HttpMethod, baseURL url: String, requestParameters parameters: FlickrOAuthMethodParams) -> URL? {
         currentState = .default
         
         getTokensFromKeychain()
@@ -192,7 +192,7 @@ class FlickrOAuth {
     
     // MARK: Build Destination URL
     
-    fileprivate func getBaseRequestParameters() -> Parameters {
+    fileprivate func getBaseRequestParameters() -> FlickrOAuthMethodParams {
         let timestamp = (floor(Date().timeIntervalSince1970) as NSNumber).stringValue
         let nonce = UUID().uuidString
         let signatureMethod = OAuthParameterValue.SignatureMethod.rawValue
@@ -218,13 +218,13 @@ class FlickrOAuth {
         return parameters
     }
     
-    fileprivate func getRequestParametersWithAdditionalParameters(_ param: Parameters) -> Parameters {
+    fileprivate func getRequestParametersWithAdditionalParameters(_ param: FlickrOAuthMethodParams) -> FlickrOAuthMethodParams {
         var parameters = getBaseRequestParameters()
         param.forEach { parameters[$0] = $1 }
         return parameters
     }
     
-    fileprivate func encriptedURLWithBaseURL(_ url: String, requestParameters parameters: Parameters, httpMethod: HttpMethod = .get) -> String {
+    fileprivate func encriptedURLWithBaseURL(_ url: String, requestParameters parameters: FlickrOAuthMethodParams, httpMethod: HttpMethod = .get) -> String {
         var parameters = parameters
         let urlStringBeforeSignature = sortedURLString(url, requestParameters: parameters, urlEscape: true)
         
@@ -238,7 +238,7 @@ class FlickrOAuth {
         return urlStringWithSignature
     }
     
-    fileprivate func sortedURLString(_ url: String, requestParameters dictionary: Parameters, urlEscape: Bool) -> String {
+    fileprivate func sortedURLString(_ url: String, requestParameters dictionary: FlickrOAuthMethodParams, urlEscape: Bool) -> String {
         func urlEscapingIfNeeded(_ string: inout String) {
             if urlEscape { string = String.urlEncodedStringFromString(string) }
         }
@@ -327,7 +327,7 @@ class FlickrOAuth {
         }
     }
     
-    fileprivate func parametersFromResponseString(_ responseString: String) -> Parameters {
+    fileprivate func parametersFromResponseString(_ responseString: String) -> FlickrOAuthMethodParams {
         let parameters = responseString.removingPercentEncoding!.components(separatedBy: "&")
         var dictionary = [String: String]()
         parameters.forEach {
@@ -340,7 +340,7 @@ class FlickrOAuth {
         return dictionary
     }
     
-    fileprivate func updateTokensFromResponseParameters(_ parameters: Parameters) {
+    fileprivate func updateTokensFromResponseParameters(_ parameters: FlickrOAuthMethodParams) {
         token = parameters[OAuthResponseKey.Token.rawValue]
         tokenSecret = parameters[OAuthResponseKey.TokenSecret.rawValue]
         if currentState == .accessToken { storeTokensInKeychain() }

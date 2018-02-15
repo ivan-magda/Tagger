@@ -122,7 +122,7 @@ extension FlickrApiClient {
     func getUserPhotos(_ user: FlickrUser,
                        success: @escaping FlickrPhotosSuccessCompletionHandler,
                        fail: @escaping FlickrFailCompletionHandler) {
-        var parameters = Parameters()
+        var parameters = FlickrOAuthMethodParams()
         getBaseParamsForPhotosSearch().forEach { parameters[$0] = "\($1)" }
         parameters[Constants.Params.Keys.perPage] = "\(Constants.Params.Values.perPageMax)"
         parameters[Constants.Response.Keys.userID] = user.userID
