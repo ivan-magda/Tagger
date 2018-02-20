@@ -24,26 +24,29 @@ import Foundation
 
 // MARK: ImaggaApiClient: MIApiClient
 
-class ImaggaApiClient: IMApiClient {
+final class ImaggaApiClient: IMApiClient {
     
-    // MARK: - Properties
-    
+    // MARK: - Instance Variables
+
     /**
      *  This class constant provides an easy way to get access
      *  to a shared instance of the ImaggaApiClient class.
      */
-    static let sharedInstance = ImaggaApiClient(configuration: .default, baseURL: "https://api.imagga.com/v1")
+    static let sharedInstance = ImaggaApiClient(configuration: .default,
+                                                baseURL: Constants.baseURL)
     
     // MARK: - Init
     
     override init(configuration: URLSessionConfiguration, baseURL: String) {
         super.init(configuration: configuration, baseURL: baseURL)
+
         configuration.httpAdditionalHeaders = [
             "Authorization": ImaggaAuthenticationToken,
             "Accept": "application/json"
         ]
         configuration.timeoutIntervalForRequest  = 30.0
         configuration.timeoutIntervalForResource = 60.0
+
         loggingEnabled = true
     }
     

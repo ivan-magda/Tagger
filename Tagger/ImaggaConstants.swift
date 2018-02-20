@@ -29,6 +29,8 @@ extension ImaggaApiClient {
     // MARK: - Constants
     
     struct Constants {
+
+        static let baseURL = "https://api.imagga.com/v1"
         
         // MARK: ParameterKeys
         
