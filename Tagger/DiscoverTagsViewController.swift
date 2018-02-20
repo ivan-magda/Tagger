@@ -268,7 +268,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
         
         // Persist the image.
         if let image = image {
-            persistenceCentral.setImage(image, toCategory: categoryForIndexPath(indexPath))
+            persistenceCentral.setImage(image, to: categoryForIndexPath(indexPath))
         }
         
         guard collectionView.indexPathsForVisibleItems.contains(indexPath) == true else { return }

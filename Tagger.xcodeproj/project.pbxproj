@@ -81,7 +81,6 @@
 		75AA9CD51D22220600DEB55D /* URLSchemesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AA9CD41D22220600DEB55D /* URLSchemesUtils.swift */; };
 		75D40D171D083DC100E3AB1F /* FlickrAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */; };
 		75D40D191D083DF900E3AB1F /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */; };
-		75D769621D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D769611D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift */; };
 		75E057391D0FC93700B3A258 /* ImaggaConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E057381D0FC93700B3A258 /* ImaggaConstants.swift */; };
 		75E0573D1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */; };
 		75FBA1FD1D21316E006EC31D /* TagListViewControllerUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */; };
@@ -189,7 +188,6 @@
 		75AA9CD41D22220600DEB55D /* URLSchemesUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSchemesUtils.swift; sourceTree = "<group>"; };
 		75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAlbum.swift; sourceTree = "<group>"; };
 		75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhoto.swift; sourceTree = "<group>"; };
-		75D769611D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceCentral+ConvenienceImage.swift"; sourceTree = "<group>"; };
 		75E057381D0FC93700B3A258 /* ImaggaConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaConstants.swift; sourceTree = "<group>"; };
 		75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrRelatedTagsViewController.swift; sourceTree = "<group>"; };
 		75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListViewControllerUIState.swift; sourceTree = "<group>"; };
@@ -443,7 +441,7 @@
 		7571F3841D23951C00402518 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				75D769631D23F34700FC65A6 /* PersistenceCentral */,
+				7571F37E1D23950100402518 /* PersistenceCentral.swift */,
 				7571F37C1D23950100402518 /* CoreDataStackManager.swift */,
 				7571F3851D23953B00402518 /* Tagger.xcdatamodeld */,
 				7524C0461D2576010004D6CE /* EntityType.swift */,
@@ -544,15 +542,6 @@
 				758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */,
 			);
 			name = OAuth;
-			sourceTree = "<group>";
-		};
-		75D769631D23F34700FC65A6 /* PersistenceCentral */ = {
-			isa = PBXGroup;
-			children = (
-				7571F37E1D23950100402518 /* PersistenceCentral.swift */,
-				75D769611D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift */,
-			);
-			name = PersistenceCentral;
 			sourceTree = "<group>";
 		};
 		75FBA1FE1D213187006EC31D /* TagListViewController */ = {
@@ -845,7 +834,6 @@
 				754532351D063F4000AEC34C /* TagListViewController.swift in Sources */,
 				757262E41D1E6D9E006DE902 /* FlickrCameraRollCollectionViewCell.swift in Sources */,
 				7524C0451D25204F0004D6CE /* ManageCategoryTableViewController.swift in Sources */,
-				75D769621D23F33C00FC65A6 /* PersistenceCentral+ConvenienceImage.swift in Sources */,
 				754F1B021D024B9400410CA0 /* JsonApiClient.swift in Sources */,
 				754F1B0E1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift in Sources */,
 				7584F34B1D0DABD0008FE98C /* ImaggaApiClient.swift in Sources */,

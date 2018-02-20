@@ -22,6 +22,7 @@
 
 import Foundation
 import CoreData
+import UIKit.UIImage
 
 // MARK: Constants
 
@@ -97,6 +98,40 @@ extension PersistenceCentral {
     }
 
 }
+
+// MARK: - PersistenceCentral (CategoryImage) -
+
+extension PersistenceCentral {
+
+    func setImage(_ image: UIImage, to category: Category) {
+        let categoryImage = CategoryImage(image: image,
+                                          context: coreDataStackManager.managedObjectContext)
+        category.image = categoryImage
+        categoryImage.category = category
+
+        coreDataStackManager.saveContext()
+    }
+
+    func deleteImages() {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: CategoryImage.type)
+        do {
+            guard let results = try coreDataStackManager.managedObjectContext.fetch(request) as? [CategoryImage] else {
+                return
+            }
+
+            results.forEach {
+                self.coreDataStackManager.managedObjectContext.delete($0)
+            }
+
+            coreDataStackManager.saveContext()
+        } catch let error as NSError {
+            print("Failed to delete all images: \(error.localizedDescription)")
+        }
+    }
+
+}
+
+
 
 // MARK: - PersistenceCentral: NSFetchedResultsControllerDelegate -
 
