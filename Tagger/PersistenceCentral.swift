@@ -44,8 +44,8 @@ final class PersistenceCentral: NSObject {
     private lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
         let request = NSFetchRequest<Category>(entityName: Category.type)
         request.sortDescriptors = [
-            NSSortDescriptor(key: Category.Key.Trending.rawValue, ascending: true),
-            NSSortDescriptor(key: Category.Key.Name.rawValue, ascending: true,
+            NSSortDescriptor(key: Category.Key.trending.rawValue, ascending: true),
+            NSSortDescriptor(key: Category.Key.name.rawValue, ascending: true,
                              selector: #selector(NSString.caseInsensitiveCompare(_:)))
         ]
         request.returnsObjectsAsFaults = false
@@ -53,7 +53,7 @@ final class PersistenceCentral: NSObject {
         let fetchedResultsController = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: self.coreDataStackManager.managedObjectContext,
-            sectionNameKeyPath: Category.Key.Trending.rawValue,
+            sectionNameKeyPath: Category.Key.trending.rawValue,
             cacheName: nil
         )
         fetchedResultsController.delegate = self
@@ -87,7 +87,7 @@ extension PersistenceCentral {
     }
 
     func deleteTags(in category: Category) {
-        category.deleteAllTags()
+        category.deleteTags()
         coreDataStackManager.saveContext()
     }
 

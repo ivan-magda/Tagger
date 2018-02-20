@@ -30,11 +30,11 @@ class Category: NSManagedObject {
     // MARK: Types
     
     enum Key: String {
-        case Id = "id"
-        case Name = "name"
-        case Trending = "trending"
-        case Tags = "tags"
-        case Image = "image"
+        case id
+        case name
+        case trending
+        case tags
+        case image
     }
     
     // MARK: Init
@@ -50,11 +50,15 @@ class Category: NSManagedObject {
         self.name = name
     }
     
-    // MARK: Public
-    
-    func deleteAllTags() {
+}
+
+// MARK: - Category (Actions) -
+
+extension Category {
+
+    func deleteTags() {
         guard let context = managedObjectContext else { return }
         tags.forEach { context.delete($0) }
     }
-    
+
 }
