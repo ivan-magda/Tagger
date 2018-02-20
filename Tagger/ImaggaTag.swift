@@ -40,8 +40,8 @@ struct ImaggaTag {
     }
     
     init?(json: JSONDictionary) {
-        guard let confidence = JSON.double(json, key: ImaggaApiClient.Constants.ResponseKeys.Confidence),
-            let tag = JSON.string(json, key: ImaggaApiClient.Constants.ResponseKeys.Tag) else {
+        guard let confidence = JSON.double(json, key: ImaggaApiClient.Constants.Response.Keys.confidence),
+            let tag = JSON.string(json, key: ImaggaApiClient.Constants.Response.Keys.tag) else {
                 return nil
         }
         self.init(confidence: confidence, tag: tag)

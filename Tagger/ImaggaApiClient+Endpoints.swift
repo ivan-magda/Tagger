@@ -74,7 +74,7 @@ extension ImaggaApiClient {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = createMultipartBody(
             params: nil,
-            files: [(data: data, name: Constants.ParameterKeys.ImageFile, fileName: "image.jpg")],
+            files: [(data: data, name: Constants.Params.Keys.imageFile, fileName: "image.jpg")],
             boundary: boundary
         )
         
@@ -86,15 +86,15 @@ extension ImaggaApiClient {
             
             switch result {
             case .json(let json):
-                guard let status = json[Constants.ResponseKeys.Status] as? String,
-                    status == Constants.ResponseValues.SuccessStatus else {
-                    self.onFailure(with: json[Constants.ResponseKeys.Message] as! String,
+                guard let status = json[Constants.Response.Keys.status] as? String,
+                    status == Constants.Response.Values.successStatus else {
+                    self.onFailure(with: json[Constants.Response.Keys.message] as! String,
                                    callback: failure)
                     return
                 }
                 
-                guard let uploaded = json[Constants.ResponseKeys.Uploaded] as? [JSONDictionary],
-                    let fileId = uploaded.first?[Constants.ResponseKeys.ID] as? String else {
+                guard let uploaded = json[Constants.Response.Keys.uploaded] as? [JSONDictionary],
+                    let fileId = uploaded.first?[Constants.Response.Keys.id] as? String else {
                         self.onFailure(with: "Invalid information received from service.",
                                        callback: failure)
                         return
@@ -112,15 +112,15 @@ extension ImaggaApiClient {
     private func tagging(by id: String,
                          success: @escaping ImaggaTaggingSuccessCompletionHandler,
                          failure: @escaping ImaggaFailureCompletionHandler) {
-        let URL = url(from: [Constants.ParameterKeys.Content: id],
+        let URL = url(from: [Constants.Params.Keys.content: id],
                       withPathExtension: Endpoint.Tagging.rawValue)
         let request = URLRequest(url: URL)
 
         fetchJson(for: request) { [unowned self] result in
             switch result {
             case .json(let json):
-                guard let results = json[Constants.ResponseKeys.Results] as? [JSONDictionary],
-                    let tagsJson = results.first?[Constants.ResponseKeys.Tags] as? [JSONDictionary] else {
+                guard let results = json[Constants.Response.Keys.results] as? [JSONDictionary],
+                    let tagsJson = results.first?[Constants.Response.Keys.tags] as? [JSONDictionary] else {
                         self.onFailure(with: "An error occured. Failed to tag your image",
                                        callback: failure)
                         return

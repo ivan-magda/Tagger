@@ -32,30 +32,40 @@ extension ImaggaApiClient {
 
         static let baseURL = "https://api.imagga.com/v1"
         
-        // MARK: ParameterKeys
-        
-        struct ParameterKeys {
-            static let Content = "content"
-            static let ImageFile = "imagefile"
+        // MARK: - Params
+
+        struct Params {
+
+            // MARK: Keys
+
+            struct Keys {
+                static let content = "content"
+                static let imageFile = "imagefile"
+            }
         }
         
-        // MARK: ResponseKeys
-        
-        struct ResponseKeys {
-            static let Status = "status"
-            static let Message = "message"
-            static let Uploaded = "uploaded"
-            static let ID = "id"
-            static let Results = "results"
-            static let Tag = "tag"
-            static let Tags = "tags"
-            static let Confidence = "confidence"
-        }
-        
-        // MARK: ResponseValues
-        
-        struct ResponseValues {
-            static let SuccessStatus = "success"
+        // MARK: - Response
+
+        struct Response {
+
+            // MARK: Keys
+
+            struct Keys {
+                static let status = "status"
+                static let message = "message"
+                static let uploaded = "uploaded"
+                static let id = "id"
+                static let results = "results"
+                static let tag = "tag"
+                static let tags = "tags"
+                static let confidence = "confidence"
+            }
+
+            // MARK: Values
+
+            struct Values {
+                static let successStatus = "success"
+            }
         }
     }
     
