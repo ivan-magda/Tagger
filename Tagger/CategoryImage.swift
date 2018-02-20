@@ -30,8 +30,8 @@ class CategoryImage: NSManagedObject {
     // MARK: Types
     
     enum Key: String {
-        case data = "data"
-        case category = "category"
+        case data
+        case category
     }
     
     // MARK: Instance Variables
