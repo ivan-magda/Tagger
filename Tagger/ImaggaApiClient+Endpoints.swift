@@ -25,7 +25,7 @@ import UIKit.UIImage
 
 // MARK: Types
 
-private enum ImaggaApiEndpoint: String {
+private enum Endpoint: String {
     case Tagging = "/tagging"
     case Content = "/content"
     case Categorizations = "/categorizations"
@@ -40,96 +40,117 @@ typealias ImaggaFailureCompletionHandler = (_ error: Error) -> Void
 // MARK: - ImaggaApiClient (Calling Api Endpoints)
 
 extension ImaggaApiClient {
-    
-    // MARK: - API Endpoints -
-    // MARK: Public
+
+    // MARK: Public API
     
     func taggingImage(_ image: UIImage,
                       success: @escaping ImaggaTaggingSuccessCompletionHandler,
                       failure: @escaping ImaggaFailureCompletionHandler) {
-        uploadImage(image, successBlock: { [unowned self] contentId in
-            self.taggingByContentId(contentId, successBlock: success, failureBlock: failure)
-            }, failureBlock: failure)
+        uploadImage(image, success: { [unowned self] contentId in
+            self.tagging(by: contentId, success: success, failure: failure)
+            }, failure: failure)
     }
     
     // MARK: Private
+
+    private static let maxImageSize: CGFloat = 500
     
-    fileprivate func uploadImage(_ image: UIImage, successBlock success: @escaping ImaggaContentIdSuccessCompletionHandler, failureBlock fail: @escaping ImaggaFailureCompletionHandler) {
-        let compression: CGFloat = (image.size.height > 500 || image.size.width > 500 ? 0.5 : 0.9)
-        guard let imageData = UIImageJPEGRepresentation(image, compression) else {
-            sendError("Could not get JPEG representation of selected image.", toBlock: fail)
+    private func uploadImage(_ image: UIImage,
+                             success: @escaping ImaggaContentIdSuccessCompletionHandler,
+                             failure: @escaping ImaggaFailureCompletionHandler) {
+        let compression: CGFloat = (image.size.height > ImaggaApiClient.maxImageSize ||
+            image.size.width > ImaggaApiClient.maxImageSize) ? 0.5 : 0.9
+
+        guard let data = UIImageJPEGRepresentation(image, compression) else {
+            onFailure(with: "Could not get JPEG representation of selected image.",
+                      callback: failure)
             return
         }
         
         let boundary = generateBoundaryString()
 
-        let request = NSMutableURLRequest(url: url(from: nil, withPathExtension: ImaggaApiEndpoint.Content.rawValue))
+        let request = NSMutableURLRequest(url: url(from: nil, withPathExtension: Endpoint.Content.rawValue))
         request.httpMethod = HttpMethod.post.rawValue
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = createMultipartBody(
             params: nil,
-            files: [(data: imageData, name: Constants.ParameterKeys.ImageFile, fileName: "image.jpg")],
+            files: [(data: data, name: Constants.ParameterKeys.ImageFile, fileName: "image.jpg")],
             boundary: boundary
         )
         
         fetchJson(for: request as URLRequest) { [unowned self] result in
             if let error = self.isContainsError(result: result) {
-                fail(error)
+                failure(error)
                 return
             }
             
             switch result {
             case .json(let json):
-                guard let status = json[Constants.ResponseKeys.Status] as? String, status == Constants.ResponseValues.SuccessStatus else {
-                    self.sendError(json[Constants.ResponseKeys.Message] as! String, toBlock: fail)
+                guard let status = json[Constants.ResponseKeys.Status] as? String,
+                    status == Constants.ResponseValues.SuccessStatus else {
+                    self.onFailure(with: json[Constants.ResponseKeys.Message] as! String,
+                                   callback: failure)
                     return
                 }
                 
                 guard let uploaded = json[Constants.ResponseKeys.Uploaded] as? [JSONDictionary],
                     let fileId = uploaded.first?[Constants.ResponseKeys.ID] as? String else {
-                        self.sendError("Invalid information received from service.", toBlock: fail)
+                        self.onFailure(with: "Invalid information received from service.",
+                                       callback: failure)
                         return
                 }
-                
+
                 self.log("Content uploaded with ID: \(fileId)")
                 success(fileId)
             default:
-                self.sendError("An error occured. Please, try again.", toBlock: fail)
+                self.onFailure(with: "An error occured. Please, try again.",
+                               callback: failure)
             }
         }
     }
     
-    fileprivate func taggingByContentId(_ id: String, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failureBlock fail: @escaping ImaggaFailureCompletionHandler) {
-        let URL = url(from: [Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
+    private func tagging(by id: String,
+                         success: @escaping ImaggaTaggingSuccessCompletionHandler,
+                         failure: @escaping ImaggaFailureCompletionHandler) {
+        let URL = url(from: [Constants.ParameterKeys.Content: id],
+                      withPathExtension: Endpoint.Tagging.rawValue)
         let request = URLRequest(url: URL)
-        fetchJson(for: request) { result in
+
+        fetchJson(for: request) { [unowned self] result in
             switch result {
             case .json(let json):
                 guard let results = json[Constants.ResponseKeys.Results] as? [JSONDictionary],
                     let tagsJson = results.first?[Constants.ResponseKeys.Tags] as? [JSONDictionary] else {
-                        self.sendError("", toBlock: fail)
+                        self.onFailure(with: "An error occured. Failed to tag your image",
+                                       callback: failure)
                         return
                 }
                 
                 let tags = ImaggaTag.sanitezedTags(tagsJson)
                 success(tags)
             default:
-                self.sendError("An error occured. Please, try again.", toBlock: fail)
+                self.onFailure(with: "An error occured. Please, try again.",
+                               callback: failure)
             }
         }
     }
-    
-    // MARK: - Private Helpers
-    
-    fileprivate func sendError(_ error: String, toBlock failureBlock: @escaping ImaggaFailureCompletionHandler) {
+
+}
+
+// MARK: - ImaggaApiClient (Private Helpers) -
+
+extension ImaggaApiClient {
+
+    private func onFailure(with error: String,
+                           callback: @escaping ImaggaFailureCompletionHandler) {
         func sendError(_ error: String) {
             let error = NSError(
                 domain: "\(BaseErrorDomain).ImaggaApiClient",
                 code: 44,
                 userInfo: [NSLocalizedDescriptionKey : error]
             )
-            failureBlock(error)
+            callback(error)
         }
     }
-    
+
 }
