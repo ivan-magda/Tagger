@@ -30,9 +30,9 @@ class Tag: NSManagedObject {
     // MARK: Types
     
     enum Key: String {
-        case Id = "id"
-        case name = "name"
-        case category = "category"
+        case id
+        case name
+        case category
     }
 
     // MARK: Init
