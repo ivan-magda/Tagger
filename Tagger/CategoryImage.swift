@@ -30,11 +30,11 @@ class CategoryImage: NSManagedObject {
     // MARK: Types
     
     enum Key: String {
-        case Data = "data"
-        case Category = "category"
+        case data = "data"
+        case category = "category"
     }
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var image: UIImage? {
         get {
@@ -43,7 +43,7 @@ class CategoryImage: NSManagedObject {
         }
     }
     
-    fileprivate lazy var _image: UIImage? = {
+    private lazy var _image: UIImage? = {
         return UIImage(data: self.data! as Data)
     }()
     
@@ -54,7 +54,8 @@ class CategoryImage: NSManagedObject {
     }
     
     convenience init(data: Data, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entity(forEntityName: CategoryImage.type, in: context)!
+        let entity = NSEntityDescription.entity(forEntityName: CategoryImage.type,
+                                                in: context)!
         self.init(entity: entity, insertInto: context)
         self.data = data
     }
