@@ -36,7 +36,7 @@ final class PersistenceCentral: NSObject {
     // MARK: Instance Variables
     
     static let shared = PersistenceCentral()
-    let coreDataStackManager = CoreDataStackManager.sharedInstance
+    let coreDataStackManager = CoreDataStackManager.shared
     
     private (set) var trendingCategories: [Category]!
     private (set) var categories: [Category]!
