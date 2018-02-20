@@ -92,8 +92,8 @@ class ImageTaggerViewController: UIViewController, Alertable {
             tagListViewController.parentCategory = createdCategory
         } else {
             tagListViewController.title = "Results"
-            tagListViewController.tags = ImaggaTag.mapImaggaTags(generatedTags!,
-                                                                 toTagsInContext: temporaryContext)
+            tagListViewController.tags = ImaggaTag.map(on: generatedTags!,
+                                                       in: temporaryContext)
         }
         navigationController?.pushViewController(tagListViewController, animated: true)
     }
@@ -147,7 +147,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
         let context = manager.managedObjectContext
         
         let category = Category(name: name, context: context)
-        ImaggaTag.mapImaggaTags(generatedTags!, withParentCategory: category, toTagsInContext: context)
+        ImaggaTag.map(on: generatedTags!, with: category, in: context)
         manager.saveContext()
         
         createdCategory = category

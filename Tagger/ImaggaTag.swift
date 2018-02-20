@@ -29,8 +29,8 @@ struct ImaggaTag {
     
     // MARK: - Properties
     
-    fileprivate (set) var tag: String
-    fileprivate (set) var confidence: Double
+    private (set) var tag: String
+    private (set) var confidence: Double
     
     // MARK: - Init
     
@@ -44,6 +44,7 @@ struct ImaggaTag {
             let tag = JSON.string(json, key: ImaggaApiClient.Constants.Response.Keys.tag) else {
                 return nil
         }
+
         self.init(confidence: confidence, tag: tag)
     }
     
@@ -53,24 +54,30 @@ struct ImaggaTag {
         return json.flatMap { self.init(json: $0) }
     }
     
-    // MARK: Core Data
-    
-    func convertToTagInContext(_ context: NSManagedObjectContext) -> Tag {
+}
+
+// MARK: - ImaggaTag (CoreData) -
+
+extension ImaggaTag {
+
+    func toTag(in context: NSManagedObjectContext) -> Tag {
         return Tag(name: tag, context: context)
     }
-    
-    @discardableResult static func mapImaggaTags(_ tags: [ImaggaTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
+
+    @discardableResult static func map(on tags: [ImaggaTag],
+                                       with category: Category? = nil,
+                                       in context: NSManagedObjectContext) -> [Tag] {
         return tags.map {
-            let tag = $0.convertToTagInContext(context)
-            
+            let tag = $0.toTag(in: context)
+
             if let category = category {
                 tag.category = category
             }
-            
+
             return tag
         }
     }
-    
+
 }
 
 // MARK: - ImaggaTag: JSONParselable -
