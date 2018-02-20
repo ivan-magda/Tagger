@@ -25,9 +25,9 @@ import Foundation
 // MARK: Types
 
 private enum CoderKey: String {
-    case Fullname
-    case Username
-    case UserID
+    case fullname
+    case username
+    case userID
 }
 
 // MARK: - FlickrUser: NSObject, NSCoding
@@ -55,9 +55,9 @@ class FlickrUser: NSObject, NSCoding {
     // MARK: NSCoding
     
     required convenience init?(coder aDecoder: NSCoder) {
-        guard let fullname = aDecoder.decodeObject(forKey: CoderKey.Fullname.rawValue) as? String,
-            let username = aDecoder.decodeObject(forKey: CoderKey.Username.rawValue) as? String,
-            let userID = aDecoder.decodeObject(forKey: CoderKey.UserID.rawValue) as? String else {
+        guard let fullname = aDecoder.decodeObject(forKey: CoderKey.fullname.rawValue) as? String,
+            let username = aDecoder.decodeObject(forKey: CoderKey.username.rawValue) as? String,
+            let userID = aDecoder.decodeObject(forKey: CoderKey.userID.rawValue) as? String else {
                 return nil
         }
         
@@ -65,9 +65,9 @@ class FlickrUser: NSObject, NSCoding {
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(fullname, forKey: CoderKey.Fullname.rawValue)
-        aCoder.encode(username, forKey: CoderKey.Username.rawValue)
-        aCoder.encode(userID, forKey: CoderKey.UserID.rawValue)
+        aCoder.encode(fullname, forKey: CoderKey.fullname.rawValue)
+        aCoder.encode(username, forKey: CoderKey.username.rawValue)
+        aCoder.encode(userID, forKey: CoderKey.userID.rawValue)
     }
     
 }
