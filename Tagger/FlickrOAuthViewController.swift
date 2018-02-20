@@ -31,23 +31,12 @@ typealias FlickrOAuthViewControllerFailureCompletionHandler = (_ error: Error) -
 
 class FlickrOAuthViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
-    fileprivate var webView = UIWebView()
-    
-    fileprivate var authorizationURLString: String!
-    fileprivate var callbackURLString: String!
+    private var webView = UIWebView()
 
-    fileprivate var authorizationURL: URL {
-        get {
-            return URL(string: authorizationURLString)!
-        }
-    }
-    fileprivate var callbackURL: URL {
-        get {
-            return URL(string: callbackURLString)!
-        }
-    }
+    private var authorizationURL: URL!
+    private var callbackURL: URL!
     
     fileprivate var successBlock: FlickrOAuthViewControllerSuccessCompletionHandler!
     fileprivate var failureBlock: FlickrOAuthViewControllerFailureCompletionHandler!
@@ -55,60 +44,34 @@ class FlickrOAuthViewController: UIViewController {
     // MARK: Init
     
     init(authorizationURL: String, callbackURL: String) {
-        self.authorizationURLString = authorizationURL
-        self.callbackURLString = callbackURL
         super.init(nibName: nil, bundle: nil)
+
+        self.authorizationURL = URL(string: authorizationURL)!
+        self.callbackURL = URL(string: callbackURL)!
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(nibName: nil, bundle: nil)
+        fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: View Life Cycle
+    //MARK: UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
+        setup()
     }
     
-    // MARK: Public
+    // MARK: Public API
     
-    func authorize(success: @escaping FlickrOAuthViewControllerSuccessCompletionHandler, failure: @escaping FlickrOAuthViewControllerFailureCompletionHandler) {
+    func authorize(success: @escaping FlickrOAuthViewControllerSuccessCompletionHandler,
+                   failure: @escaping FlickrOAuthViewControllerFailureCompletionHandler) {
         successBlock = success
         failureBlock = failure
         
         let rootViewController = UIUtils.getRootViewController()!
         let navigationController = UINavigationController(rootViewController: self)
         rootViewController.present(navigationController, animated: true, completion: nil)
-    }
-    
-    // MARK: Actions
-    
-    @objc func dismiss() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: Private
-    
-    fileprivate func configure() {
-        title = "Flickr Auth"
-        
-        webView.delegate = self
-        webView.frame = view.bounds
-        webView.backgroundColor = .white
-        webView.scalesPageToFit = true
-        webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .flexibleWidth, .flexibleHeight)
-        view.addSubview(webView)
-        
-        let request = URLRequest(url: authorizationURL)
-        webView.loadRequest(request)
-
-        let doneBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done,
-            target: self,
-            action: #selector(((FlickrOAuthViewController.dismiss) as (FlickrOAuthViewController) -> () -> Void))
-        )
-        navigationItem.rightBarButtonItem = doneBarButtonItem
     }
     
 }
@@ -160,4 +123,39 @@ extension FlickrOAuthViewController: UIWebViewDelegate {
         failureBlock(error)
     }
     
+}
+
+// MARK: - FlickrOAuthViewController (Private Helpers) -
+
+extension FlickrOAuthViewController {
+
+    @objc private func dismiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    private func setup() {
+        title = "Flickr Auth"
+
+        webView.delegate = self
+        webView.frame = view.bounds
+        webView.backgroundColor = .white
+        webView.scalesPageToFit = true
+        webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .flexibleWidth, .flexibleHeight)
+        view.addSubview(webView)
+
+        let request = URLRequest(url: authorizationURL)
+        webView.loadRequest(request)
+
+        let doneBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(
+                ((FlickrOAuthViewController.dismiss)
+                    as (FlickrOAuthViewController) -> () -> Void)
+            )
+        )
+
+        navigationItem.rightBarButtonItem = doneBarButtonItem
+    }
+
 }
