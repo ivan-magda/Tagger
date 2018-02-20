@@ -35,7 +35,7 @@ private enum ImaggaApiEndpoint: String {
 
 typealias ImaggaContentIdSuccessCompletionHandler = (_ contentId: String) -> Void
 typealias ImaggaTaggingSuccessCompletionHandler = (_ tags: [ImaggaTag]) -> Void
-typealias ImaggaFailCompletionHandler = (_ error: Error) -> Void
+typealias ImaggaFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - ImaggaApiClient (Calling Api Endpoints)
 
@@ -44,15 +44,17 @@ extension ImaggaApiClient {
     // MARK: - API Endpoints -
     // MARK: Public
     
-    func taggingImage(_ image: UIImage, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failBlock fail: @escaping ImaggaFailCompletionHandler) {
+    func taggingImage(_ image: UIImage,
+                      success: @escaping ImaggaTaggingSuccessCompletionHandler,
+                      failure: @escaping ImaggaFailureCompletionHandler) {
         uploadImage(image, successBlock: { [unowned self] contentId in
-            self.taggingByContentId(contentId, successBlock: success, failBlock: fail)
-            }, failBlock: fail)
+            self.taggingByContentId(contentId, successBlock: success, failureBlock: failure)
+            }, failureBlock: failure)
     }
     
     // MARK: Private
     
-    fileprivate func uploadImage(_ image: UIImage, successBlock success: @escaping ImaggaContentIdSuccessCompletionHandler, failBlock fail: @escaping ImaggaFailCompletionHandler) {
+    fileprivate func uploadImage(_ image: UIImage, successBlock success: @escaping ImaggaContentIdSuccessCompletionHandler, failureBlock fail: @escaping ImaggaFailureCompletionHandler) {
         let compression: CGFloat = (image.size.height > 500 || image.size.width > 500 ? 0.5 : 0.9)
         guard let imageData = UIImageJPEGRepresentation(image, compression) else {
             sendError("Could not get JPEG representation of selected image.", toBlock: fail)
@@ -97,7 +99,7 @@ extension ImaggaApiClient {
         }
     }
     
-    fileprivate func taggingByContentId(_ id: String, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failBlock fail: @escaping ImaggaFailCompletionHandler) {
+    fileprivate func taggingByContentId(_ id: String, successBlock success: @escaping ImaggaTaggingSuccessCompletionHandler, failureBlock fail: @escaping ImaggaFailureCompletionHandler) {
         let URL = url(from: [Constants.ParameterKeys.Content: id], withPathExtension: ImaggaApiEndpoint.Tagging.rawValue)
         let request = URLRequest(url: URL)
         fetchJson(for: request) { result in
@@ -119,14 +121,14 @@ extension ImaggaApiClient {
     
     // MARK: - Private Helpers
     
-    fileprivate func sendError(_ error: String, toBlock failBlock: @escaping ImaggaFailCompletionHandler) {
+    fileprivate func sendError(_ error: String, toBlock failureBlock: @escaping ImaggaFailureCompletionHandler) {
         func sendError(_ error: String) {
             let error = NSError(
                 domain: "\(BaseErrorDomain).ImaggaApiClient",
                 code: 44,
                 userInfo: [NSLocalizedDescriptionKey : error]
             )
-            failBlock(error)
+            failureBlock(error)
         }
     }
     

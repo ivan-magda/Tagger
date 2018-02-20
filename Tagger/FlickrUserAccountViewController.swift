@@ -110,7 +110,7 @@ extension FlickrUserAccountViewController {
             flickr.api.getProfilePhotoWithNSID(user.userID, success: {
                 self.imageView.image = $0
                 self.setUIState(.default)
-                }, fail: {
+                }, failure: {
                     self.showError($0)
                     self.setUIState(.default)
             })

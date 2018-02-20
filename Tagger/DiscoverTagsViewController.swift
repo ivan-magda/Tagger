@@ -250,14 +250,14 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
                     self.flickr.api.getRandomPhoto(
                         for: $0.map { $0.content },
                         success: { self.setImage($0, toCellAtIndexPath: indexPath) },
-                        fail: handleError)
+                        failure: handleError)
                 },
-                fail: handleError)
+                failure: handleError)
         } else {
             flickr.api.getRandomPhoto(
                 for: [category.name],
                 success: { self.setImage($0, toCellAtIndexPath: indexPath) },
-                fail: handleError
+                failure: handleError
             )
         }
     }

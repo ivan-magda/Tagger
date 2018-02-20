@@ -75,7 +75,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
     
     @IBAction func generateTags(_ sender: AnyObject) {
         setUIState(.networking)
-        imaggaApiClient.taggingImage(taggingImage, successBlock: { [weak self] tags in
+        imaggaApiClient.taggingImage(taggingImage, success: { [weak self] tags in
             self?.processOnGeneratedTags(tags)
         }) { [weak self] error in
             self?.generatedTags = nil

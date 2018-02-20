@@ -26,7 +26,7 @@ import UIKit.UIImage
 // MARK: Typealias
 
 typealias ImageDownloadingCompletionHandler = (_ image: UIImage) -> Void
-typealias FailCompletionHandler = (_ error: Error) -> Void
+typealias FailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - HttpApiClient (Convenience)
 
@@ -34,7 +34,7 @@ extension HttpApiClient {
 
     func getImage(for url: URL,
                   success: @escaping ImageDownloadingCompletionHandler,
-                  fail: @escaping FailCompletionHandler) {
+                  failure: @escaping FailureCompletionHandler) {
         fetchRawData(for: URLRequest(url: url)) { result in
             func returnError(_ error: String) {
                 self.log("Error: \(error)")
@@ -43,7 +43,7 @@ extension HttpApiClient {
                     code: FlickrApiClient.Constants.Error.LoadImageErrorCode,
                     userInfo: [NSLocalizedDescriptionKey : error]
                 )
-                fail(error)
+                failure(error)
             }
             
             switch result {

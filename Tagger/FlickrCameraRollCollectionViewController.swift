@@ -113,7 +113,7 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
                             success: { [weak self] image in
                                 self?.setImage(image, toCellAtIndexPath: indexPath)
                             },
-                            fail: failedToLoadImageWithError)
+                            failure: failedToLoadImageWithError)
     }
     
     fileprivate func setImage(_ image: UIImage?, toCellAtIndexPath indexPath: IndexPath) {

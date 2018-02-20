@@ -39,7 +39,7 @@ private enum ErrorCode: Int {
 
 // MARK: - Typealias
 
-typealias IMFailCompletionHandler = (_ error: Error) -> Void
+typealias IMFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - IMApiClient: JsonApiClient -
 
@@ -53,19 +53,19 @@ extension IMApiClient {
 
     func getResource<T: JSONParselable>(for request: URLRequest,
                                         success: @escaping (T) -> Void,
-                                        fail: @escaping IMFailCompletionHandler) {
+                                        failure: @escaping IMFailureCompletionHandler) {
         getResource(for: request, parse: { json -> T? in
             return T.decode(json)
-        }, success: success, fail: fail)
+        }, success: success, failure: failure)
     }
 
     func getCollection<T: JSONParselable>(for request: URLRequest,
                                           rootKeys: [String],
                                           success: @escaping ([T]) -> Void,
-                                          fail: @escaping IMFailCompletionHandler) {
+                                          failure: @escaping IMFailureCompletionHandler) {
         getCollection(for: request, rootKeys: rootKeys, parse: { (json) -> [T]? in
             return json.flatMap { T.decode($0) }
-        }, success: success, fail: fail)
+        }, success: success, failure: failure)
     }
 
     // MARK: Private
@@ -73,10 +73,10 @@ extension IMApiClient {
     private func getResource<T>(for request: URLRequest,
                                 parse: @escaping (JSONDictionary) -> T?,
                                 success: @escaping (T) -> Void,
-                                fail: @escaping IMFailCompletionHandler) {
+                                failure: @escaping IMFailureCompletionHandler) {
         fetchJson(for: request) { [unowned self] result in
             if let error = self.isContainsError(result: result) {
-                fail(error)
+                failure(error)
                 return
             }
 
@@ -88,7 +88,7 @@ extension IMApiClient {
                         self.log("\(json)")
 
                         performOnMain {
-                            fail(NSError(domain: ErrorDomain.UnexpectedResponse,
+                            failure(NSError(domain: ErrorDomain.UnexpectedResponse,
                                          code: ErrorCode.unexpectedResponse.rawValue,
                                          userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
                         }
@@ -101,7 +101,7 @@ extension IMApiClient {
                     }
                 }
             default:
-                fail(NSError(domain: ErrorDomain.UnexpectedSituation,
+                failure(NSError(domain: ErrorDomain.UnexpectedSituation,
                              code: ErrorCode.unexpectedSituation.rawValue,
                              userInfo: [NSLocalizedDescriptionKey : "Unexpected error."]))
             }
@@ -112,7 +112,7 @@ extension IMApiClient {
                                   rootKeys: [String],
                                   parse: @escaping ([JSONDictionary]) -> [T]?,
                                   success: @escaping ([T]) -> Void,
-                                  fail: @escaping IMFailCompletionHandler) {
+                                  failure: @escaping IMFailureCompletionHandler) {
         func getJSONParseError() -> Error {
             return NSError(
                 domain: ErrorDomain.UnexpectedResponse,
@@ -123,7 +123,7 @@ extension IMApiClient {
 
         fetchJson(for: request) { [unowned self] result in
             if let error = self.isContainsError(result: result) {
-                fail(error)
+                failure(error)
                 return
             }
 
@@ -133,7 +133,7 @@ extension IMApiClient {
                     let keyPath = rootKeys.joined(separator: ".")
                     guard let jsonArray = (json as NSDictionary).value(forKeyPath: keyPath) as? [JSONDictionary] else {
                         performOnMain {
-                            fail(getJSONParseError())
+                            failure(getJSONParseError())
                         }
                         return
                     }
@@ -143,7 +143,7 @@ extension IMApiClient {
                         self.log("\(json)")
 
                         performOnMain {
-                            fail(getJSONParseError())
+                            failure(getJSONParseError())
                         }
 
                         return
@@ -154,9 +154,12 @@ extension IMApiClient {
                     }
                 }
             default:
-                fail(NSError(domain: ErrorDomain.UnexpectedSituation,
-                                code: ErrorCode.unexpectedSituation.rawValue,
-                                userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]))
+                failure(
+                    NSError(domain: ErrorDomain.UnexpectedSituation,
+                            code: ErrorCode.unexpectedSituation.rawValue,
+                            userInfo: [NSLocalizedDescriptionKey : "Unexpected situation reached."]
+                    )
+                )
             }
         }
     }
