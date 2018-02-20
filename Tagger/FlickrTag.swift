@@ -27,10 +27,10 @@ import CoreData
 
 struct FlickrTag {
     
-    // MARK: - Properties
+    // MARK: - Instance Variables
     
-    fileprivate (set) var content: String
-    fileprivate (set) var score: Int? = nil
+    private (set) var content: String
+    private (set) var score: Int? = nil
     
     // MARK: - Init
     
@@ -55,24 +55,30 @@ struct FlickrTag {
         }
     }
     
-    // MARK: Core Data
-    
-    func convertToTagInContext(_ context: NSManagedObjectContext) -> Tag {
+}
+
+// MARK: - FlickrTag (CoreData) -
+
+extension FlickrTag {
+
+    func toTag(in context: NSManagedObjectContext) -> Tag {
         return Tag(name: content, context: context)
     }
-    
-    static func mapFlickrTags(_ tags: [FlickrTag], withParentCategory category: Category? = nil, toTagsInContext context: NSManagedObjectContext) -> [Tag] {
+
+    static func map(on tags: [FlickrTag],
+                    with category: Category? = nil,
+                    in context: NSManagedObjectContext) -> [Tag] {
         return tags.map {
-            let tag = $0.convertToTagInContext(context)
-            
+            let tag = $0.toTag(in: context)
+
             if let category = category {
                 tag.category = category
             }
-            
+
             return tag
         }
     }
-    
+
 }
 
 // MARK: - FlickrTag: JSONParselable -

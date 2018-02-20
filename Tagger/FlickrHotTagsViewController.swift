@@ -74,10 +74,9 @@ class FlickrHotTagsViewController: TagListViewController {
                 strongSelf.persistenceCentral.deleteTags(in: strongSelf.parentCategory!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
                 
-                let mappedTags = FlickrTag.mapFlickrTags(tags,
-                    withParentCategory: strongSelf.parentCategory!,
-                    toTagsInContext: manager.managedObjectContext
-                )
+                let mappedTags = FlickrTag.map(on: tags,
+                                               with: strongSelf.parentCategory!,
+                                               in: manager.managedObjectContext)
                 manager.saveContext()
                 strongSelf.tags = mappedTags
                 
