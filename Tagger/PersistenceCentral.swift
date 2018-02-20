@@ -25,27 +25,27 @@ import CoreData
 
 // MARK: Constants
 
-let kPersistenceCentralDidChangeContentNotification = "PersistenceCentralDidChangeContent"
-private let kSeedInitialDataKey = "initialDataSeeded"
+let persistenceCentralDidChangeContentNotification = "PersistenceCentralDidChangeContent"
+private let seedInitialDataKey = "initialDataSeeded"
 
 // MARK: - PersistenceCentral: NSObject
 
-class PersistenceCentral: NSObject {
+final class PersistenceCentral: NSObject {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     static let shared = PersistenceCentral()
     let coreDataStackManager = CoreDataStackManager.sharedInstance
     
-    fileprivate (set) var trendingCategories: [Category]!
-    fileprivate (set) var categories: [Category]!
+    private (set) var trendingCategories: [Category]!
+    private (set) var categories: [Category]!
     
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<Category> = {
         let request = NSFetchRequest<Category>(entityName: Category.type)
         request.sortDescriptors = [
             NSSortDescriptor(key: Category.Key.Trending.rawValue, ascending: true),
             NSSortDescriptor(key: Category.Key.Name.rawValue, ascending: true,
-                selector: #selector(NSString.caseInsensitiveCompare(_:)))
+                             selector: #selector(NSString.caseInsensitiveCompare(_:)))
         ]
         request.returnsObjectsAsFaults = false
         
@@ -62,72 +62,40 @@ class PersistenceCentral: NSObject {
     
     // MARK: Init
     
-    fileprivate override init() {
+    private override init() {
         super.init()
         setup()
     }
-    
-    // MARK: - Private Methods -
-    // MARK: Setup
-    
-    fileprivate func setup() {
-        seedInitialDataIfNeeded()
-        _ = try! fetchedResultsController.performFetch()
-        updateCategories()
-    }
-    
-    fileprivate func seedInitialDataIfNeeded() {
-        let userDefaults = UserDefaults.standard
-        guard userDefaults.bool(forKey: kSeedInitialDataKey) == false else { return }
-        
-        let context = coreDataStackManager.managedObjectContext
-        
-        let categories = [
-            "sunset", "beach", "water", "sky", "dance", "red",
-            "blue", "nature", "night", "vacation", "white", "green",
-            "flowers", "portrait", "art", "light", "snow", "dog",
-            "sun", "clouds", "cat", "park", "winter", "street",
-            "landscape", "summer", "trees", "sea", "city", "yellow",
-            "lake", "christmas", "family", "bridge", "people", "bird",
-            "river", "pink", "house", "car", "food", "bw",
-            "old", "macro", "new", "music", "garden", "orange",
-            "me", "baby"
-        ]
-        categories.forEach { let _ = Category(name: $0, context: context) }
-        
-        let trending = ["now", "this week"]
-        trending.forEach {
-            let category = Category(name: $0, context: context)
-            category.trending = true
-        }
-        coreDataStackManager.saveContext()
-        
-        userDefaults.set(true, forKey: kSeedInitialDataKey)
-    }
-    
-    // MARK: - Convenience -
-    // MARK: Category
-    
+
+}
+
+// MARK: - PersistenceCentral (Category) -
+
+extension PersistenceCentral {
+
     func deleteCategory(_ category: Category) {
         coreDataStackManager.managedObjectContext.delete(category)
         coreDataStackManager.saveContext()
     }
-    
-    func deleteAllCategories() {
-        categories.forEach { coreDataStackManager.managedObjectContext.delete($0) }
+
+    func deleteCategories() {
+        categories.forEach {
+            coreDataStackManager.managedObjectContext.delete($0)
+        }
         coreDataStackManager.saveContext()
     }
-    
-    func deleteAllTagsInCategory(_ category: Category) {
+
+    func deleteTags(in category: Category) {
         category.deleteAllTags()
         coreDataStackManager.saveContext()
     }
-    
-    func saveCategoryWithName(_ name: String) {
-        let _ = Category(name: name, context: coreDataStackManager.managedObjectContext)
+
+    func saveCategory(for name: String) {
+        let _ = Category(name: name,
+                         context: coreDataStackManager.managedObjectContext)
         coreDataStackManager.saveContext()
     }
-    
+
 }
 
 // MARK: - PersistenceCentral: NSFetchedResultsControllerDelegate -
@@ -141,9 +109,9 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
         PersistenceCentral.postDidChangeContentNotification()
     }
     
-    // MARK: Helpers
+    // MARK: Private
     
-    fileprivate func updateCategories() {
+    private func updateCategories() {
         func objectsForSection(_ section: Int) -> [Category] {
             return fetchedResultsController.sections?[section].objects as? [Category] ?? [Category]()
         }
@@ -151,9 +119,59 @@ extension PersistenceCentral: NSFetchedResultsControllerDelegate {
         trendingCategories = objectsForSection(1)
     }
     
-    fileprivate class func postDidChangeContentNotification() {
+    private class func postDidChangeContentNotification() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.post(name: Notification.Name(rawValue: kPersistenceCentralDidChangeContentNotification), object: self)
+        notificationCenter.post(name: Notification.Name(rawValue: persistenceCentralDidChangeContentNotification), object: self)
     }
     
+}
+
+// MARK: - PersistenceCentral (Private Helpers) -
+
+extension PersistenceCentral {
+
+    private func setup() {
+        seedData()
+        _ = try! fetchedResultsController.performFetch()
+        updateCategories()
+    }
+
+}
+
+// MARK: - PersistenceCentral (Seed Data) -
+
+extension PersistenceCentral {
+
+    private func seedData() {
+        let userDefaults = UserDefaults.standard
+
+        guard userDefaults.bool(forKey: seedInitialDataKey) == false else {
+            return
+        }
+
+        let context = coreDataStackManager.managedObjectContext
+
+        let categories = [
+            "sunset", "beach", "water", "sky", "dance", "red",
+            "blue", "nature", "night", "vacation", "white", "green",
+            "flowers", "portrait", "art", "light", "snow", "dog",
+            "sun", "clouds", "cat", "park", "winter", "street",
+            "landscape", "summer", "trees", "sea", "city", "yellow",
+            "lake", "christmas", "family", "bridge", "people", "bird",
+            "river", "pink", "house", "car", "food", "bw",
+            "old", "macro", "new", "music", "garden", "orange",
+            "me", "baby"
+        ]
+        categories.forEach { let _ = Category(name: $0, context: context) }
+
+        let trending = ["now", "this week"]
+        trending.forEach {
+            let category = Category(name: $0, context: context)
+            category.trending = true
+        }
+
+        coreDataStackManager.saveContext()
+        UserDefaults.standard.set(true, forKey: seedInitialDataKey)
+    }
+
 }

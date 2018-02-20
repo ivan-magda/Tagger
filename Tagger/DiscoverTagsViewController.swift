@@ -117,7 +117,7 @@ class DiscoverTagsViewController: UIViewController, Alertable {
         configureUI()
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: kPersistenceCentralDidChangeContentNotification), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: persistenceCentralDidChangeContentNotification), object: nil)
     }
     
 }

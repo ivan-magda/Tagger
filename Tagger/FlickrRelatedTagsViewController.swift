@@ -65,7 +65,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
                 
-                strongSelf.persistenceCentral.deleteAllTagsInCategory(strongSelf.parentCategory!)
+                strongSelf.persistenceCentral.deleteTags(in: strongSelf.parentCategory!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
                 
                 let mappedTags = FlickrTag.mapFlickrTags(tags,

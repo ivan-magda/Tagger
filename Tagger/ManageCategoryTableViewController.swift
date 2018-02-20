@@ -92,7 +92,7 @@ class ManageCategoryTableViewController: UITableViewController, Alertable {
     }
     
     fileprivate func createCategory() {
-        persistenceCentral.saveCategoryWithName(name)
+        persistenceCentral.saveCategory(for: name)
         
         let alert = self.alert("Success", message: "Category created") { _ in
             self.dismiss(animated: true, completion: nil)
