@@ -30,16 +30,16 @@ private enum SegueIdentifier: String {
 
 // MARK: - ImageTaggerDataSourceViewController: UIViewController, Alertable -
 
-class ImageTaggerDataSourceViewController: UIViewController, Alertable {
+final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     
-    // MARK: - Properties
+    // MARK: - Instance Variables
     
     var flickr: IMFlickr!
     var persistenceCentral: PersistenceCentral!
     
-    fileprivate var pickedImage: UIImage?
+    private var pickedImage: UIImage?
     
-    // MARK: - View Life Cycle
+    // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,30 +57,41 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
         }
     }
     
-    // MARK: - Actions
-    
+}
+
+// MARK: - ImageTaggerDataSourceViewController (Actions) -
+
+extension ImageTaggerDataSourceViewController {
+
     @IBAction func selectImageFromFlickr(_ sender: AnyObject) {
         if let _ = flickr.currentUser {
             presentFlickrUserCameraRoll()
         } else {
-            let alert = UIAlertController(title: "You are not logged in", message: "If you want select photo from your Flickr account, then sign in your account.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "You are not logged in",
+                                          message: "If you want select photo from your Flickr account, then sign in your account.",
+                                          preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Sign In", style: .default) { action in
                 self.flickrAuth()
             })
+
             present(alert, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func selectImageFromDevice(_ sender: AnyObject) {
         MIImagePickerController.presentInViewController(self, withDidFinishPickingImageBlock: processOnPickedImage)
     }
-    
-    // MARK: - Private
-    
-    fileprivate func flickrAuth() {
+
+}
+
+// MARK: - ImageTaggerDataSourceViewController (Private Helpers) -
+
+extension ImageTaggerDataSourceViewController {
+
+    private func flickrAuth() {
         UIUtils.showNetworkActivityIndicator()
-        
+
         flickr.OAuth.auth(with: .write) { [unowned self] result in
             UIUtils.hideNetworkActivityIndicator()
             switch result {
@@ -94,14 +105,16 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
             }
         }
     }
-    
-    fileprivate func processOnPickedImage(_ image: UIImage) {
+
+    private func processOnPickedImage(_ image: UIImage) {
         pickedImage = image
         performSegue(withIdentifier: SegueIdentifier.TagAnImage.rawValue, sender: self)
     }
-    
-    fileprivate func presentFlickrUserCameraRoll() {
-        FlickrCameraRollCollectionViewController.show(in: self, flickr: flickr, then: processOnPickedImage)
+
+    private func presentFlickrUserCameraRoll() {
+        FlickrCameraRollCollectionViewController.show(in: self,
+                                                      flickr: flickr,
+                                                      then: processOnPickedImage)
     }
-    
+
 }
