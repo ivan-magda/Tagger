@@ -101,7 +101,7 @@ class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     }
     
     fileprivate func presentFlickrUserCameraRoll() {
-        FlickrCameraRollCollectionViewController.presentInViewController(self, flickr: flickr, didFinishPickingImage: processOnPickedImage)
+        FlickrCameraRollCollectionViewController.show(in: self, flickr: flickr, then: processOnPickedImage)
     }
     
 }

@@ -28,30 +28,30 @@ typealias FlickrCameraRollDidPickImageCompletionHandler = (_ image: UIImage) -> 
 
 // MARK: - FlickrCameraRollCollectionViewController: UICollectionViewController, Alertable
 
-class FlickrCameraRollCollectionViewController: UICollectionViewController, Alertable {
+final class FlickrCameraRollCollectionViewController: UICollectionViewController, Alertable {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var flickr: IMFlickr!
     
     /// Did finish picking image completion handler.
     var didFinishPickingImageBlock: FlickrCameraRollDidPickImageCompletionHandler?
     
-    fileprivate var photos = [FlickrPhoto]()
-    fileprivate var images = [String: UIImage]()
-    fileprivate var imagesIsInLoading = Set<IndexPath>()
+    private var photos = [FlickrPhoto]()
+    private var images = [String: UIImage]()
+    private var loadingSet = Set<IndexPath>()
     
-    fileprivate var numberOfColumns = 3
-    fileprivate let maxNumberOfColumns = 4
+    private var numberOfColumns = 3
+    private let maxNumberOfColumns = 4
     
-    // MARK: View Life Cycle
+    // MARK: UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         assert(flickr != nil)
         
-        configureUI()
+        setup()
         fetchData()
     }
     
@@ -62,108 +62,40 @@ class FlickrCameraRollCollectionViewController: UICollectionViewController, Aler
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
+
         if numberOfColumns > maxNumberOfColumns {
             numberOfColumns = maxNumberOfColumns
         }
+
         collectionView!.collectionViewLayout.invalidateLayout()
     }
     
-    // MARK: Presenting
+    // MARK: Public API
     
-    class func presentInViewController(_ viewController: UIViewController, flickr: IMFlickr, didFinishPickingImage block: @escaping FlickrCameraRollDidPickImageCompletionHandler) {
-        let flowLayout = UICollectionViewFlowLayout()
-        let cameraRollViewController = FlickrCameraRollCollectionViewController(collectionViewLayout: flowLayout)
-        cameraRollViewController.flickr = flickr
-        cameraRollViewController.didFinishPickingImageBlock = block
-        let navigationController = UINavigationController(rootViewController: cameraRollViewController)
-        viewController.present(navigationController, animated: true, completion: nil)
-    }
-    
-    // MARK: UICollectionViewDataSource
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier, for: indexPath) as! FlickrCameraRollCollectionViewCell
-        configureCell(cell, atIndexPath: indexPath)
-        return cell
-    }
-    
-    fileprivate func configureCell(_ cell: FlickrCameraRollCollectionViewCell, atIndexPath indexPath: IndexPath) {
-        func failedToLoadImageWithError(_ error: Error) {
-            setImage(nil, toCellAtIndexPath: indexPath)
-            print("Failed to load an image. Error: \(error.localizedDescription)")
-        }
-        
-        let photo = photos[indexPath.row]
-        if let image = images[photo.id] {
-            cell.photoImageView.image = image
-            return
-        }
-        
-        guard imagesIsInLoading.contains(indexPath) == false else { return }
-        imagesIsInLoading.insert(indexPath)
-        
-        guard let URL = URL(string: photo.urlSmall) else { return }
-        cell.activityIndicator.startAnimating()
+    static func show(in viewController: UIViewController,
+                    flickr: IMFlickr,
+                    then callback: @escaping FlickrCameraRollDidPickImageCompletionHandler) {
+        let cameraRollVC = FlickrCameraRollCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        cameraRollVC.flickr = flickr
+        cameraRollVC.didFinishPickingImageBlock = callback
 
-        flickr.api.getImage(for: URL,
-                            success: { [weak self] image in
-                                self?.setImage(image, toCellAtIndexPath: indexPath)
-                            },
-                            failure: failedToLoadImageWithError)
-    }
-    
-    fileprivate func setImage(_ image: UIImage?, toCellAtIndexPath indexPath: IndexPath) {
-        imagesIsInLoading.remove(indexPath)
-        
-        guard collectionView!.indexPathsForVisibleItems.contains(indexPath) == true else { return }
-        guard let cell = collectionView!.cellForItem(at: indexPath) as? FlickrCameraRollCollectionViewCell else { return }
-        
-        cell.activityIndicator.stopAnimating()
-        cell.photoImageView.image = image
-        images[photos[indexPath.row].id] = image
-    }
-    
-    // MARK: UICollectionViewDelegate
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dismiss()
-        didFinishPickingImageBlock?(images[photos[indexPath.row].id]!)
+        let navigationVC = UINavigationController(rootViewController: cameraRollVC)
+        viewController.present(navigationVC, animated: true, completion: nil)
     }
     
     // MARK: Actions
     
-    @objc func dismiss() {
+    @objc private func dismiss() {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: Private
-    
-    // TODO: Currently presents 500 user photos. Need add ability to present next photos page.
-    fileprivate func fetchData() {
-        UIUtils.showNetworkActivityIndicator()
-        
-        flickr.api.getUserPhotos(flickr.currentUser!, success: { [weak self] photos in
-            UIUtils.hideNetworkActivityIndicator()
-            self?.photos = photos
-            self?.collectionView?.reloadData()
-        }) { [weak self] error in
-            UIUtils.hideNetworkActivityIndicator()
-            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
-            self?.present(alert!, animated: true, completion: nil)
-        }
     }
     
 }
 
-// MARK: - FlickrCameraRollCollectionViewController (UI Functions)  -
+// MARK: - FlickrCameraRollCollectionViewController (Setup)  -
 
 extension FlickrCameraRollCollectionViewController {
     
-    fileprivate func configureUI() {
+    private func setup() {
         title = "Camera Roll"
 
         let selector = #selector(
@@ -179,9 +111,11 @@ extension FlickrCameraRollCollectionViewController {
         setupCollectionView()
     }
     
-    fileprivate func setupCollectionView() {
-        collectionView!.register(FlickrCameraRollCollectionViewCell.self, forCellWithReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier)
+    private func setupCollectionView() {
+        collectionView!.register(FlickrCameraRollCollectionViewCell.self,
+                                 forCellWithReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier)
         collectionView!.backgroundColor = .white
+
         if let layout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionInset = UIEdgeInsets.zero
             layout.minimumInteritemSpacing = 1.0
@@ -191,11 +125,111 @@ extension FlickrCameraRollCollectionViewController {
     
 }
 
+// MARK: - FlickrCameraRollCollectionViewController (Networking) -
+
+extension FlickrCameraRollCollectionViewController {
+
+    // TODO: Currently presents 500 user photos. Need add ability to present next photos page.
+    private func fetchData() {
+        UIUtils.showNetworkActivityIndicator()
+
+        flickr.api.getUserPhotos(flickr.currentUser!, success: { [weak self] photos in
+            UIUtils.hideNetworkActivityIndicator()
+            self?.photos = photos
+            self?.collectionView?.reloadData()
+        }) { [weak self] error in
+            UIUtils.hideNetworkActivityIndicator()
+            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
+            self?.present(alert!, animated: true, completion: nil)
+        }
+    }
+
+    private func load(_ photo: FlickrPhoto,
+                      at indexPath: IndexPath,
+                      into cell: FlickrCameraRollCollectionViewCell) {
+        guard loadingSet.contains(indexPath) == false else { return }
+        loadingSet.insert(indexPath)
+
+        guard let URL = URL(string: photo.urlSmall) else { return }
+        cell.activityIndicator.startAnimating()
+
+        flickr.api.getImage(
+            for: URL,
+            success: { [weak self] image in
+                self?.set(image: image, at: indexPath)
+            },
+            failure: { [weak self] error in
+                self?.set(image: nil, at: indexPath)
+                print("Failed to load an image. Error: \(error.localizedDescription)")
+            }
+        )
+    }
+
+}
+
+// MARK: - FlickrCameraRollCollectionViewController (UICollectionViewDelegate) -
+
+extension FlickrCameraRollCollectionViewController {
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        dismiss()
+        didFinishPickingImageBlock?(images[photos[indexPath.row].id]!)
+    }
+
+}
+
+// MARK: - FlickrCameraRollCollectionViewController (UICollectionViewDataSource) -
+
+extension FlickrCameraRollCollectionViewController {
+
+    // MARK: UICollectionViewDataSource
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photos.count
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier,
+                                                      for: indexPath) as! FlickrCameraRollCollectionViewCell
+        configure(cell: cell, at: indexPath)
+
+        return cell
+    }
+
+    // MARK: Private Helpers
+
+    private func configure(cell: FlickrCameraRollCollectionViewCell,
+                           at indexPath: IndexPath) {
+        let photo = photos[indexPath.row]
+        if let image = images[photo.id] {
+            cell.photoImageView.image = image
+            return
+        }
+
+        load(photo, at: indexPath, into: cell)
+    }
+
+    private func set(image: UIImage?, at indexPath: IndexPath) {
+        loadingSet.remove(indexPath)
+
+        guard collectionView!.indexPathsForVisibleItems.contains(indexPath) == true else { return }
+        guard let cell = collectionView!.cellForItem(at: indexPath) as? FlickrCameraRollCollectionViewCell else { return }
+
+        cell.activityIndicator.stopAnimating()
+        cell.photoImageView.image = image
+
+        images[photos[indexPath.row].id] = image
+    }
+
+}
+
 // MARK: - FlickrCameraRollCollectionViewController: UICollectionViewDelegateFlowLayout -
 
 extension FlickrCameraRollCollectionViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return CGSize.zero
         }
