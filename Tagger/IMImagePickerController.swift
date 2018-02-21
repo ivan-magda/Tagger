@@ -28,7 +28,7 @@ typealias MIImagePickerDidFinishPickingImageCompletionHandler = (_ image: UIImag
 
 // MARK: - MIImagePickerController: UIImagePickerController
 
-class MIImagePickerController: UIImagePickerController, Alertable {
+final class IMImagePickerController: UIImagePickerController, Alertable {
     
     // MARK: - Properties
     
@@ -41,7 +41,7 @@ class MIImagePickerController: UIImagePickerController, Alertable {
     // MARK: - Presenting
     
     class func presentInViewController(_ rootViewController: UIViewController, withDidFinishPickingImageBlock block: @escaping MIImagePickerDidFinishPickingImageCompletionHandler) {
-        let picker = MIImagePickerController()
+        let picker = IMImagePickerController()
         picker.rootViewController = rootViewController
         picker.didFinishPickingImageBlock = block
         picker.delegate = picker
@@ -68,7 +68,7 @@ class MIImagePickerController: UIImagePickerController, Alertable {
 
 // MARK: - MIImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate -
 
-extension MIImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: UIImagePickerControllerDelegate
     
