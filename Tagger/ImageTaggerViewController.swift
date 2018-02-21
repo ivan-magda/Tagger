@@ -89,7 +89,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
         let tagListViewController = TagListViewController(persistenceCentral: persistenceCentral)
         
         if let createdCategory = createdCategory {
-            tagListViewController.parentCategory = createdCategory
+            tagListViewController.category = createdCategory
         } else {
             tagListViewController.title = "Results"
             tagListViewController.tags = ImaggaTag.map(on: generatedTags!,

@@ -36,7 +36,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(flickrApiClient != nil && parentCategory != nil)
+        assert(flickrApiClient != nil && category != nil)
         setup()
     }
     
@@ -45,7 +45,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
     convenience init(flickrApiClient: FlickrApiClient, category: Category) {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
         self.flickrApiClient = flickrApiClient
-        self.parentCategory = category
+        self.category = category
     }
     
     // MARK: - Private
@@ -60,16 +60,16 @@ class FlickrRelatedTagsViewController: TagListViewController {
     @objc func fetchData() {
         setUIState(.downloading)
         flickrApiClient.getRelatedTags(
-            for: parentCategory!.name,
+            for: category!.name,
             success: { [weak self] tags in
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
                 
-                strongSelf.persistenceCentral.deleteTags(in: strongSelf.parentCategory!)
+                strongSelf.persistenceCentral.deleteTags(in: strongSelf.category!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
                 
                 let mappedTags = FlickrTag.map(on: tags,
-                                               with: strongSelf.parentCategory!,
+                                               with: strongSelf.category!,
                                                in: manager.managedObjectContext)
                 manager.saveContext()
                 strongSelf.tags = mappedTags
@@ -90,7 +90,7 @@ class FlickrRelatedTagsViewController: TagListViewController {
 extension FlickrRelatedTagsViewController {
     
     fileprivate func configureUI() {
-        title = parentCategory!.name.capitalized
+        title = category!.name.capitalized
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
     }

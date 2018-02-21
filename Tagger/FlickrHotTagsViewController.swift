@@ -40,7 +40,7 @@ class FlickrHotTagsViewController: TagListViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(flickrApiClient != nil && parentCategory != nil)
+        assert(flickrApiClient != nil && category != nil)
         setup()
     }
     
@@ -50,7 +50,7 @@ class FlickrHotTagsViewController: TagListViewController {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
         self.flickrApiClient = flickrApiClient
         self.period = period
-        self.parentCategory = category
+        self.category = category
     }
     
     // MARK: - Private
@@ -71,11 +71,11 @@ class FlickrHotTagsViewController: TagListViewController {
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
                 
-                strongSelf.persistenceCentral.deleteTags(in: strongSelf.parentCategory!)
+                strongSelf.persistenceCentral.deleteTags(in: strongSelf.category!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
                 
                 let mappedTags = FlickrTag.map(on: tags,
-                                               with: strongSelf.parentCategory!,
+                                               with: strongSelf.category!,
                                                in: manager.managedObjectContext)
                 manager.saveContext()
                 strongSelf.tags = mappedTags

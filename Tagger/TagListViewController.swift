@@ -22,15 +22,15 @@
 
 import UIKit
 
-// MARK: - Constants
+// MARK: Constants
 
-private let kTableViewCellReuseIdentifier = "TagTableViewCell"
+private let tableViewCellReuseIdentifier = "TagTableViewCell"
 
 // MARK: - TagListViewController: UIViewController, Alertable -
 
 class TagListViewController: UIViewController, Alertable {
     
-    // MARK: Outlets
+    // MARK: IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
@@ -38,33 +38,44 @@ class TagListViewController: UIViewController, Alertable {
     @IBOutlet weak var copyToClipboardBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var messageBarButtonItem: UIBarButtonItem!
     
-    // MARK: Properties
-    
-    static let nibName = "TagListViewController"
+    // MARK: Instance variables
     
     var persistenceCentral: PersistenceCentral!
 
-    var parentCategory: Category?
+    // Tags to be displayed will be setted with the following steps:
+    // If `category` exist -> category.tags.
+    // Otherwise `tags` with empty state.
+    /// Category of the tags.
+    var category: Category?
+
+    /// Tags to be displayed.
     var tags = [Tag]() {
         didSet {
             guard tableView != nil else { return }
             reloadData()
         }
     }
+
+    /// UIAlertController with actionSheet style.
+    /// Use it for presenting actions.
+    let actionSheet = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+
+    static let nibName = "TagListViewController"
+
+    private var selectedIndexes = Set<Int>()
     
-    fileprivate var selectedIndexes = Set<Int>()
-    
-    fileprivate var tagsTextView: HashtagsTextView = {
+    private lazy var tagsTextView: HashtagsTextView = {
         let textView = HashtagsTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isEditable = false
         textView.font = UIFont.systemFont(ofSize: 19.0)
         textView.isHidden = true
         textView.alpha = 0.0
+
         return textView
     }()
-    
-    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
     // MARK: Init
     
@@ -77,11 +88,11 @@ class TagListViewController: UIViewController, Alertable {
         self.persistenceCentral = persistenceCentral
     }
     
-    // MARK: - View Life Cycle
+    // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(persistenceCentral != nil)
+        assert(persistenceCentral != nil, "persistenceCentral should must be initialized.")
         setup()
     }
     
@@ -91,81 +102,101 @@ class TagListViewController: UIViewController, Alertable {
     }
     
     // MARK: - Private
-    
-    fileprivate func setup() {
-        if let parentCategory = parentCategory {
-            tags = parentCategory.tags
+
+    private func setup() {
+        if let category = category {
+            tags = category.tags
         }
-        configureUI()
+
+        setupUI()
     }
-    
-    fileprivate func reloadData() {
+
+    private func reloadData() {
         tagsTextView.updateWithNewData(
             tags.enumerated().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
         )
-        
-        guard tableView.numberOfSections == 1 else {
-            tableView.reloadData()
-            return
-        }
-        tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+
+        tableView.reloadSections(
+            IndexSet(0...max(tableView.numberOfSections-1, 0)),
+            with: .automatic
+        )
     }
     
-    // MARK: Actions
-    
-    @objc func moreBarButtonItemDidPressed() {
+}
+
+// MARK: - TagListViewController (Actions) -
+
+extension TagListViewController {
+
+    @objc private func onMore() {
         present(actionSheet, animated: true, completion: nil)
     }
-    
-    @IBAction func selectAllDidPressed(_ sender: AnyObject) {
+
+    @IBAction func onSelectAll(_ sender: AnyObject) {
         let selectedCount = selectedIndexes.count
         selectedIndexes.removeAll()
-        
+
         if selectedCount != tags.count {
-            for i in 0..<tags.count { selectedIndexes.insert(i) }
+            for i in 0..<tags.count {
+                selectedIndexes.insert(i)
+            }
         }
-        
+
         reloadData()
         updateUI()
     }
-    
-    @IBAction func copyToClipboardDidPressed(_ sender: AnyObject) {
+
+    @IBAction func onCopyToClipboard(_ sender: AnyObject) {
         PasteboardUtils.copyString(tagsTextView.text)
-        
-        let alert = UIAlertController(title: "Copied", message: "Now paste the tags into your Instagram/Flickr picture comments or caption", preferredStyle: .alert)
+
+        let alert = UIAlertController(
+            title: "Copied",
+            message: "Now paste the tags into your Instagram/Flickr picture comments or caption",
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
+
         if URLSchemesUtils.canOpenInstagram() {
-            alert.addAction(UIAlertAction(title: "Instagram", style: .default, handler: { action in
-                URLSchemesUtils.openInstagram()
-            }))
+            alert.addAction(
+                UIAlertAction(
+                    title: "Instagram",
+                    style: .default,
+                    handler: { _ in URLSchemesUtils.openInstagram() }
+                )
+            )
         }
-        
+
         if URLSchemesUtils.canOpenFlickr() {
-            alert.addAction(UIAlertAction(title: "Flickr", style: .default, handler: { action in
-                URLSchemesUtils.openFlickr()
-            }))
+            alert.addAction(
+                UIAlertAction(
+                    title: "Flickr",
+                    style: .default,
+                    handler: { _ in URLSchemesUtils.openFlickr() }
+                )
+            )
         }
+
         present(alert, animated: true, completion: nil)
     }
-    
+
 }
 
 // MARK: - TagListViewController (UI Functions) -
 
 extension TagListViewController {
     
-    fileprivate func configureUI() {
+    private func setupUI() {
         setTabBarHidden(true)
         
-        if let parentCategory = parentCategory {
+        if let parentCategory = category {
             title = parentCategory.name.capitalized
         }
         
         // Configure table view.
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: kTableViewCellReuseIdentifier)
+        tableView.register(UITableViewCell.self,
+                           forCellReuseIdentifier: tableViewCellReuseIdentifier)
         
         // Configure text view:
         // Add as a subview to a root view and add constraints.
@@ -175,22 +206,28 @@ extension TagListViewController {
         view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .bottom, relatedBy: .equal, toItem: toolbar, attribute: .top, multiplier: 1.0, constant: 0.0))
         
         // Create more bar button and present action sheet with actions below on click.
-        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"), style: .plain, target: self, action: #selector(moreBarButtonItemDidPressed))
+        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"),
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(onMore))
         navigationItem.rightBarButtonItem = moreBarButtonItem
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Table View", style: .default, handler: { action in
-            guard self.tagsTextView.isHidden == false else { return }
-            self.tableView.isHidden = false
-            self.tagsTextView.setTextViewHidden(true)
+        actionSheet.addAction(UIAlertAction(title: "Table View", style: .default, handler: { [weak self] action in
+            guard self?.tagsTextView.isHidden == false else { return }
+            self?.tableView.isHidden = false
+            self?.tagsTextView.setTextViewHidden(true)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .default, handler: { action in
-            guard self.tagsTextView.isHidden == true else { return }
-            self.tableView.isHidden = true
-            self.tagsTextView.setTextViewHidden(false)
+        actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .default, handler: { [weak self] action in
+            guard self?.tagsTextView.isHidden == true else { return }
+            self?.tableView.isHidden = true
+            self?.tagsTextView.setTextViewHidden(false)
         }))
         
-        messageBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)], for: UIControlState())
+        messageBarButtonItem.setTitleTextAttributes(
+            [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)],
+            for: UIControlState()
+        )
         setUIState(.default)
     }
     
@@ -220,7 +257,7 @@ extension TagListViewController {
         }
     }
     
-    fileprivate func updateUI() {
+    private func updateUI() {
         let selectedCount = selectedIndexes.count
         
         guard tags.count > 0 else {
@@ -246,7 +283,7 @@ extension TagListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: kTableViewCellReuseIdentifier)!
+        return tableView.dequeueReusableCell(withIdentifier: tableViewCellReuseIdentifier)!
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
