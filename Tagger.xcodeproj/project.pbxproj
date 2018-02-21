@@ -635,6 +635,7 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 6UNHY8UY6E;
 						LastSwiftMigration = 0920;
+						ProvisioningStyle = Manual;
 					};
 					7552DF9D1D013A750032ECFA = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1001,12 +1002,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6UNHY8UY6E;
 				INFOPLIST_FILE = Tagger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2d33c18-8801-4ac7-88c8-62be27cfa47b";
+				PROVISIONING_PROFILE_SPECIFIER = TaggerDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Tagger-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1020,13 +1024,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6UNHY8UY6E;
 				INFOPLIST_FILE = Tagger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.Tagger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1b3d5c64-ed0a-4993-848a-d2d9b00e7180";
+				PROVISIONING_PROFILE_SPECIFIER = TaggerDistribution;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Tagger-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
