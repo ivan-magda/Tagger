@@ -24,19 +24,15 @@ import UIKit
 
 // MARK: Typealiases
 
-typealias CountPickerDoneBlock = (_ selectedIndex: Int, _ selectedValue: Int) -> Void
-typealias CountPickerCancelBlock = () -> Void
-
-// MARK: - Constants
-
-private let kNibName = "CountPickerViewController"
+typealias CountPickerDoneBlock = (_ selectedIndex: Int, _ selectedValue: Int) -> Swift.Void
+typealias CountPickerCancelBlock = () -> Swift.Void
 
 // MARK: - CountPickerViewController: UIViewController
 
 @IBDesignable
-class CountPickerViewController: UIViewController {
+final class CountPickerViewController: UIViewController {
     
-    // MARK: Outlets
+    // MARK: IBOutlets
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -44,77 +40,88 @@ class CountPickerViewController: UIViewController {
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var initialSelection = 0
     var numberOfRows = 20
     
-    fileprivate var selectedRowIdx = 0
-    fileprivate var selectedValue: Int {
+    private var selectedRowIdx = 0
+    private var selectedValue: Int {
         get {
             return selectedRowIdx + 1
         }
     }
     
-    fileprivate var doneBlock: CountPickerDoneBlock?
-    fileprivate var cancelBlock: CountPickerCancelBlock?
+    private var doneBlock: CountPickerDoneBlock?
+    private var cancelBlock: CountPickerCancelBlock?
+
+    private static let nibName = "CountPickerViewController"
     
-    // MARK: - View Life Cycle
+    // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         setup()
     }
     
     // MARK: - Init
     
     convenience init() {
-        self.init(nibName: kNibName, bundle: nil)
+        self.init(nibName: CountPickerViewController.nibName, bundle: nil)
     }
     
-    // MARK: - Actions
-    
-    @objc func cancelButtonDidPressed(_ button: UIButton) {
+}
+
+// MARK: - CountPickerViewController (Actions) -
+
+extension CountPickerViewController {
+
+    @objc private func cancelButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
         cancelBlock?()
     }
-    
-    @objc func selectButtonDidPressed(_ button: UIButton) {
+
+    @objc private func selectButtonDidPressed(_ button: UIButton) {
         dismissFromParentViewController()
         doneBlock?(selectedRowIdx, selectedValue)
     }
-    
-    // MARK: - Private
-    
-    fileprivate func configureUI() {
+
+}
+
+// MARK: - CountPickerViewController (Private Helpers) -
+
+extension CountPickerViewController {
+
+    private func setup() {
         containerView.layer.masksToBounds = true
         containerView.layer.cornerRadius = 8.0
-    }
-    
-    fileprivate func setup() {
+
         cancelButton.addTarget(self, action: #selector(cancelButtonDidPressed(_:)), for: .touchUpInside)
         selectButton.addTarget(self, action: #selector(selectButtonDidPressed(_:)), for: .touchUpInside)
-        
+
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.selectRow(initialSelection, inComponent: 0, animated: false)
     }
-    
+
 }
 
 // MARK: - CountPickerViewController (Embed) -
 
 extension CountPickerViewController {
     
-    @discardableResult class func showPickerWithTitle(_ title: String, rows: Int, initialSelection: Int, doneBlock: @escaping CountPickerDoneBlock, cancelBlock: CountPickerCancelBlock?) -> Bool {
+    @discardableResult class func showPicker(title: String,
+                                             rows: Int,
+                                             initialSelection: Int,
+                                             doneHandler: @escaping CountPickerDoneBlock,
+                                             cancelHandler: CountPickerCancelBlock?) -> Bool {
         guard let rootViewController = UIUtils.getRootViewController() else { return false }
         
         let picker = CountPickerViewController()
         picker.numberOfRows = rows
         picker.initialSelection = initialSelection
-        picker.doneBlock = doneBlock
-        picker.cancelBlock = cancelBlock
+        picker.doneBlock = doneHandler
+        picker.cancelBlock = cancelHandler
         
         picker.presentInParentViewController(rootViewController)
         picker.titleLabel.text = title
@@ -124,6 +131,7 @@ extension CountPickerViewController {
     
     func dismissFromParentViewController() {
         willMove(toParentViewController: nil)
+
         UIView.animate(withDuration: 0.3, animations: {
             self.containerView.frame.origin.y += self.view.bounds.height
             self.view.alpha = 0.0
@@ -145,7 +153,7 @@ extension CountPickerViewController {
         UIView.animate(withDuration: 0.3, animations: {
             self.view.alpha = 1.0
             self.containerView.frame.origin.y = 0
-            }, completion: nil)
+        }, completion: nil)
     }
     
 }

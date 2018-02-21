@@ -106,15 +106,15 @@ extension FlickrHotTagsViewController {
         tableView.addSubview(refreshControl)
         
         actionSheet.addAction(UIAlertAction(title: "Number of Tags", style: .default, handler: { _ in
-            CountPickerViewController.showPickerWithTitle(
-                "Number of Tags",
+            CountPickerViewController.showPicker(
+                title: "Number of Tags",
                 rows: 200,
                 initialSelection: self.numberOfTags-1,
-                doneBlock: { [weak self] (_, selectedValue) in
+                doneHandler: { [weak self] (_, selectedValue) in
                     self?.numberOfTags = selectedValue
                     self?.fetchData()
                 },
-                cancelBlock: nil
+                cancelHandler: nil
             )
         }))
     }
