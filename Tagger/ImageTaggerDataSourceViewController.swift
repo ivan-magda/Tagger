@@ -80,7 +80,7 @@ extension ImageTaggerDataSourceViewController {
     }
 
     @IBAction func selectImageFromDevice(_ sender: AnyObject) {
-        IMImagePickerController.presentInViewController(self, withDidFinishPickingImageBlock: processOnPickedImage)
+        IMImagePickerController.present(in: self, then: processOnPickedImage)
     }
 
 }

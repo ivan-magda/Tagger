@@ -24,33 +24,34 @@ import UIKit
 
 // MARK: Typealias
 
-typealias MIImagePickerDidFinishPickingImageCompletionHandler = (_ image: UIImage) -> Void
+typealias IMImagePickerDidFinishPickingImageCompletionHandler = (_ image: UIImage) -> Swift.Void
 
-// MARK: - MIImagePickerController: UIImagePickerController
+// MARK: - IMImagePickerController: UIImagePickerController
 
 final class IMImagePickerController: UIImagePickerController, Alertable {
     
-    // MARK: - Properties
+    // MARK: - Instance Variables
     
     /// Controller in that image picker controller presenting.
     var rootViewController: UIViewController!
     
     /// Did finish picking image completion handler.
-    var didFinishPickingImageBlock: MIImagePickerDidFinishPickingImageCompletionHandler!
+    var didFinishPickingImageHandler: IMImagePickerDidFinishPickingImageCompletionHandler!
     
-    // MARK: - Presenting
+    // MARK: - Public API
     
-    class func presentInViewController(_ rootViewController: UIViewController, withDidFinishPickingImageBlock block: @escaping MIImagePickerDidFinishPickingImageCompletionHandler) {
+    class func present(in rootViewController: UIViewController,
+                       then handler: @escaping IMImagePickerDidFinishPickingImageCompletionHandler) {
         let picker = IMImagePickerController()
         picker.rootViewController = rootViewController
-        picker.didFinishPickingImageBlock = block
+        picker.didFinishPickingImageHandler = handler
         picker.delegate = picker
         
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
-            picker.photoFromLibrary()
+            picker.getPhotoFromLibrary()
         })
         photoLibraryAction.setValue(UIImage(named: "iOS-photos")?.withRenderingMode(.alwaysOriginal), forKey: "image")
         actionSheet.addAction(photoLibraryAction)
@@ -66,23 +67,26 @@ final class IMImagePickerController: UIImagePickerController, Alertable {
     
 }
 
-// MARK: - MIImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate -
+// MARK: - IMImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate -
 
 extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: UIImagePickerControllerDelegate
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
         performOnMain { [unowned self] in
             guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-                let alertViewController = self.alert("An error occured", message: "Failed to select an image. Please, try again.", handler: nil)
+                let alertViewController = self.alert("An error occured",
+                                                     message: "Failed to select an image. Please, try again.",
+                                                     handler: nil)
                 self.rootViewController.present(alertViewController, animated: true, completion: nil)
                 return
             }
             
             picker.dismiss(animated: true, completion: { [unowned self] in
-                self.didFinishPickingImageBlock(pickedImage)
-                })
+                self.didFinishPickingImageHandler(pickedImage)
+            })
         }
     }
     
@@ -90,24 +94,18 @@ extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigation
         picker.dismiss(animated: true, completion: nil)
     }
     
-    // MARK: Private Helper Methods
+    // MARK: Private Helpers
     
-    fileprivate func noCameraAlert() {
-        let alert = UIAlertController(title: "No Camera", message: "Sorry, this device has no camera", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        rootViewController.present(alert, animated: true, completion: nil)
-    }
-    
-    /// Get a photo from the library.
-    func photoFromLibrary() {
+    /// Gets a photo from the library.
+    private func getPhotoFromLibrary() {
         allowsEditing = false
         sourceType = .photoLibrary
         modalPresentationStyle = .fullScreen
         rootViewController.present(self, animated: true, completion: nil)
     }
     
-    /// Take a picture, check if we have a camera first.
-    func takePhoto() {
+    /// Takes a picture, checks if we have a camera first.
+    private func takePhoto() {
         guard UIImagePickerController.availableCaptureModes(for: .rear) != nil else {
             noCameraAlert()
             return
@@ -118,6 +116,15 @@ extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigation
         cameraCaptureMode = .photo
         modalPresentationStyle = .fullScreen
         rootViewController.present(self, animated: true, completion: nil)
+    }
+
+    private func noCameraAlert() {
+        let alert = UIAlertController(title: "No Camera",
+                                      message: "Sorry, this device has no camera",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+        rootViewController.present(alert, animated: true, completion: nil)
     }
     
 }
