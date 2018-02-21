@@ -31,26 +31,27 @@ private enum UIState {
 
 // MARK: - FlickrUserAccountViewController: UIViewController, Alertable
 
-class FlickrUserAccountViewController: UIViewController, Alertable {
+final class FlickrUserAccountViewController: UIViewController, Alertable {
     
-    // MARK: Outlets
+    // MARK: IBOutlets
     
     @IBOutlet weak var imageView: ProfileImageView!
     @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
-    // MARK: Properties
+    // MARK: Instance variables
     
     var flickr: IMFlickr!
     
-    fileprivate let activityIndicator: UIActivityIndicatorView = {
+    private let activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true
+
         return activityIndicator
     }()
     
-    // MARK: View Life Cycle
+    // MARK: UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,44 +64,51 @@ class FlickrUserAccountViewController: UIViewController, Alertable {
         setUIState(.default)
     }
     
-    // MARK: Actions
-    
+}
+
+// MARK: - FlickrUserAccountViewController (Actions) -
+
+extension FlickrUserAccountViewController {
+
     @IBAction func actionButtonDidPressed(_ sender: AnyObject) {
         setUIState(.network)
+
         if flickr.currentUser == nil {
             signIn()
         } else {
             logOut()
         }
     }
-    
-    fileprivate func logOut() {
+
+    private func logOut() {
         flickr.logOut()
         setUIState(.default)
         configureUI()
     }
-    
-    fileprivate func signIn() {
-        flickr.OAuth.auth(with: .write) { result in
+
+    private func signIn() {
+        flickr.OAuth.auth(with: .write) { [weak self] result in
+            guard let strongSelf = self else { return }
+
             switch result {
             case .success(_, _, let user):
-                self.flickr.currentUser = user
-                self.configureUI()
-                self.setUIState(.default)
+                strongSelf.flickr.currentUser = user
+                strongSelf.configureUI()
+                strongSelf.setUIState(.default)
             case .failure(let error):
-                self.showError(error)
-                self.setUIState(.default)
+                strongSelf.showError(error)
+                strongSelf.setUIState(.default)
             }
         }
     }
-    
+
 }
 
 // MARK: - FlickrUserAccountViewController (UI Functions) -
 
 extension FlickrUserAccountViewController {
     
-    fileprivate func configureUI() {
+    private func configureUI() {
         if let user = flickr.currentUser {
             mainLabel.text = user.fullname
             detailLabel.text = user.username
@@ -125,12 +133,12 @@ extension FlickrUserAccountViewController {
         navigationItem.rightBarButtonItem = spinner
     }
     
-    fileprivate func showError(_ error: Error) {
+    private func showError(_ error: Error) {
         let alertController = alert("Error", message: error.localizedDescription, handler: nil)
         present(alertController, animated: true, completion: nil)
     }
     
-    fileprivate func setUIState(_ state: UIState) {
+    private func setUIState(_ state: UIState) {
         switch state {
         case .default:
             UIUtils.hideNetworkActivityIndicator()
