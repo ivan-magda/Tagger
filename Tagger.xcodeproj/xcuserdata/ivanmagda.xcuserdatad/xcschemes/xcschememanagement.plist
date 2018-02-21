@@ -9,23 +9,28 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>TaggerRelease.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>7552DF891D013A740032ECFA</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 		<key>7552DF9D1D013A750032ECFA</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 		<key>7552DFA81D013A750032ECFA</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 	</dict>
 </dict>
