@@ -25,18 +25,18 @@ import CoreData
 
 // MARK: FlickrHotTagsViewController: TagListViewController -
 
-class FlickrHotTagsViewController: TagListViewController {
+final class FlickrHotTagsViewController: TagListViewController {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var flickrApiClient: FlickrApiClient!
     
-    fileprivate var period = Period.day
-    fileprivate var numberOfTags = 20
+    private var period = Period.day
+    private var numberOfTags = 20
     
-    fileprivate let refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
-    // MARK: - View Life Cycle
+    // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,21 +48,19 @@ class FlickrHotTagsViewController: TagListViewController {
     
     convenience init(flickrApiClient: FlickrApiClient, period: Period, category: Category) {
         self.init(nibName: TagListViewController.nibName, bundle: nil)
+
         self.flickrApiClient = flickrApiClient
         self.period = period
         self.category = category
     }
     
-    // MARK: - Private
-    
-    fileprivate func setup() {
-        configureUI()
-        if tags.count == 0 {
-            fetchData()
-        }
-    }
-    
-    @objc func fetchData() {
+}
+
+// MARK: - FlickrHotTagsViewController (Networking) -
+
+extension FlickrHotTagsViewController {
+
+    @objc private func fetchData() {
         setUIState(.downloading)
         flickrApiClient.getTagsHotList(
             for: period,
@@ -70,16 +68,16 @@ class FlickrHotTagsViewController: TagListViewController {
             success: { [weak self] tags in
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
-                
+
                 strongSelf.persistenceCentral.deleteTags(in: strongSelf.category!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
-                
+
                 let mappedTags = FlickrTag.map(on: tags,
                                                with: strongSelf.category!,
                                                in: manager.managedObjectContext)
                 manager.saveContext()
                 strongSelf.tags = mappedTags
-                
+
                 strongSelf.setUIState(.successDoneWithDownloading)
         }) { [weak self] error in
             self?.refreshControl.endRefreshing()
@@ -88,14 +86,22 @@ class FlickrHotTagsViewController: TagListViewController {
             self?.present(alert!, animated: true, completion: nil)
         }
     }
-    
+
 }
 
-// MARK: - FlickrHotTagsViewController (UI Functions) -
+// MARK: - FlickrHotTagsViewController (Private Helpers) -
 
 extension FlickrHotTagsViewController {
-    
-    fileprivate func configureUI() {
+
+    private func setup() {
+        configureUI()
+
+        if tags.count == 0 {
+            fetchData()
+        }
+    }
+
+    private func configureUI() {
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
@@ -104,9 +110,10 @@ extension FlickrHotTagsViewController {
                 "Number of Tags",
                 rows: 200,
                 initialSelection: self.numberOfTags-1,
-                doneBlock: { (_, selectedValue) in
-                    self.numberOfTags = selectedValue
-                    self.fetchData() },
+                doneBlock: { [weak self] (_, selectedValue) in
+                    self?.numberOfTags = selectedValue
+                    self?.fetchData()
+                },
                 cancelBlock: nil
             )
         }))
