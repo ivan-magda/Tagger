@@ -194,7 +194,7 @@ extension DiscoverTagsViewController: UICollectionViewDataSource {
             configureSectionHeaderView(headerView, forIndexPath: indexPath)
             return headerView
         default:
-            assert(false, "Unexpected element kind")
+            fatalError("Unexpected element kind")
         }
     }
     
