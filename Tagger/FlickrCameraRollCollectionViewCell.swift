@@ -24,7 +24,7 @@ import UIKit
 
 // MARK: FlickrCameraRollCollectionViewCell: UICollectionViewCell
 
-class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
+final class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     
     // MARK: Properties
     
@@ -32,7 +32,10 @@ class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     
     let photoImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+
         return imageView
     }()
     
@@ -40,6 +43,7 @@ class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         indicator.hidesWhenStopped = true
         indicator.translatesAutoresizingMaskIntoConstraints = false
+
         return indicator
     }()
     
@@ -47,34 +51,40 @@ class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Override Methods
+    // MARK: UICollectionViewCell lifecycle
     
     override func prepareForReuse() {
         super.prepareForReuse()
         photoImageView.image = nil
     }
     
-    // MARK: ConfigureUI
-    
-    fileprivate func setupViews() {
+}
+
+extension FlickrCameraRollCollectionViewCell {
+
+    private func setup() {
         backgroundColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.00)
-        
-        // Setup image view.
+
         addSubview(photoImageView)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": photoImageView]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : photoImageView]))
-        
-        // Setup activity indicator.
+        NSLayoutConstraint.activate([
+            photoImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            photoImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            photoImageView.topAnchor.constraint(equalTo: topAnchor),
+            photoImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+
         addSubview(activityIndicator)
-        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0.0))
-        addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0.0))
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
-    
+
 }
