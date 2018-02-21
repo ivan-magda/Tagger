@@ -25,14 +25,14 @@ import CoreData
 
 // MARK: FlickrRelatedTagsViewController: TagListViewController -
 
-class FlickrRelatedTagsViewController: TagListViewController {
+final class FlickrRelatedTagsViewController: TagListViewController {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
-    fileprivate (set) var flickrApiClient: FlickrApiClient!
-    fileprivate let refreshControl = UIRefreshControl()
+    private (set) var flickrApiClient: FlickrApiClient!
+    private let refreshControl = UIRefreshControl()
     
-    // MARK: - View Life Cycle
+    // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,48 +48,56 @@ class FlickrRelatedTagsViewController: TagListViewController {
         self.category = category
     }
     
-    // MARK: - Private
-    
-    fileprivate func setup() {
-        configureUI()
-        if tags.count == 0 {
-            fetchData()
-        }
-    }
-    
-    @objc func fetchData() {
+}
+
+// MARK: - FlickrRelatedTagsViewController (Networking) -
+
+extension FlickrRelatedTagsViewController {
+
+    @objc private func fetchData() {
         setUIState(.downloading)
+
         flickrApiClient.getRelatedTags(
             for: category!.name,
             success: { [weak self] tags in
                 guard let strongSelf = self else { return }
                 strongSelf.refreshControl.endRefreshing()
-                
+
                 strongSelf.persistenceCentral.deleteTags(in: strongSelf.category!)
                 let manager = strongSelf.persistenceCentral.coreDataStackManager
-                
+
                 let mappedTags = FlickrTag.map(on: tags,
                                                with: strongSelf.category!,
                                                in: manager.managedObjectContext)
                 manager.saveContext()
                 strongSelf.tags = mappedTags
-                
+
                 strongSelf.setUIState(.successDoneWithDownloading)
         }) { [weak self] error in
-            self?.refreshControl.endRefreshing()
-            self?.setUIState(.failureDoneWithDownloading(error: error))
-            let alert = self?.alert("Error", message: error.localizedDescription, handler: nil)
-            self?.present(alert!, animated: true, completion: nil)
+            guard let strongSelf = self else { return }
+
+            strongSelf.refreshControl.endRefreshing()
+            strongSelf.setUIState(.failureDoneWithDownloading(error: error))
+            let alert = strongSelf.alert("Error", message: error.localizedDescription,
+                                         handler: nil)
+            strongSelf.present(alert, animated: true, completion: nil)
         }
     }
-    
+
 }
 
-// MARK: - FlickrRelatedTagsViewController (UI Functions) -
+// MARK: - FlickrRelatedTagsViewController (Private Helpers) -
 
 extension FlickrRelatedTagsViewController {
-    
-    fileprivate func configureUI() {
+
+    private func setup() {
+        configureUI()
+        if tags.count == 0 {
+            fetchData()
+        }
+    }
+
+    private func configureUI() {
         title = category!.name.capitalized
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
