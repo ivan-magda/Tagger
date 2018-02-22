@@ -24,16 +24,16 @@ import Foundation
 
 // MARK: UUIDUtils
 
-class UUIDUtils {
+final class UUIDUtils {
     
     // MARK: Init
     
-    fileprivate init() {
+    private init() {
     }
 
-    // MARK: Functions
+    // MARK: Public API
     
-    class func generateUUIDString() -> String {
+    static func string() -> String {
         return UUID().uuidString
     }
     

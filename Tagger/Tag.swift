@@ -44,7 +44,7 @@ class Tag: NSManagedObject {
     convenience init(name: String, context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entity(forEntityName: Tag.type, in: context)!
         self.init(entity: entity, insertInto: context)
-        self.id = UUIDUtils.generateUUIDString()
+        self.id = UUIDUtils.string()
         self.name = name
     }
     
