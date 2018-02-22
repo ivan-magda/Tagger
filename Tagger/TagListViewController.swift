@@ -156,22 +156,22 @@ extension TagListViewController {
         )
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-        if URLSchemesUtils.canOpenInstagram() {
+        if URLSchemeUtils.canOpenInstagram() {
             alert.addAction(
                 UIAlertAction(
                     title: "Instagram",
                     style: .default,
-                    handler: { _ in URLSchemesUtils.openInstagram() }
+                    handler: { _ in URLSchemeUtils.openInstagram() }
                 )
             )
         }
 
-        if URLSchemesUtils.canOpenFlickr() {
+        if URLSchemeUtils.canOpenFlickr() {
             alert.addAction(
                 UIAlertAction(
                     title: "Flickr",
                     style: .default,
-                    handler: { _ in URLSchemesUtils.openFlickr() }
+                    handler: { _ in URLSchemeUtils.openFlickr() }
                 )
             )
         }

@@ -24,7 +24,7 @@ import UIKit
 
 // MARK: URLSchemesUtils
 
-class URLSchemesUtils {
+final class URLSchemeUtils {
     
     // MARK: Properties
     
