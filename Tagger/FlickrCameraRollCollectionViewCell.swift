@@ -26,7 +26,7 @@ import UIKit
 
 final class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     
-    // MARK: Properties
+    // MARK: Instance variables
     
     static let reuseIdentifier = "FlickrCameraRollCollectionViewCell"
     
@@ -66,6 +66,8 @@ final class FlickrCameraRollCollectionViewCell: UICollectionViewCell {
     }
     
 }
+
+// MARK: - FlickrCameraRollCollectionViewCell (Private helpers) -
 
 extension FlickrCameraRollCollectionViewCell {
 
