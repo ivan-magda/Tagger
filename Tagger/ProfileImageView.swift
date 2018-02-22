@@ -24,27 +24,34 @@ import UIKit
 
 // MARK: ProfileImageView: UIImageView
 
-class ProfileImageView: UIImageView {
+final class ProfileImageView: UIImageView {
     
     // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        themeImageView()
+        theme()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        themeImageView()
+        theme()
     }
-    
-    // MARK: Theme
-    
-    fileprivate func themeImageView() {
+
+}
+
+// MARK: - ProfileImageView (UI) -
+
+extension ProfileImageView {
+
+    private func theme() {
         layer.masksToBounds = true
         layer.cornerRadius = bounds.size.height / 2.0
         layer.borderWidth = 2.0
-        layer.borderColor = UIColor(red: 255.0 / 255.0, green: 0.0, blue: 132.0 / 255.0, alpha: 1.0).cgColor
+        layer.borderColor = UIColor(red: 255.0 / 255.0,
+                                    green: 0.0,
+                                    blue: 132.0 / 255.0,
+                                    alpha: 1.0).cgColor
     }
 
 }
