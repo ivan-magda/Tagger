@@ -25,9 +25,9 @@ import UIKit
 // MARK: Types
 
 private enum SegueIdentifier: String {
-    case showCategories
-    case addCategory
-    case flickrAccount
+    case showCategories = "ShowCategories"
+    case addCategory = "AddCategory"
+    case flickrAccount = "FlickrAccount"
 }
 
 // MARK: - MoreInfoTableViewController: UITableViewController
