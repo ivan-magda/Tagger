@@ -24,18 +24,19 @@ import Foundation
 
 // MARK: PathUtils
 
-class PathUtils {
+final class PathUtils {
     
     // MARK: Init
 
-    fileprivate init() {
+    private init() {
     }
 
-    // MARK: Functions
+    // MARK: Public API
     
-    class func applicationDocumentsDirectory() -> URL {
+    static func applicationDocumentsDirectory() -> URL {
         let fileManager = FileManager.default
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+
         return urls[urls.count-1]
     }
     
