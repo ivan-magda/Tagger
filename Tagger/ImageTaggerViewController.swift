@@ -40,7 +40,7 @@ class ImageTaggerViewController: UIViewController, Alertable {
     var taggingImage: UIImage!
     var persistenceCentral: PersistenceCentral!
     
-    fileprivate let imaggaApiClient = ImaggaApiClient.sharedInstance
+    private let imaggaApiClient = ImaggaApiClient.shared
     
     fileprivate var generatedTags: [ImaggaTag]?
     fileprivate var createdCategory: Category?

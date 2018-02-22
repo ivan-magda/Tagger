@@ -32,8 +32,8 @@ final class ImaggaApiClient: IMApiClient {
      *  This class constant provides an easy way to get access
      *  to a shared instance of the ImaggaApiClient class.
      */
-    static let sharedInstance = ImaggaApiClient(configuration: .default,
-                                                baseURL: Constants.baseURL)
+    static let shared = ImaggaApiClient(configuration: .default,
+                                        baseURL: Constants.baseURL)
     
     // MARK: - Init
     
