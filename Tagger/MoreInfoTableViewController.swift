@@ -25,38 +25,45 @@ import UIKit
 // MARK: Types
 
 private enum SegueIdentifier: String {
-    case ShowCategories
-    case AddCategory
-    case FlickrAccount
+    case showCategories
+    case addCategory
+    case flickrAccount
 }
 
 // MARK: - MoreInfoTableViewController: UITableViewController
 
-class MoreInfoTableViewController: UITableViewController {
+final class MoreInfoTableViewController: UITableViewController {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var flickr: IMFlickr!
     var persistenceCentral: PersistenceCentral!
 
-    // MARK: View Life Cycle
+    // MARK: UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(flickr != nil && persistenceCentral != nil)
     }
-    
+
+    // MARK: Navigation
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueIdentifier.ShowCategories.rawValue {
+        guard let identifier = segue.identifier else { return }
+
+        switch identifier {
+        case SegueIdentifier.showCategories.rawValue:
             let controller = segue.destination as! CategoriesTableViewController
             controller.persistenceCentral = persistenceCentral
-        } else if segue.identifier == SegueIdentifier.AddCategory.rawValue {
+        case SegueIdentifier.addCategory.rawValue:
             let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
-        } else if segue.identifier == SegueIdentifier.FlickrAccount.rawValue {
+        case SegueIdentifier.flickrAccount.rawValue:
             let controller = segue.destination as! FlickrUserAccountViewController
             controller.flickr = flickr
+        default:
+            fatalError("Receive unknow segue identifier")
         }
     }
     
