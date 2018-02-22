@@ -26,13 +26,15 @@ import Foundation
 
 extension String {
     
-    static func urlEncodedStringFromString(_ string: String) -> String {
+    static func urlEncoded(_ string: String) -> String {
         let ignoredCharacters = CharacterSet(charactersIn: "% /'\"?=&+<>;:!").inverted
+
         return string.addingPercentEncoding(withAllowedCharacters: ignoredCharacters)!
     }
     
-    static func oauthEncodedStringFromString(_ string: String) -> String {
+    static func oauthEncoded(_ string: String) -> String {
         let ignoredCharacters = CharacterSet(charactersIn: "%:/?#[]@!$&'()*+,;=").inverted
+
         return string.addingPercentEncoding(withAllowedCharacters: ignoredCharacters)!
     }
     

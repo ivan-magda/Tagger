@@ -366,7 +366,7 @@ extension FlickrOAuth {
                                     urlEscape: Bool) -> String {
         func doUrlEscaping(_ string: inout String) {
             if urlEscape {
-                string = String.urlEncodedStringFromString(string)
+                string = String.urlEncoded(string)
             }
         }
 
@@ -377,7 +377,7 @@ extension FlickrOAuth {
 
         keys.forEach { key in
             let value = dictionary[key]!
-            let escapedValue = String.oauthEncodedStringFromString(value)
+            let escapedValue = String.oauthEncoded(value)
             pairs.append("\(key)=\(escapedValue)")
         }
 
