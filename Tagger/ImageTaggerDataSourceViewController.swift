@@ -25,7 +25,7 @@ import UIKit
 // MARK: Types
 
 private enum SegueIdentifier: String {
-    case TagAnImage
+    case tagAnImage = "TagAnImage"
 }
 
 // MARK: - ImageTaggerDataSourceViewController: UIViewController, Alertable -
@@ -49,7 +49,7 @@ final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueIdentifier.TagAnImage.rawValue {
+        if segue.identifier == SegueIdentifier.tagAnImage.rawValue {
             let navigationController = segue.destination as! UINavigationController
             let imageTaggerViewController = navigationController.topViewController as! ImageTaggerViewController
             imageTaggerViewController.taggingImage = pickedImage
@@ -108,7 +108,7 @@ extension ImageTaggerDataSourceViewController {
 
     private func processOnPickedImage(_ image: UIImage) {
         pickedImage = image
-        performSegue(withIdentifier: SegueIdentifier.TagAnImage.rawValue, sender: self)
+        performSegue(withIdentifier: SegueIdentifier.tagAnImage.rawValue, sender: self)
     }
 
     private func presentFlickrUserCameraRoll() {
