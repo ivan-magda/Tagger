@@ -24,13 +24,13 @@ import UIKit
 
 // MARK: SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseIdentifierable -
 
-class SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseIdentifierable {
+final class SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseIdentifierable {
     
-    // MARK: Outlets
+    // MARK: IBOutlets
     
     @IBOutlet var title: UILabel!
     
-    // MARK: Properties
+    // MARK: Instance variables
     
     static let height: CGFloat = 26.0
     
