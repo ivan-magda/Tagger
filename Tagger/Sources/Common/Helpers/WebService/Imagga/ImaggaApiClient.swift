@@ -41,7 +41,7 @@ final class ImaggaApiClient: IMApiClient {
         super.init(configuration: configuration, baseURL: baseURL)
 
         configuration.httpAdditionalHeaders = [
-            "Authorization": ImaggaAuthenticationToken,
+            "Authorization": Tagger.Constants.Imagga.authenticationToken,
             "Accept": "application/json"
         ]
         configuration.timeoutIntervalForRequest  = 30.0

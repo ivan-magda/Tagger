@@ -25,7 +25,7 @@ import Foundation
 // MARK: Types -
 
 private struct ErrorDomain {
-    static let Base = "\(BaseErrorDomain).HttpApiClient"
+    static let Base = "\(Tagger.Constants.Error.baseDomain).HttpApiClient"
     static let BadResponse = "\(Base).bad-response"
     static let EmptyResponse = "\(Base).empty-response"
 }

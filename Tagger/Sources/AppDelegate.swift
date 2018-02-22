@@ -73,12 +73,12 @@ extension AppDelegate {
 
     private func checkConstants() {
         assert(
-                FlickrApplicationKey      != "REPLACE_WITH_YOUR_FLICKR_API_KEY"       &&
-                FlickrApplicationSecret   != "REPLACE_WITH_YOUR_FLICKR_API_SECRET"    &&
-                FlickrOAuthCallbackURL    != "REPLACE_WITH_YOUR_CALLBACK_URL"         &&
-                ImaggaApplicationKey      != "REPLACE_WITH_YOUR_IMAGGA_API_KEY"       &&
-                ImaggaApplicationSecret   != "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"    &&
-                ImaggaAuthenticationToken != "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION",
+                Tagger.Constants.Flickr.applicationKey != "REPLACE_WITH_YOUR_FLICKR_API_KEY" &&
+                Tagger.Constants.Flickr.applicationSecret != "REPLACE_WITH_YOUR_FLICKR_API_SECRET" &&
+                Tagger.Constants.Flickr.OAuthCallbackURL != "REPLACE_WITH_YOUR_CALLBACK_URL" &&
+                Tagger.Constants.Imagga.applicationKey != "REPLACE_WITH_YOUR_IMAGGA_API_KEY" &&
+                Tagger.Constants.Imagga.applicationSecret != "REPLACE_WITH_YOUR_IMAGGA_API_SECRET" &&
+                Tagger.Constants.Imagga.authenticationToken != "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION",
                 "Change the constants properties with your own instances."
         )
     }

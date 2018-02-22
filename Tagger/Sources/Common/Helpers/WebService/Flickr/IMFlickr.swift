@@ -41,9 +41,9 @@ class IMFlickr {
     let api: FlickrApiClient
     var OAuth: FlickrOAuth {
         get {
-            return FlickrOAuth(consumerKey: FlickrApplicationKey,
-                               consumerSecret: FlickrApplicationSecret,
-                               callbackURL: FlickrOAuthCallbackURL
+            return FlickrOAuth(consumerKey: Tagger.Constants.Flickr.applicationKey,
+                               consumerSecret: Tagger.Constants.Flickr.applicationSecret,
+                               callbackURL: Tagger.Constants.Flickr.OAuthCallbackURL
             )
         }
     }

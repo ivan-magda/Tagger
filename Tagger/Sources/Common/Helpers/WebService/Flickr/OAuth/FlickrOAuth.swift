@@ -267,7 +267,7 @@ extension FlickrOAuth {
 
         onMain {
             let error = NSError(
-                domain: "\(BaseErrorDomain).FlickrOAuth",
+                domain: "\(Tagger.Constants.Error.baseDomain).FlickrOAuth",
                 code: 55,
                 userInfo: [NSLocalizedDescriptionKey : errorMessage]
             )

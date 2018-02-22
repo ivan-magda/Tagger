@@ -22,20 +22,44 @@
 
 import Foundation
 
-// MARK: API Constants -
-// MARK: Flickr
-let FlickrApplicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
-let FlickrApplicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
-let FlickrOAuthCallbackURL = "REPLACE_WITH_YOUR_CALLBACK_URL"
+// MARK: - Constants for project
 
-// MARK: Imagga
-let ImaggaApplicationKey = "REPLACE_WITH_YOUR_IMAGGA_API_KEY"
-let ImaggaApplicationSecret = "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"
-let ImaggaAuthenticationToken = "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
+final class Tagger {
 
-// MARK: - Error Constants
-let BaseErrorDomain = "com.ivanmagda.Tagger"
+    struct Constants {
 
-// MARK: - URL Schemes
-let InstagramAppURL = "instagram://app"
-let FLickrAppURL = "flickr://"
+        // MARK: Flickr
+
+        struct Flickr {
+            static let applicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
+            static let applicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
+            static let OAuthCallbackURL = "REPLACE_WITH_YOUR_CALLBACK_URL"
+        }
+
+        // MARK: Imagga
+
+        struct Imagga {
+            static let applicationKey = "REPLACE_WITH_YOUR_IMAGGA_API_KEY"
+            static let applicationSecret = "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"
+            static let authenticationToken = "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
+        }
+
+        // MARK: URL Schemes
+
+        struct URLSchemes {
+            static let instagram = "instagram://app"
+            static let fLickr = "flickr://"
+        }
+
+        // MARK: Error
+
+        struct Error {
+            static let baseDomain = "com.ivanmagda.Tagger"
+        }
+
+    }
+
+    private init() {
+    }
+
+}

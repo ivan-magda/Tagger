@@ -145,7 +145,7 @@ extension ImaggaApiClient {
                            callback: @escaping ImaggaFailureCompletionHandler) {
         func sendError(_ error: String) {
             let error = NSError(
-                domain: "\(BaseErrorDomain).ImaggaApiClient",
+                domain: "\(Tagger.Constants.Error.baseDomain).ImaggaApiClient",
                 code: 44,
                 userInfo: [NSLocalizedDescriptionKey : error]
             )

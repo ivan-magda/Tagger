@@ -25,7 +25,7 @@ import Foundation
 // MARK: Types
 
 private struct ErrorDomain {
-    static let Base = "\(BaseErrorDomain).JsonApiClient"
+    static let Base = "\(Tagger.Constants.Error.baseDomain).JsonApiClient"
     static let EmptyResponse = "\(Base).empty-response"
     static let JSONDeserializing = "\(Base).jsonerror.deserializing"
     static let NotSuccsessfullResponse = "\(Base).bad-response-code"

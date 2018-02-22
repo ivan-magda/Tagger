@@ -25,7 +25,7 @@ import Foundation
 // MARK: Types -
 
 private struct ErrorDomain {
-    static let Base = "\(BaseErrorDomain).MIApiClient"
+    static let Base = "\(Tagger.Constants.Error.baseDomain).MIApiClient"
     static let ApiRequest = "\(Base).api-request"
     static let UnexpectedResponse = "\(Base).api-request-unexpected-response"
     static let UnexpectedSituation = "\(Base).api-request-unexpected-situation"

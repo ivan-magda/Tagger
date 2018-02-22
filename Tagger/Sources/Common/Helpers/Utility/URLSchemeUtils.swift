@@ -28,8 +28,8 @@ final class URLSchemeUtils {
     
     // MARK: Instance variables
     
-    static let instagramURL = URL(string: InstagramAppURL)!
-    static let flickrURL = URL(string: FLickrAppURL)!
+    static let instagramURL = URL(string: Tagger.Constants.URLSchemes.instagram)!
+    static let flickrURL = URL(string: Tagger.Constants.URLSchemes.fLickr)!
 
     private static let application = UIApplication.shared
     

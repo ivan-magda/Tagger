@@ -261,8 +261,8 @@ extension FlickrApiClient {
     // MARK: Private
 
     private static func getTempOAuth() -> FlickrOAuth {
-        return FlickrOAuth(consumerKey: FlickrApplicationKey,
-                           consumerSecret: FlickrApplicationSecret,
+        return FlickrOAuth(consumerKey: Tagger.Constants.Flickr.applicationKey,
+                           consumerSecret: Tagger.Constants.Flickr.applicationSecret,
                            callbackURL: "")
     }
 

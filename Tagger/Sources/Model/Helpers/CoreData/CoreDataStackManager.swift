@@ -67,7 +67,7 @@ final class CoreDataStackManager {
             dict[NSUnderlyingErrorKey] = error
 
             let wrappedError = NSError(
-                domain: BaseErrorDomain,
+                domain: Tagger.Constants.Error.baseDomain,
                 code: 9999,
                 userInfo: dict
             )

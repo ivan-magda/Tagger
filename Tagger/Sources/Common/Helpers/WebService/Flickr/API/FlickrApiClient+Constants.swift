@@ -65,7 +65,7 @@ extension FlickrApiClient {
 
             struct Values {
 
-                static let apiKey = FlickrApplicationKey
+                static let apiKey = Tagger.Constants.Flickr.applicationKey
                 static let responseFormat = "json"
                 static let disableJSONCallback = "1"
                 static let searchMethod = "flickr.photos.search"
@@ -138,7 +138,7 @@ extension FlickrApiClient {
             
             // MARK: Domains & Code
             
-            static let ErrorDomain = "\(BaseErrorDomain).FlickrApiClient"
+            static let ErrorDomain = "\(Tagger.Constants.Error.baseDomain).FlickrApiClient"
             static let ErrorCode = 300
             
             static let NumberOfPagesForPhotoSearchErrorDomain = "\(ErrorDomain).number-of-pages"
