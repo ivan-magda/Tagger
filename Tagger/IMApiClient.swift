@@ -82,7 +82,7 @@ extension IMApiClient {
 
             switch result {
             case .json(let json):
-                performOnBackgroud {
+                onBackgroud {
                     guard let resource = parse(json) else {
                         self.log("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.log("\(json)")
@@ -129,7 +129,7 @@ extension IMApiClient {
 
             switch result {
             case .json(let json):
-                performOnBackgroud {
+                onBackgroud {
                     let keyPath = rootKeys.joined(separator: ".")
                     guard let jsonArray = (json as NSDictionary).value(forKeyPath: keyPath) as? [JSONDictionary] else {
                         onMain {

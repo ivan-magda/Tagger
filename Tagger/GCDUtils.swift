@@ -37,7 +37,7 @@ func after(_ time: Double, block: @escaping Block) {
     }
 }
 
-func performOnBackgroud(_ block: @escaping Block) {
+func onBackgroud(_ block: @escaping Block) {
     DispatchQueue.global(qos: .default).async {
         block()
     }

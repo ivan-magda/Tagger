@@ -50,7 +50,7 @@ extension HttpApiClient {
             case .error(let error):
                 returnError(error.localizedDescription)
             case .rawData(let data):
-                performOnBackgroud {
+                onBackgroud {
                     guard let image = UIImage(data: data) else {
                         onMain {
                             returnError("Could not initialize the image from the specified data.")
