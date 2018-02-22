@@ -103,7 +103,7 @@ extension FlickrApiClient {
                         failure: @escaping FlickrFailureCompletionHandler) {
         countPages(with: parameters, success: { pages in
             let pageLimit = min(pages, 20)
-            let randomPage = RandomNumberUtils.numberFromZeroTo(pageLimit) + 1
+            let randomPage = RandomUtils.randInt(pageLimit) + 1
 
             var parameters = parameters
             parameters[Constants.Params.Keys.page] = randomPage
@@ -113,7 +113,7 @@ extension FlickrApiClient {
                     return
                 }
 
-                let randomIndex = RandomNumberUtils.numberFromZeroTo(album.photos.count)
+                let randomIndex = RandomUtils.randInt(album.photos.count)
                 success(album.photos[randomIndex])
             }, failure: failure)
         }, failure: failure)

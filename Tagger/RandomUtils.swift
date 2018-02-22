@@ -24,17 +24,24 @@ import Foundation
 
 // MARK: RandomNumberUtils
 
-class RandomNumberUtils {
+final class RandomUtils {
     
-    // MARK: - Init
+    // MARK: Init
     
-    fileprivate init() {
+    private init() {
     }
     
-    // MARK: Static
-    
-    class func numberFromZeroTo(_ number: Int) -> Int {
-        return Int(arc4random_uniform(UInt32(number)))
+    // MARK: Public API
+
+    /// - Parameter upperBound: Max number that could be returned, not inclusive.
+    /// - Returns: A random number between zero and the upper bound minus one.
+    static func randInt(_ upperBound: Int) -> Int {
+        return Int(arc4random_uniform(UInt32(upperBound)))
+    }
+
+    /// Returns a number between lower bound and upper bound, not including upper bound.
+    static func random(_ range: Range<Int>) -> Int {
+        return range.lowerBound + Int(arc4random_uniform(UInt32(range.upperBound - range.lowerBound)))
     }
     
 }

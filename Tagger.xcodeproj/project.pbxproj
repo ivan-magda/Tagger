@@ -48,7 +48,7 @@
 		7552DFC21D0159F00032ECFA /* DiscoverTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */; };
 		7552DFC41D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */; };
 		7552DFC81D015AAF0032ECFA /* MoreInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFC71D015AAF0032ECFA /* MoreInfoTableViewController.swift */; };
-		755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomNumberUtils.swift */; };
+		755E38C51D0939580052BA48 /* RandomUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E38C41D0939580052BA48 /* RandomUtils.swift */; };
 		756F445F1D2279DE00736C49 /* FlickrUserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F445E1D2279DE00736C49 /* FlickrUserAccountViewController.swift */; };
 		756F44611D227FFD00736C49 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F44601D227FFD00736C49 /* ProfileImageView.swift */; };
 		7571F3801D23950100402518 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571F37C1D23950100402518 /* CoreDataStackManager.swift */; };
@@ -154,7 +154,7 @@
 		7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverTagsViewController.swift; sourceTree = "<group>"; };
 		7552DFC31D015A5D0032ECFA /* ImageTaggerDataSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTaggerDataSourceViewController.swift; sourceTree = "<group>"; };
 		7552DFC71D015AAF0032ECFA /* MoreInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInfoTableViewController.swift; sourceTree = "<group>"; };
-		755E38C41D0939580052BA48 /* RandomNumberUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomNumberUtils.swift; sourceTree = "<group>"; };
+		755E38C41D0939580052BA48 /* RandomUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtils.swift; sourceTree = "<group>"; };
 		756F445E1D2279DE00736C49 /* FlickrUserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrUserAccountViewController.swift; sourceTree = "<group>"; };
 		756F44601D227FFD00736C49 /* ProfileImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		7571F37C1D23950100402518 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				754F1AF91D024B9400410CA0 /* UIUtils.swift */,
-				755E38C41D0939580052BA48 /* RandomNumberUtils.swift */,
+				755E38C41D0939580052BA48 /* RandomUtils.swift */,
 				754F1AF31D024B9400410CA0 /* GCDUtils.swift */,
 				75AA9CD21D2217E500DEB55D /* PasteboardUtils.swift */,
 				75AA9CD41D22220600DEB55D /* URLSchemesUtils.swift */,
@@ -782,7 +782,7 @@
 				75755C941D112BDD007DE8B8 /* FlickrOAuth.swift in Sources */,
 				75755C8B1D10FCA6007DE8B8 /* String+Encode.swift in Sources */,
 				75755C971D1130F5007DE8B8 /* FlickrOAuthViewController.swift in Sources */,
-				755E38C51D0939580052BA48 /* RandomNumberUtils.swift in Sources */,
+				755E38C51D0939580052BA48 /* RandomUtils.swift in Sources */,
 				7584F34E1D0DAFFC008FE98C /* ImaggaApiClient+Endpoints.swift in Sources */,
 				754C204A1D043FE200CA4B34 /* SectionHeaderCollectionReusableView.swift in Sources */,
 				75755C8D1D10FD1D007DE8B8 /* String+HMACSHA1.swift in Sources */,
