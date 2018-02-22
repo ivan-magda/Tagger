@@ -24,23 +24,23 @@ import UIKit
 
 // MARK: Constants
 
-private let kReuseIdentifier = "CategoryCell"
+private let cellReuseIdentifier = "CategoryCell"
 
-// MARK: - Types
+// MARK: Types
 
 private enum SegueIdentifier: String {
-    case EditCategory
+    case editCategory = "EditCategory"
 }
 
-// MARK: - CategoriesTableViewController: UITableViewController
+// MARK: - CategoriesTableViewController: UITableViewController -
 
-class CategoriesTableViewController: UITableViewController {
+final class CategoriesTableViewController: UITableViewController {
     
-    // MARK: Properties
+    // MARK: Instance Variables
     
     var persistenceCentral: PersistenceCentral!
 
-    // MARK: View Life Cycle
+    // MARK: UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,7 @@ class CategoriesTableViewController: UITableViewController {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueIdentifier.EditCategory.rawValue {
+        if segue.identifier == SegueIdentifier.editCategory.rawValue {
             let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! ManageCategoryTableViewController
             controller.persistenceCentral = persistenceCentral
@@ -63,49 +63,63 @@ class CategoriesTableViewController: UITableViewController {
             let indexPath = tableView.indexPathForSelectedRow!
             let category = persistenceCentral.categories[indexPath.row]
             controller.category = category
+        } else {
+            fatalError("Receive unknown segue identifier: \(String(describing: segue.identifier)).")
         }
     }
 
-    // MARK: - Table view data source
+}
+
+// MARK: - CategoriesTableViewController: UITableViewDataSource -
+
+extension CategoriesTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return persistenceCentral.categories.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: kReuseIdentifier)!
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)!
+
         let category = persistenceCentral.categories[indexPath.row]
         cell.textLabel?.text = category.name
-        
+
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            commit editingStyle: UITableViewCellEditingStyle,
+                            forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteCategoryAtIndexPath(indexPath)
+            deleteCategory(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-    // MARK: Public
-    
-    @objc func reloadData() {
+
+}
+
+// MARK: - CategoriesTableViewController (Private helpers) -
+
+extension CategoriesTableViewController {
+
+    private func setup() {
+        navigationItem.rightBarButtonItem = editButtonItem
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(reloadData),
+                         name: NSNotification.Name(rawValue: kManageCategoryTableViewControllerDidDoneOnCategoryNotification),
+                         object: nil)
+    }
+
+    @objc private func reloadData() {
         tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
-    
-    // MARK: Private
-    
-    fileprivate func setup() {
-        navigationItem.rightBarButtonItem = editButtonItem
-        
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: kManageCategoryTableViewControllerDidDoneOnCategoryNotification), object: nil)
-    }
-    
-    fileprivate func deleteCategoryAtIndexPath(_ indexPath: IndexPath) {
+
+    private func deleteCategory(at indexPath: IndexPath) {
         let category = persistenceCentral.categories[indexPath.row]
         persistenceCentral.deleteCategory(category)
     }
 
 }
+
