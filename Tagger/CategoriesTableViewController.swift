@@ -108,7 +108,7 @@ extension CategoriesTableViewController {
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(reloadData),
-                         name: NSNotification.Name(rawValue: kManageCategoryTableViewControllerDidDoneOnCategoryNotification),
+                         name: NSNotification.Name(rawValue: manageCategoryTableViewControllerDidDoneOnCategoryNotification),
                          object: nil)
     }
 
