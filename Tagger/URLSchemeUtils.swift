@@ -26,36 +26,46 @@ import UIKit
 
 final class URLSchemeUtils {
     
-    // MARK: Properties
-    
-    fileprivate static let application = UIApplication.shared
+    // MARK: Instance variables
     
     static let instagramURL = URL(string: InstagramAppURL)!
     static let flickrURL = URL(string: FLickrAppURL)!
+
+    private static let application = UIApplication.shared
     
     // MARK: Init
     
-    fileprivate init() {
+    private init() {
     }
-    
-    // MARK: Public
-    
-    class func canOpenInstagram() -> Bool {
+
+}
+
+// MARK: - URLSchemeUtils (Instagram) -
+
+extension URLSchemeUtils {
+
+    static func canOpenInstagram() -> Bool {
         return application.canOpenURL(instagramURL)
     }
-    
-    class func canOpenFlickr() -> Bool {
-        return application.canOpenURL(flickrURL)
-    }
-    
-    class func openInstagram() {
+
+    static func openInstagram() {
         guard canOpenInstagram() else { return }
         application.openURL(instagramURL)
     }
-    
-    class func openFlickr() {
+
+}
+
+// MARK: - URLSchemeUtils (Flickr) -
+
+extension URLSchemeUtils {
+
+    static func canOpenFlickr() -> Bool {
+        return application.canOpenURL(flickrURL)
+    }
+
+    static func openFlickr() {
         guard canOpenFlickr() else { return }
         application.openURL(flickrURL)
     }
-    
+
 }
