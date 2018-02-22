@@ -22,11 +22,11 @@
 
 import UIKit
 
-// MARK: TagCollectionViewCell: UICollectionViewCell -
+// MARK: TagCollectionViewCell: UICollectionViewCell
 
-class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
+final class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
     
-    // MARK: Outlets
+    // MARK: IBOutlets
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var title: UILabel!
@@ -41,7 +41,7 @@ class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
         super.init(coder: aDecoder)
     }
     
-    // Override Methods
+    // MARK: UICollectionViewCell lifecycle
     
     override func prepareForReuse() {
         super.prepareForReuse()
