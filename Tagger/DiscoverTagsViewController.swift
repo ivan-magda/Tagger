@@ -40,7 +40,7 @@ private enum SectionType: Int, CaseCountable {
 }
 
 private enum SegueIdentifier: String {
-    case TagCategoryDetail
+    case tagCategoryDetail = "TagCategoryDetail"
 }
 
 // MARK: - DiscoverTagsViewController: UIViewController, Alertable -
