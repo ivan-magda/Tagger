@@ -23,24 +23,19 @@
 import Foundation
 
 // MARK: API Constants -
-
 // MARK: Flickr
-
 let FlickrApplicationKey = "REPLACE_WITH_YOUR_FLICKR_API_KEY"
 let FlickrApplicationSecret = "REPLACE_WITH_YOUR_FLICKR_API_SECRET"
 let FlickrOAuthCallbackURL = "REPLACE_WITH_YOUR_CALLBACK_URL"
 
 // MARK: Imagga
-
 let ImaggaApplicationKey = "REPLACE_WITH_YOUR_IMAGGA_API_KEY"
 let ImaggaApplicationSecret = "REPLACE_WITH_YOUR_IMAGGA_API_SECRET"
 let ImaggaAuthenticationToken = "REPLACE_WITH_YOUR_IMAGGA_AUTHORIZATION"
 
 // MARK: - Error Constants
-
 let BaseErrorDomain = "com.ivanmagda.Tagger"
 
 // MARK: - URL Schemes
-
 let InstagramAppURL = "instagram://app"
 let FLickrAppURL = "flickr://"

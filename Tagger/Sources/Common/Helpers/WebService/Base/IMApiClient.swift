@@ -43,7 +43,8 @@ typealias IMFailureCompletionHandler = (_ error: Error) -> Void
 
 // MARK: - IMApiClient: JsonApiClient -
 
-class IMApiClient: JsonApiClient {}
+class IMApiClient: JsonApiClient {
+}
 
 // MARK: - IMApiClient (Networking) -
 
