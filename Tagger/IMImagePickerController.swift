@@ -75,7 +75,7 @@ extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigation
     
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
-        performOnMain { [unowned self] in
+        onMain { [unowned self] in
             guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
                 let alertViewController = self.alert("An error occured",
                                                      message: "Failed to select an image. Please, try again.",

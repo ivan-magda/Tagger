@@ -87,7 +87,7 @@ extension HttpApiClient {
     func fetchRawData(for request: URLRequest,
                       with completionHandler: @escaping TaskCompletionHandler) {
         let task = dataTask(for: request) { result in
-            performOnMain {
+            onMain {
                 completionHandler(result)
             }
         }

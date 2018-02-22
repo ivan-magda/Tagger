@@ -87,7 +87,7 @@ extension IMApiClient {
                         self.log("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.log("\(json)")
 
-                        performOnMain {
+                        onMain {
                             failure(NSError(domain: ErrorDomain.UnexpectedResponse,
                                          code: ErrorCode.unexpectedResponse.rawValue,
                                          userInfo: [NSLocalizedDescriptionKey : "Couldn't parse the returned JSON."]))
@@ -96,7 +96,7 @@ extension IMApiClient {
                         return
                     }
 
-                    performOnMain {
+                    onMain {
                         success(resource)
                     }
                 }
@@ -132,7 +132,7 @@ extension IMApiClient {
                 performOnBackgroud {
                     let keyPath = rootKeys.joined(separator: ".")
                     guard let jsonArray = (json as NSDictionary).value(forKeyPath: keyPath) as? [JSONDictionary] else {
-                        performOnMain {
+                        onMain {
                             failure(getJSONParseError())
                         }
                         return
@@ -142,14 +142,14 @@ extension IMApiClient {
                         self.log("WARNING: Couldn't parse the following JSON as a \(T.self)")
                         self.log("\(json)")
 
-                        performOnMain {
+                        onMain {
                             failure(getJSONParseError())
                         }
 
                         return
                     }
 
-                    performOnMain {
+                    onMain {
                         success(collection)
                     }
                 }

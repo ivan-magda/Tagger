@@ -52,12 +52,12 @@ extension HttpApiClient {
             case .rawData(let data):
                 performOnBackgroud {
                     guard let image = UIImage(data: data) else {
-                        performOnMain {
+                        onMain {
                             returnError("Could not initialize the image from the specified data.")
                         }
                         return
                     }
-                    performOnMain {
+                    onMain {
                         success(image)
                     }
                 }

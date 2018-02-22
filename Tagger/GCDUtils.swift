@@ -24,7 +24,7 @@ import Foundation
 
 typealias Block = () -> Void
 
-func performOnMain(_ block: @escaping Block) {
+func onMain(_ block: @escaping Block) {
     DispatchQueue.main.async {
         block()
     }

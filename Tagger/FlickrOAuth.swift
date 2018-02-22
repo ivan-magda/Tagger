@@ -234,7 +234,7 @@ extension FlickrOAuth {
         }
         updateTokens(from: params)
 
-        performOnMain {
+        onMain {
             self.promtsUserForAuth { [unowned self] callbackURL in
                 self.getAccessToken(from: callbackURL)
             }
@@ -251,7 +251,7 @@ extension FlickrOAuth {
         }
         updateTokens(from: params)
 
-        performOnMain {
+        onMain {
             self.resultBlock(
                 FlickrOAuthResult.success(
                     token: self.token!,
@@ -265,7 +265,7 @@ extension FlickrOAuth {
     private func onFailure(with errorMessage: String) {
         print("Failed to authorize with Flickr. Error: \(errorMessage)).")
 
-        performOnMain {
+        onMain {
             let error = NSError(
                 domain: "\(BaseErrorDomain).FlickrOAuth",
                 code: 55,
