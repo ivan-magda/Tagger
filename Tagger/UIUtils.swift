@@ -22,53 +22,69 @@
 
 import UIKit
 
-// MARK: UIUtils -
+// MARK: UIUtils
 
-class UIUtils {
+final class UIUtils {
     
     // MARK: Init
     
-    fileprivate init() {
+    private init() {
     }
-
-    // MARK: - Class Functions -
-    // MARK: Screen Sizes
     
-    class func screenBounds() -> CGRect {
+}
+
+// MARK: - UIUtils (Screen sizes) -
+
+extension UIUtils {
+
+    static func screenBounds() -> CGRect {
         return UIScreen.main.bounds
     }
-    
-    class func screenSize() -> CGSize {
+
+    static func screenSize() -> CGSize {
         return UIScreen.main.bounds.size
     }
-    
-    class func statusBarHeight() -> CGFloat {
+
+    static func statusBarHeight() -> CGFloat {
         return UIApplication.shared.statusBarFrame.height
     }
-    
-    // MARK: Network Indicator
-    
-    class func showNetworkActivityIndicator() {
+
+}
+
+// MARK: - UIUtils (Network Indicator) -
+
+extension UIUtils {
+
+    static func showNetworkActivityIndicator() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
-    
-    class func hideNetworkActivityIndicator() {
+
+    static func hideNetworkActivityIndicator() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
-    // MARK: View Controller
-    
-    class func getRootViewController() -> UIViewController? {
+
+}
+
+// MARK: - UIUtils (UIViewController) -
+
+extension UIUtils {
+
+    static func rootViewController() -> UIViewController? {
         return UIApplication.shared.keyWindow?.rootViewController
     }
-    
-    // MARK: Status Bar
-    
-    class func setStatusBarBackgroundColor(_ color: UIColor) {
+
+}
+
+// MARK: - UIUtils (Status bar) -
+
+extension UIUtils {
+
+    static func setStatusBarBackgroundColor(_ color: UIColor) {
         guard let statusBar = (UIApplication.shared.value(forKey: "statusBarWindow") as AnyObject).value(forKey: "statusBar") as? UIView else {
             return
         }
+
         statusBar.backgroundColor = color
     }
-    
+
 }

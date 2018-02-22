@@ -115,7 +115,7 @@ extension CountPickerViewController {
                                              initialSelection: Int,
                                              doneHandler: @escaping CountPickerDoneBlock,
                                              cancelHandler: CountPickerCancelBlock?) -> Bool {
-        guard let rootViewController = UIUtils.getRootViewController() else { return false }
+        guard let rootViewController = UIUtils.rootViewController() else { return false }
         
         let picker = CountPickerViewController()
         picker.numberOfRows = rows

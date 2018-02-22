@@ -69,7 +69,7 @@ class FlickrOAuthViewController: UIViewController {
         successBlock = success
         failureBlock = failure
         
-        let rootViewController = UIUtils.getRootViewController()!
+        let rootViewController = UIUtils.rootViewController()!
         let navigationController = UINavigationController(rootViewController: self)
         rootViewController.present(navigationController, animated: true, completion: nil)
     }
