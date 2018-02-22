@@ -24,16 +24,16 @@ import UIKit
 
 // MARK: PasteboardUtils
 
-class PasteboardUtils {
+final class PasteboardUtils {
     
     // MARK: Init
     
-    fileprivate init() {
+    private init() {
     }
     
-    // MARK: Functions
+    // MARK: Public API
     
-    class func copyString(_ string: String) {
+    static func copyString(_ string: String) {
         UIPasteboard.general.string = string
     }
     
