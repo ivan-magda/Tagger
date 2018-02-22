@@ -24,9 +24,11 @@ import UIKit
 
 // MARK: HashtagsTextView: UITextView
 
-class HashtagsTextView: UITextView {
-    
-    fileprivate var tapGestureRecognizer: UITapGestureRecognizer!
+final class HashtagsTextView: UITextView {
+
+    // MARK: Instance variables
+
+    private var tapGestureRecognizer: UITapGestureRecognizer!
     
     // MARK: Init
     
@@ -40,9 +42,9 @@ class HashtagsTextView: UITextView {
         setup()
     }
     
-    // MARK: Public
+    // MARK: Public API
     
-    func updateWithNewData(_ tags: [String]) {
+    func updateOnNew(_ tags: [String] = []) {
         let tagsText = tags.joined(separator: " #")
         
         if !tagsText.isEmpty {
@@ -52,14 +54,18 @@ class HashtagsTextView: UITextView {
         }
     }
     
-    func setTextViewHidden(_ hidden: Bool) {
+    func setIsHidden(_ hidden: Bool) {
         let duration = 0.25
+
         if hidden {
             UIView.animate(withDuration: duration, animations: {
                 self.alpha = 0.0
                 }, completion: { finish in
-                    if finish { self.isHidden = true }
-            })
+                    if finish {
+                        self.isHidden = true
+                    }
+                }
+            )
         } else {
             self.isHidden = false
             UIView.animate(withDuration: duration, animations: {
@@ -68,18 +74,24 @@ class HashtagsTextView: UITextView {
         }
     }
     
-    // MARK: Actions
-    
-    @objc func didTapOnText() {
-        selectedTextRange = textRange(from: beginningOfDocument, to: endOfDocument)
-    }
-    
     // MARK: Private
     
-    fileprivate func setup() {
-        updateWithNewData([])
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnText))
+    private func setup() {
+        updateOnNew()
+
+        tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                      action: #selector(didTapOnText))
         addGestureRecognizer(tapGestureRecognizer)
     }
     
+}
+
+// MARK: - HashtagsTextView (Actions) -
+
+extension HashtagsTextView {
+
+    @objc private func didTapOnText() {
+        selectedTextRange = textRange(from: beginningOfDocument, to: endOfDocument)
+    }
+
 }

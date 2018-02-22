@@ -112,7 +112,7 @@ class TagListViewController: UIViewController, Alertable {
     }
 
     private func reloadData() {
-        tagsTextView.updateWithNewData(
+        tagsTextView.updateOnNew(
             tags.enumerated().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
         )
 
@@ -216,12 +216,12 @@ extension TagListViewController {
         actionSheet.addAction(UIAlertAction(title: "Table View", style: .default, handler: { [weak self] action in
             guard self?.tagsTextView.isHidden == false else { return }
             self?.tableView.isHidden = false
-            self?.tagsTextView.setTextViewHidden(true)
+            self?.tagsTextView.setIsHidden(true)
         }))
         actionSheet.addAction(UIAlertAction(title: "Hashtags View", style: .default, handler: { [weak self] action in
             guard self?.tagsTextView.isHidden == true else { return }
             self?.tableView.isHidden = true
-            self?.tagsTextView.setTextViewHidden(false)
+            self?.tagsTextView.setIsHidden(false)
         }))
         
         messageBarButtonItem.setTitleTextAttributes(
