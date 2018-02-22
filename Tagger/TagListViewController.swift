@@ -32,11 +32,11 @@ class TagListViewController: UIViewController, Alertable {
     
     // MARK: IBOutlets
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var copyAllBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var copyToClipboardBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var messageBarButtonItem: UIBarButtonItem!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var toolbar: UIToolbar!
+    @IBOutlet var copyAllBarButtonItem: UIBarButtonItem!
+    @IBOutlet var copyToClipboardBarButtonItem: UIBarButtonItem!
+    @IBOutlet var messageBarButtonItem: UIBarButtonItem!
     
     // MARK: Instance variables
     

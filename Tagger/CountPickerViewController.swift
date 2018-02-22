@@ -34,11 +34,11 @@ final class CountPickerViewController: UIViewController {
     
     // MARK: IBOutlets
     
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var pickerView: UIPickerView!
-    @IBOutlet weak var selectButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet var containerView: UIView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var pickerView: UIPickerView!
+    @IBOutlet var selectButton: UIButton!
+    @IBOutlet var cancelButton: UIButton!
     
     // MARK: Instance Variables
     

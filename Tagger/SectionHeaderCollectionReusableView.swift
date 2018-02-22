@@ -28,7 +28,7 @@ class SectionHeaderCollectionReusableView: UICollectionReusableView, CellReuseId
     
     // MARK: Outlets
     
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet var title: UILabel!
     
     // MARK: Properties
     

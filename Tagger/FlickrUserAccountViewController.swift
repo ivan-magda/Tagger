@@ -35,10 +35,10 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
     
     // MARK: IBOutlets
     
-    @IBOutlet weak var imageView: ProfileImageView!
-    @IBOutlet weak var mainLabel: UILabel!
-    @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet var imageView: ProfileImageView!
+    @IBOutlet var mainLabel: UILabel!
+    @IBOutlet var detailLabel: UILabel!
+    @IBOutlet var actionButton: UIButton!
     
     // MARK: Instance variables
     

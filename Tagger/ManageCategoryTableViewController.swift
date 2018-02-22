@@ -30,8 +30,8 @@ class ManageCategoryTableViewController: UITableViewController, Alertable {
     
     // MARK: Outlets
     
-    @IBOutlet weak var doneBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet var doneBarButtonItem: UIBarButtonItem!
+    @IBOutlet var textField: UITextField!
     
     // MARK: Properties
     

@@ -49,7 +49,7 @@ final class DiscoverTagsViewController: UIViewController, Alertable {
     
     // MARK: IBOutlets
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet var collectionView: UICollectionView!
     
     // MARK: Instance Variables
     

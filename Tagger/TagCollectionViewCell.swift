@@ -28,8 +28,8 @@ class TagCollectionViewCell: UICollectionViewCell, CellReuseIdentifierable {
     
     // MARK: Outlets
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var title: UILabel!
     
     // MARK: Init
     

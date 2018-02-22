@@ -52,12 +52,12 @@ class ImageTaggerViewController: UIViewController, Alertable {
     
     // MARK: Outlets
     
-    @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var generateBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var resultsBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var saveResultsBarButtonItem: UIBarButtonItem!
+    @IBOutlet var cancelBarButtonItem: UIBarButtonItem!
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var generateBarButtonItem: UIBarButtonItem!
+    @IBOutlet var resultsBarButtonItem: UIBarButtonItem!
+    @IBOutlet var saveResultsBarButtonItem: UIBarButtonItem!
     
     // MARK: - View Life Cycle
     
