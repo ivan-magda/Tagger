@@ -30,7 +30,8 @@ func onMain(_ block: @escaping Block) {
     }
 }
 
-func performAfterOnMain(_ time: Double, block: @escaping Block) {
+/// Executes `block` after some time in the future on the main thread.
+func after(_ time: Double, block: @escaping Block) {
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
         block()
     }
