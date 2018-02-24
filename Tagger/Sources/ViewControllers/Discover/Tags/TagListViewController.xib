@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,11 +26,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HQX-Yo-MpG">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </tableView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2XN-Fu-mDv">
-                    <rect key="frame" x="0.0" y="768" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="734" width="375" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="s7O-4b-KxG"/>
                     </constraints>
@@ -54,13 +55,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="2XN-Fu-mDv" secondAttribute="trailing" id="D1f-dF-HPw"/>
-                <constraint firstAttribute="bottom" secondItem="HQX-Yo-MpG" secondAttribute="bottom" id="GvO-OY-nc6"/>
-                <constraint firstAttribute="bottom" secondItem="2XN-Fu-mDv" secondAttribute="bottom" id="K0I-ej-dMa"/>
-                <constraint firstItem="HQX-Yo-MpG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="R5O-Wg-oCK"/>
-                <constraint firstAttribute="trailing" secondItem="HQX-Yo-MpG" secondAttribute="trailing" id="UXa-b2-hyU"/>
-                <constraint firstItem="HQX-Yo-MpG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WEy-H6-Ix6"/>
-                <constraint firstItem="2XN-Fu-mDv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lbi-O0-GiG"/>
+                <constraint firstItem="2XN-Fu-mDv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6eA-SR-dIe"/>
+                <constraint firstAttribute="bottomMargin" secondItem="HQX-Yo-MpG" secondAttribute="bottom" id="F2g-vX-nA6"/>
+                <constraint firstItem="HQX-Yo-MpG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OE0-LS-k4d"/>
+                <constraint firstItem="HQX-Yo-MpG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" id="UY9-gk-G6S"/>
+                <constraint firstAttribute="trailing" secondItem="HQX-Yo-MpG" secondAttribute="trailing" id="cbf-ce-z8a"/>
+                <constraint firstAttribute="bottomMargin" secondItem="2XN-Fu-mDv" secondAttribute="bottom" id="htZ-5S-CFU"/>
+                <constraint firstAttribute="trailing" secondItem="2XN-Fu-mDv" secondAttribute="trailing" id="tlI-nq-OyU"/>
             </constraints>
         </view>
     </objects>

@@ -197,13 +197,32 @@ extension TagListViewController {
         tableView.delegate = self
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: tableViewCellReuseIdentifier)
+
+        self.edgesForExtendedLayout = .all
+        tableView.contentInset = UIEdgeInsets(top: 0,
+                                              left: 0,
+                                              bottom: toolbar.bounds.height,
+                                              right: 0)
         
         // Configure text view:
         // Add as a subview to a root view and add constraints.
         view.insertSubview(tagsTextView, belowSubview: toolbar)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-0-[textView]", options: NSLayoutFormatOptions(), metrics: nil, views: ["topGuide": topLayoutGuide, "textView": tagsTextView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[textView]-0-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["textView": tagsTextView]))
-        view.addConstraint(NSLayoutConstraint(item: tagsTextView, attribute: .bottom, relatedBy: .equal, toItem: toolbar, attribute: .top, multiplier: 1.0, constant: 0.0))
+
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([
+                tagsTextView.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
+                tagsTextView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                tagsTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+                tagsTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tagsTextView.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
+                tagsTextView.topAnchor.constraint(equalTo: view.topAnchor),
+                tagsTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+                tagsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
+        }
         
         // Create more bar button and present action sheet with actions below on click.
         let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "more-tab-bar"),
