@@ -771,6 +771,7 @@
 				00F511488B3F0F287C3257D2 /* [CP] Check Pods Manifest.lock */,
 				7552DF861D013A740032ECFA /* Sources */,
 				7552DF871D013A740032ECFA /* Frameworks */,
+				759EDBDA204185A3008E7417 /* Increment Build */,
 				7552DF881D013A740032ECFA /* Resources */,
 				752520641D1ECF710047AB57 /* ShellScript */,
 				3068D2F4895C57A181E86B8D /* [CP] Embed Pods Frameworks */,
@@ -962,6 +963,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\nTAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\nfi";
+		};
+		759EDBDA204185A3008E7417 /* Increment Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
