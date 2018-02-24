@@ -771,7 +771,8 @@
 				00F511488B3F0F287C3257D2 /* [CP] Check Pods Manifest.lock */,
 				7552DF861D013A740032ECFA /* Sources */,
 				7552DF871D013A740032ECFA /* Frameworks */,
-				759EDBDA204185A3008E7417 /* Increment Build */,
+				759EDBDA204185A3008E7417 /* Increment Build number */,
+				759EDBDB2041880E008E7417 /* Increment Short bundle version */,
 				7552DF881D013A740032ECFA /* Resources */,
 				752520641D1ECF710047AB57 /* ShellScript */,
 				3068D2F4895C57A181E86B8D /* [CP] Embed Pods Frameworks */,
@@ -964,19 +965,33 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\nTAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\nfi";
 		};
-		759EDBDA204185A3008E7417 /* Increment Build */ = {
+		759EDBDA204185A3008E7417 /* Increment Build number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Increment Build";
+			name = "Increment Build number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"";
+		};
+		759EDBDB2041880E008E7417 /* Increment Short bundle version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Short bundle version";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "VERSIONNUM=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_FILE}\")\nNEWSUBVERSION=`echo $VERSIONNUM | awk -F \".\" '{print $3}'`\nNEWSUBVERSION=$(($NEWSUBVERSION + 1))\nNEWVERSIONSTRING=`echo $VERSIONNUM | awk -F \".\" '{print $1 \".\" $2 \".'$NEWSUBVERSION'\" }'`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $NEWVERSIONSTRING\" \"${INFOPLIST_FILE}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
