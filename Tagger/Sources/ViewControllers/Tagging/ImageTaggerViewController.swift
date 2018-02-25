@@ -23,17 +23,17 @@
 import UIKit.UIImage
 import CoreData
 
-// MARK: Types
-
-private enum UIState {
-    case `default`
-    case networking
-    case doneWithNetworking
-}
-
 // MARK: - ImageTaggerViewController: UIViewController, Alertable
 
 final class ImageTaggerViewController: UIViewController, Alertable {
+
+    // MARK: - Types
+
+    private enum State {
+        case idle
+        case fetching
+        case fetched
+    }
     
     // MARK: - Instance Variables
 
@@ -57,6 +57,34 @@ final class ImageTaggerViewController: UIViewController, Alertable {
 
         return context
     }()
+
+    private var state: State = .idle {
+        didSet {
+            switch state {
+            case .idle:
+                imageView.image = taggingImage
+
+                generateBarButtonItem.isEnabled = true
+                resultsBarButtonItem.isEnabled = false
+                saveResultsBarButtonItem.isEnabled = false
+            case .fetching:
+                UIUtils.showNetworkActivityIndicator()
+                activityIndicator.startAnimating()
+
+                resultsBarButtonItem.isEnabled = false
+                generateBarButtonItem.isEnabled = false
+                saveResultsBarButtonItem.isEnabled = false
+            case .fetched:
+                UIUtils.hideNetworkActivityIndicator()
+                activityIndicator.stopAnimating()
+
+                let enabled = generatedTags != nil && generatedTags!.count > 0
+                resultsBarButtonItem.isEnabled = enabled
+                saveResultsBarButtonItem.isEnabled = enabled
+                generateBarButtonItem.isEnabled = false
+            }
+        }
+    }
     
     // MARK: IBOutlets
 
@@ -83,17 +111,20 @@ extension ImageTaggerViewController {
 
     private func handleGeneratedTags(_ tags: [ImaggaTag]) {
         generatedTags = tags
-        setUIState(.doneWithNetworking)
+        state = .fetched
 
-        let alert = UIAlertController(title: "Success",
-                                      message: "Tags successfully generated. Do you want save or see them?",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Save", style: .default) { [weak self]  _ in
+        let alert = UIAlertController(
+            title: NSLocalizedString("Success", comment: "ImageTaggerViewController"),
+            message: NSLocalizedString("Tags successfully generated. Do you want save or see them?", comment: ""),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"),
+                                      style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "ImageTaggerViewController"), style: .default) { [weak self]  _ in
             guard let strongSelf = self else { return }
             strongSelf.saveResults(strongSelf)
         })
-        alert.addAction(UIAlertAction(title: "See Results", style: .default) { [weak self]  _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("See Results", comment: "ImageTaggerViewController"), style: .default) { [weak self]  _ in
             guard let strongSelf = self else { return }
             strongSelf.showResults(strongSelf)
         })
@@ -127,19 +158,21 @@ extension ImageTaggerViewController {
     }
 
     @IBAction func generateTags(_ sender: AnyObject) {
-        setUIState(.networking)
+        state = .fetching
+
         imaggaApiClient.taggingImage(taggingImage, success: { [weak self] tags in
             self?.handleGeneratedTags(tags)
         }) { [weak self] error in
-            guard let strongSelf = self else {
-                return
-            }
+            guard let strongSelf = self else { return }
 
             strongSelf.generatedTags = nil
-            strongSelf.setUIState(.doneWithNetworking)
+            strongSelf.state = .fetched
 
-            let alert = strongSelf.alert("Error", message: error.localizedDescription,
-                                         handler: nil)
+            let alert = strongSelf.alert(
+                NSLocalizedString("Error", comment: "ImageTaggerViewController"),
+                message: error.localizedDescription,
+                handler: nil
+            )
             strongSelf.present(alert, animated: true, completion: nil)
         }
     }
@@ -150,7 +183,7 @@ extension ImageTaggerViewController {
         if let createdCategory = createdCategory {
             tagListViewController.category = createdCategory
         } else {
-            tagListViewController.title = "Results"
+            tagListViewController.title = NSLocalizedString("Results", comment: "ImageTaggerViewController")
             tagListViewController.tags = ImaggaTag.map(on: generatedTags!,
                                                        in: temporaryContext)
         }
@@ -161,8 +194,8 @@ extension ImageTaggerViewController {
     @IBAction func saveResults(_ sender: AnyObject) {
         func showAlert() {
             let alert = self.alert(
-                "Invalid category name",
-                message: "Try again",
+                NSLocalizedString("Invalid category name", comment: "ImageTaggerViewController"),
+                message: NSLocalizedString("Try again", comment: "ImageTaggerViewController"),
                 handler: { [weak self] in
                     self?.saveResults($0)
                 }
@@ -173,11 +206,19 @@ extension ImageTaggerViewController {
 
         var categoryNameTextField: UITextField?
 
-        let alert = UIAlertController(title: "Create Category",
-                                      message: "To save the tags, please enter the category name.",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [unowned self] _ in
+        let alert = UIAlertController(
+            title: NSLocalizedString("Create Category", comment: "ImageTaggerViewController"),
+            message: NSLocalizedString("To save the tags, please enter the category name.", comment: "ImageTaggerViewController"),
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"),
+            style: .cancel,
+            handler: nil)
+        )
+
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "ImageTaggerViewController"), style: .default, handler: { [unowned self] _ in
             guard let name = categoryNameTextField?.text, !name.isEmpty else {
                 showAlert()
                 return
@@ -185,9 +226,10 @@ extension ImageTaggerViewController {
 
             self.createCategory(with: name)
         }))
+
         alert.addTextField { textField in
             categoryNameTextField = textField
-            categoryNameTextField?.placeholder = "Enter category name"
+            categoryNameTextField?.placeholder = NSLocalizedString("Enter category name", comment: "ImageTaggerViewController")
         }
 
         present(alert, animated: true, completion: nil)
@@ -200,35 +242,15 @@ extension ImageTaggerViewController {
 extension ImageTaggerViewController {
     
     private func configureUI() {
-        setUIState(.default)
-        navigationController?.view.backgroundColor = .white
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back",
-                                                           style: .plain,
-                                                           target: nil,
-                                                           action: nil)
-    }
-    
-    private func setUIState(_ state: UIState) {
-        switch state {
-        case .default:
-            imageView.image = taggingImage
-            resultsBarButtonItem.isEnabled = false
-            saveResultsBarButtonItem.isEnabled = false
-        case .networking:
-            UIUtils.showNetworkActivityIndicator()
-            activityIndicator.startAnimating()
-            resultsBarButtonItem.isEnabled = false
-            generateBarButtonItem.isEnabled = false
-            saveResultsBarButtonItem.isEnabled = false
-        case .doneWithNetworking:
-            UIUtils.hideNetworkActivityIndicator()
-            activityIndicator.stopAnimating()
-            generateBarButtonItem.isEnabled = true
+        state = .idle
 
-            let enabled = generatedTags != nil && generatedTags!.count > 0
-            resultsBarButtonItem.isEnabled = enabled
-            saveResultsBarButtonItem.isEnabled = enabled
-        }
+        navigationController?.view.backgroundColor = .white
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Back", comment: "ImageTaggerViewController"),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
     }
     
 }
