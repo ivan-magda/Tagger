@@ -50,6 +50,11 @@ final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(flickr != nil && persistenceCentral != nil)
+
+        for view in rootView.stackView.subviews {
+            guard let button = view as? UIButton else { continue }
+            button.imageView?.contentMode = .scaleAspectFit
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -145,7 +150,10 @@ extension ImageTaggerDataSourceViewController {
     private func updateConstraints() {
         if UIDevice.current.orientation.isLandscape {
             rootView.messageViewTopConstraint.constant = ImageTaggerDataSourceView.defaultMessageViewTopConstant
+            rootView.stackViewTopConstraint.constant = ImageTaggerDataSourceView.smallStackViewVerticalSpacingConstant
         } else {
+            rootView.stackViewTopConstraint.constant = ImageTaggerDataSourceView.defaultStackViewVerticalSpacingConstant
+
             let contentHeight = round(rootView.messageView.bounds.height)
                 + round(rootView.stackView.bounds.height)
                 + rootView.stackViewTopConstraint.constant

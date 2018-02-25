@@ -37,5 +37,7 @@ final class ImageTaggerDataSourceView: UIView {
     // MARK: Constants
 
     static let defaultMessageViewTopConstant: CGFloat = 20
+    static let defaultStackViewVerticalSpacingConstant: CGFloat = 20
+    static let smallStackViewVerticalSpacingConstant: CGFloat = 8
 
 }

@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>102</string>
+	<string>115</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>flickr</string>
