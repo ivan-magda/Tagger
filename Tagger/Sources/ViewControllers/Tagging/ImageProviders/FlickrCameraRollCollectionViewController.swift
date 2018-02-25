@@ -120,6 +120,10 @@ extension FlickrCameraRollCollectionViewController {
             layout.sectionInset = UIEdgeInsets.zero
             layout.minimumInteritemSpacing = 1.0
             layout.minimumLineSpacing = 1.0
+
+            if #available(iOS 11.0, *) {
+                layout.sectionInsetReference = .fromSafeArea
+            }
         }
     }
     
@@ -189,11 +193,16 @@ extension FlickrCameraRollCollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier,
-                                                      for: indexPath) as! FlickrCameraRollCollectionViewCell
-        configure(cell: cell, at: indexPath)
+        return collectionView.dequeueReusableCell(
+            withReuseIdentifier: FlickrCameraRollCollectionViewCell.reuseIdentifier,
+            for: indexPath
+        )
+    }
 
-        return cell
+    override func collectionView(_ collectionView: UICollectionView,
+                                 willDisplay cell: UICollectionViewCell,
+                                 forItemAt indexPath: IndexPath) {
+        configure(cell: cell as! FlickrCameraRollCollectionViewCell, at: indexPath)
     }
 
     // MARK: Private Helpers
@@ -233,11 +242,18 @@ extension FlickrCameraRollCollectionViewController: UICollectionViewDelegateFlow
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return CGSize.zero
         }
-        
+
+        var collectionViewWidth = collectionView.bounds.width
+
+        if #available(iOS 11.0, *) {
+            let insets = collectionView.safeAreaInsets
+            collectionViewWidth -= (insets.left + insets.right)
+        }
+
         let sectionInsets = layout.sectionInset
         let minimumInteritemSpacing = layout.minimumInteritemSpacing
         
-        let remainingWidth = collectionView.bounds.width
+        let remainingWidth = collectionViewWidth
             - sectionInsets.left
             - CGFloat((numberOfColumns - 1)) * minimumInteritemSpacing
             - sectionInsets.right
