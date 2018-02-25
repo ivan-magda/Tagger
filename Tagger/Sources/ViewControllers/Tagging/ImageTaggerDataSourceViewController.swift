@@ -31,19 +31,38 @@ private enum SegueIdentifier: String {
 // MARK: - ImageTaggerDataSourceViewController: UIViewController, Alertable -
 
 final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
-    
+
     // MARK: - Instance Variables
     
     var flickr: IMFlickr!
     var persistenceCentral: PersistenceCentral!
     
     private var pickedImage: UIImage?
+
+    private var rootView: ImageTaggerDataSourceView {
+        get {
+            return self.view as! ImageTaggerDataSourceView
+        }
+    }
     
     // MARK: - UIViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(flickr != nil && persistenceCentral != nil)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateConstraints()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.updateConstraints()
+        }, completion: nil)
     }
     
     // MARK: - Navigation
@@ -115,6 +134,24 @@ extension ImageTaggerDataSourceViewController {
         FlickrCameraRollCollectionViewController.show(in: self,
                                                       flickr: flickr,
                                                       then: processOnPickedImage)
+    }
+
+}
+
+// MARK: - ImageTaggerDataSourceViewController (UI) -
+
+extension ImageTaggerDataSourceViewController {
+
+    private func updateConstraints() {
+        if UIDevice.current.orientation.isLandscape {
+            rootView.messageViewTopConstraint.constant = ImageTaggerDataSourceView.defaultMessageViewTopConstant
+        } else {
+            let contentHeight = round(rootView.messageView.bounds.height)
+                + round(rootView.stackView.bounds.height)
+                + rootView.stackViewTopConstraint.constant
+            rootView.messageViewTopConstraint.constant = round(rootView.scrollView.bounds.height / 2.0)
+                - round(contentHeight / 2.0)
+        }
     }
 
 }
