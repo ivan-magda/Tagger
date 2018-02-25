@@ -566,7 +566,7 @@
         <!--Flickr-->
         <scene sceneID="ZTz-MO-w8O">
             <objects>
-                <viewController id="isa-OM-phE" customClass="FlickrUserAccountViewController" customModule="Tagger" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="isa-OM-phE" customClass="FlickrUserAccountViewController" customModule="Tagger" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3nh-E5-5QL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -579,22 +579,22 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="main label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRF-as-GHO">
-                                <rect key="frame" x="0.0" y="296" width="375" height="29"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <rect key="frame" x="20" y="320" width="335" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9n-Fh-o7W">
-                                <rect key="frame" x="0.0" y="333" width="375" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="20" y="357" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nca-SY-Jvh">
-                                <rect key="frame" x="0.0" y="653" width="375" height="44"/>
+                                <rect key="frame" x="20" y="702" width="335" height="56"/>
                                 <color key="backgroundColor" red="0.0" green="0.38823529411764707" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="jkr-ZG-Xzl"/>
+                                    <constraint firstAttribute="height" constant="56" id="jkr-ZG-Xzl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Button">
@@ -607,16 +607,16 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="nca-SY-Jvh" secondAttribute="trailing" id="4yf-Ub-FDi"/>
-                            <constraint firstItem="nca-SY-Jvh" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" id="Cl3-A7-j5k"/>
-                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="s9n-Fh-o7W" secondAttribute="trailing" constant="20" symbolic="YES" id="Hwb-bC-P7H"/>
+                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="nca-SY-Jvh" secondAttribute="trailing" constant="20" id="4yf-Ub-FDi"/>
+                            <constraint firstItem="nca-SY-Jvh" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" constant="20" id="Cl3-A7-j5k"/>
+                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="s9n-Fh-o7W" secondAttribute="trailing" constant="20" id="Hwb-bC-P7H"/>
                             <constraint firstItem="HMI-Cj-Sla" firstAttribute="centerX" secondItem="MIJ-R8-N9t" secondAttribute="centerX" id="JUK-E3-FOX"/>
-                            <constraint firstItem="uRF-as-GHO" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" constant="20" symbolic="YES" id="KI2-cD-7kh"/>
-                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="uRF-as-GHO" secondAttribute="trailing" constant="20" symbolic="YES" id="L9E-CJ-POq"/>
-                            <constraint firstItem="s9n-Fh-o7W" firstAttribute="top" secondItem="uRF-as-GHO" secondAttribute="bottom" constant="8" symbolic="YES" id="Rwy-9J-XOB"/>
-                            <constraint firstItem="s9n-Fh-o7W" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" constant="20" symbolic="YES" id="alo-jT-zAr"/>
-                            <constraint firstItem="uRF-as-GHO" firstAttribute="top" secondItem="HMI-Cj-Sla" secondAttribute="bottom" constant="16" id="mvF-YV-vzi"/>
-                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="bottom" secondItem="nca-SY-Jvh" secondAttribute="bottom" constant="32" id="sjp-yW-LpC"/>
+                            <constraint firstItem="uRF-as-GHO" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" constant="20" id="KI2-cD-7kh"/>
+                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="trailing" secondItem="uRF-as-GHO" secondAttribute="trailing" constant="20" id="L9E-CJ-POq"/>
+                            <constraint firstItem="s9n-Fh-o7W" firstAttribute="top" secondItem="uRF-as-GHO" secondAttribute="bottom" constant="8" id="Rwy-9J-XOB"/>
+                            <constraint firstItem="s9n-Fh-o7W" firstAttribute="leading" secondItem="MIJ-R8-N9t" secondAttribute="leading" constant="20" id="alo-jT-zAr"/>
+                            <constraint firstItem="uRF-as-GHO" firstAttribute="top" secondItem="HMI-Cj-Sla" secondAttribute="bottom" constant="40" id="mvF-YV-vzi"/>
+                            <constraint firstItem="MIJ-R8-N9t" firstAttribute="bottom" secondItem="nca-SY-Jvh" secondAttribute="bottom" constant="20" id="sjp-yW-LpC"/>
                             <constraint firstItem="HMI-Cj-Sla" firstAttribute="top" secondItem="MIJ-R8-N9t" secondAttribute="top" constant="32" id="tHa-WT-a8J"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MIJ-R8-N9t"/>

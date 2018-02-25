@@ -22,17 +22,16 @@
 
 import UIKit
 
-// MARK: Types
-
-private enum UIState {
-    case `default`
-    case network
-}
-
 // MARK: - FlickrUserAccountViewController: UIViewController, Alertable
 
 final class FlickrUserAccountViewController: UIViewController, Alertable {
-    
+
+    private enum State {
+        case guest
+        case fetching
+        case signedIn
+    }
+
     // MARK: IBOutlets
     
     @IBOutlet var imageView: ProfileImageView!
@@ -50,6 +49,30 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
 
         return activityIndicator
     }()
+
+    private var state: State = .guest {
+        didSet {
+            var title: String
+
+            switch state {
+            case .guest:
+                UIUtils.hideNetworkActivityIndicator()
+                activityIndicator.stopAnimating()
+                title = NSLocalizedString("Sign in", comment: "")
+            case .signedIn:
+                UIUtils.hideNetworkActivityIndicator()
+                activityIndicator.stopAnimating()
+                title = NSLocalizedString("Sign Out", comment: "")
+            case .fetching:
+                UIUtils.showNetworkActivityIndicator()
+                activityIndicator.startAnimating()
+                title = NSLocalizedString("Signing in...", comment: "")
+            }
+
+            actionButton.isEnabled = state == .guest || state == .signedIn
+            actionButton.setTitle(title, for: .normal)
+        }
+    }
     
     // MARK: UIViewController lifecycle
     
@@ -61,7 +84,6 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureUI()
-        setUIState(.default)
     }
     
 }
@@ -71,8 +93,6 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
 extension FlickrUserAccountViewController {
 
     @IBAction func actionButtonDidPressed(_ sender: AnyObject) {
-        setUIState(.network)
-
         if flickr.currentUser == nil {
             signIn()
         } else {
@@ -81,12 +101,13 @@ extension FlickrUserAccountViewController {
     }
 
     private func logOut() {
+        state = .guest
         flickr.logOut()
-        setUIState(.default)
         configureUI()
     }
 
     private func signIn() {
+        state = .fetching
         flickr.OAuth.auth(with: .write) { [weak self] result in
             guard let strongSelf = self else { return }
 
@@ -94,10 +115,10 @@ extension FlickrUserAccountViewController {
             case .success(_, _, let user):
                 strongSelf.flickr.currentUser = user
                 strongSelf.configureUI()
-                strongSelf.setUIState(.default)
+                strongSelf.state = .signedIn
             case .failure(let error):
                 strongSelf.showError(error)
-                strongSelf.setUIState(.default)
+                strongSelf.state = .guest
             }
         }
     }
@@ -109,48 +130,37 @@ extension FlickrUserAccountViewController {
 extension FlickrUserAccountViewController {
     
     private func configureUI() {
-        if let user = flickr.currentUser {
-            mainLabel.text = user.fullname
-            detailLabel.text = user.username
-            actionButton.setTitle("Log Out", for: UIControlState())
-            
-            setUIState(.network)
-            flickr.api.getProfilePhotoWithNSID(user.userID, success: {
-                self.imageView.image = $0
-                self.setUIState(.default)
-                }, failure: {
-                    self.showError($0)
-                    self.setUIState(.default)
-            })
-        } else {
-            imageView.image = UIImage(named: "flickr_rocket_logo")!
-            mainLabel.text = "You are not logged in"
-            detailLabel.text = "If you want to interact with your account, then sign in"
-            actionButton.setTitle("Sign In", for: UIControlState())
-        }
-        
+        actionButton.layer.cornerRadius = 10
+        actionButton.clipsToBounds = true
+
         let spinner = UIBarButtonItem(customView: activityIndicator)
         navigationItem.rightBarButtonItem = spinner
+
+        if let user = flickr.currentUser {
+            state = .signedIn
+            mainLabel.text = user.fullname
+            detailLabel.text = user.username
+
+            activityIndicator.startAnimating()
+
+            flickr.api.getProfilePhotoWithNSID(user.userID, success: { [weak self] in
+                self?.activityIndicator.stopAnimating()
+                self?.imageView.image = $0
+            }, failure: { [weak self] in
+                self?.activityIndicator.stopAnimating()
+                self?.showError($0)
+            })
+        } else {
+            state = .guest
+            imageView.image = UIImage(named: "flickr_rocket_logo")!
+            mainLabel.text = "You are not signed in"
+            detailLabel.text = "If you want to interact with your account, please sign in."
+        }
     }
     
     private func showError(_ error: Error) {
         let alertController = alert("Error", message: error.localizedDescription, handler: nil)
         present(alertController, animated: true, completion: nil)
-    }
-    
-    private func setUIState(_ state: UIState) {
-        switch state {
-        case .default:
-            UIUtils.hideNetworkActivityIndicator()
-            activityIndicator.stopAnimating()
-            actionButton.isEnabled = true
-            actionButton.backgroundColor = UIColor(red: 0.0, green: 99.0 / 255.0, blue: 220.0 / 255.0, alpha: 1.0)
-        case .network:
-            UIUtils.showNetworkActivityIndicator()
-            activityIndicator.startAnimating()
-            actionButton.isEnabled = false
-            actionButton.backgroundColor = .lightGray
-        }
     }
     
 }
