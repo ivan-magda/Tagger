@@ -108,9 +108,8 @@ extension AppDelegate {
 
 extension AppDelegate {
 
-    // TODO: Create constant or extension on UIColor for the priamary color.
     private func themeApplication() {
-        window?.tintColor = UIColor(red:0.34, green:0.70, blue:0.64, alpha:1.00)
+        window?.tintColor = UIColor(.primary)
     }
 
 }
