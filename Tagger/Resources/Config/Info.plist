@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.2.36</string>
+	<string>0.2.38</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>46</string>
+	<string>48</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>flickr</string>
@@ -27,6 +27,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We require access to the camera to able to take and analysis images and hashtags generating.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We require access to the photo library to able to analysis your images and hashtags generating.</string>
 	<key>UILaunchStoryboardName</key>
