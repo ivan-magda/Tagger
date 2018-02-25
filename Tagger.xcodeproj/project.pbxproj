@@ -10,6 +10,7 @@
 		750A9D1A1D20E64D008501EF /* HashtagsTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750A9D191D20E64D008501EF /* HashtagsTextView.swift */; };
 		750A9D1C1D20E8F8008501EF /* UIViewController+TabBarHidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */; };
 		750DF2F51D0ECE8A002A95B6 /* ImaggaTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */; };
+		75131CF42042F56F00FA29E3 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75131CF32042F56F00FA29E3 /* UIColor+Hex.swift */; };
 		75145CDB2042C001000109F1 /* ImageTaggerDataSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75145CDA2042C001000109F1 /* ImageTaggerDataSourceView.swift */; };
 		7514BDEA1D03AB46004A2E20 /* FlickrTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDE91D03AB46004A2E20 /* FlickrTag.swift */; };
 		7514BDEC1D03B56A004A2E20 /* IMApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514BDEB1D03B56A004A2E20 /* IMApiClient.swift */; };
@@ -111,6 +112,7 @@
 		750A9D191D20E64D008501EF /* HashtagsTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagsTextView.swift; sourceTree = "<group>"; };
 		750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+TabBarHidable.swift"; sourceTree = "<group>"; };
 		750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaTag.swift; sourceTree = "<group>"; };
+		75131CF32042F56F00FA29E3 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		75145CDA2042C001000109F1 /* ImageTaggerDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaggerDataSourceView.swift; sourceTree = "<group>"; };
 		7514BDE91D03AB46004A2E20 /* FlickrTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrTag.swift; sourceTree = "<group>"; };
 		7514BDEB1D03B56A004A2E20 /* IMApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMApiClient.swift; sourceTree = "<group>"; };
@@ -267,6 +269,14 @@
 				7552DF961D013A740032ECFA /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		75131CF22042F4E700FA29E3 /* UIColor */ = {
+			isa = PBXGroup;
+			children = (
+				75131CF32042F56F00FA29E3 /* UIColor+Hex.swift */,
+			);
+			path = UIColor;
 			sourceTree = "<group>";
 		};
 		75145CD92042BFDB000109F1 /* ImageTaggerDataSourceView */ = {
@@ -588,6 +598,7 @@
 		75F8DFE1203F58E500B7EC6A /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				75131CF22042F4E700FA29E3 /* UIColor */,
 				75F8DFE5203F594200B7EC6A /* UIViewController */,
 			);
 			path = UIKit;
@@ -1068,6 +1079,7 @@
 				754F1B031D024B9400410CA0 /* JSONParselable.swift in Sources */,
 				756F44611D227FFD00736C49 /* ProfileImageView.swift in Sources */,
 				750DF2F51D0ECE8A002A95B6 /* ImaggaTag.swift in Sources */,
+				75131CF42042F56F00FA29E3 /* UIColor+Hex.swift in Sources */,
 				7571F3981D23BCD800402518 /* CategoryImage.swift in Sources */,
 				754532451D0675E200AEC34C /* Alertable.swift in Sources */,
 				7552DFC81D015AAF0032ECFA /* MoreInfoTableViewController.swift in Sources */,
