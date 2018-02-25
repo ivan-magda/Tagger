@@ -78,7 +78,10 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         assert(flickr != nil)
+
+        navigationController?.view.backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {
