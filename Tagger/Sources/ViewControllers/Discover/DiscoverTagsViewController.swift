@@ -131,10 +131,16 @@ extension DiscoverTagsViewController {
 extension DiscoverTagsViewController {
     
     private func setupUI() {
-        guard let layout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        guard let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         layout.sectionInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
         layout.minimumInteritemSpacing = 8.0
         layout.minimumLineSpacing = 8.0
+
+        if #available(iOS 11.0, *) {
+            layout.sectionInsetReference = .fromSafeArea
+            collectionView?.contentInsetAdjustmentBehavior = .always
+        }
+
         collectionView?.contentInset.top += layout.sectionInset.top
     }
     
@@ -186,6 +192,10 @@ extension DiscoverTagsViewController {
                 for: indexPath
             ) as! SectionHeaderCollectionReusableView
             configureSectionHeaderView(headerView, at: indexPath)
+
+            if #available(iOS 11.0, *) {
+                let insets = collectionView.safeAreaInsets
+            }
 
             return headerView
         default:
@@ -280,15 +290,24 @@ extension DiscoverTagsViewController {
 
 extension DiscoverTagsViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return CGSize.zero
         }
-        
+
+        var collectionViewWidth = collectionView.bounds.width
+
+        if #available(iOS 11.0, *) {
+            let insets = collectionView.safeAreaInsets
+            collectionViewWidth -= (insets.left + insets.right)
+        }
+
         let sectionInsets = layout.sectionInset
         let minimumInteritemSpacing = layout.minimumInteritemSpacing
         
-        let remainingWidth = collectionView.bounds.width
+        let remainingWidth = collectionViewWidth
             - sectionInsets.left
             - CGFloat((numberOfColumns - 1)) * minimumInteritemSpacing
             - sectionInsets.right

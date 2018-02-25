@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,19 +43,19 @@
                                         <rect key="frame" x="20" y="20.000000000000007" width="335" height="93.666666666666686"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From where" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucb-DN-Ir0">
-                                                <rect key="frame" x="103" y="0.0" width="129" height="31.333333333333332"/>
+                                                <rect key="frame" x="103.33333333333331" y="0.0" width="129" height="31.333333333333332"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="26"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zN-2r-18A">
-                                                <rect key="frame" x="131.66666666666666" y="30.666666666666657" width="71.666666666666657" height="31.333333333333329"/>
+                                                <rect key="frame" x="132" y="30.666666666666657" width="71.666666666666686" height="31.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="an image?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GJ-DZ-Uiz">
-                                                <rect key="frame" x="111" y="61.666666666666664" width="113" height="31.333333333333336"/>
+                                                <rect key="frame" x="111.33333333333334" y="61.666666666666664" width="113" height="31.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="26"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -159,7 +160,7 @@
                                 </items>
                             </toolbar>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="anV-Ps-bZn">
-                                <rect key="frame" x="169.66666666666666" y="392.66666666666669" width="37" height="37"/>
+                                <rect key="frame" x="169" y="392.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -210,6 +211,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <viewLayoutGuide key="safeArea" id="vq2-5Q-YME"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="8" id="jZ2-na-OBb">
                             <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
@@ -255,15 +257,16 @@
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdR-Wt-34r">
-                                    <rect key="frame" x="15.000000000000004" y="16" width="35.333333333333343" height="17"/>
+                                    <rect key="frame" x="16.000000000000004" y="16.666666666666668" width="35.333333333333343" height="17.000000000000004"/>
+                                    <viewLayoutGuide key="safeArea" id="NHy-T5-G6e"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="IdR-Wt-34r" firstAttribute="leading" secondItem="kFy-Vp-b1D" secondAttribute="leading" constant="15" id="AQP-Zd-F7P"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IdR-Wt-34r" secondAttribute="trailing" constant="15" id="B6I-IG-dDz"/>
+                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="IdR-Wt-34r" secondAttribute="trailing" constant="8" id="A1b-i8-KyW"/>
+                                <constraint firstItem="IdR-Wt-34r" firstAttribute="leading" secondItem="kFy-Vp-b1D" secondAttribute="leadingMargin" constant="8" id="dpD-5y-6Lh"/>
                                 <constraint firstItem="IdR-Wt-34r" firstAttribute="centerY" secondItem="kFy-Vp-b1D" secondAttribute="centerY" id="enX-Q2-OHd"/>
                             </constraints>
                             <connections>
