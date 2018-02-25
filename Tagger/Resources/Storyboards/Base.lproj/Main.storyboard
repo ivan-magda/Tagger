@@ -35,73 +35,92 @@
                         <viewControllerLayoutGuide type="top" id="uiA-7M-vav"/>
                         <viewControllerLayoutGuide type="bottom" id="UEQ-be-JQB"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="3rk-JE-1js">
+                    <view key="view" contentMode="scaleToFill" id="3rk-JE-1js" customClass="ImageTaggerDataSourceView" customModule="Tagger" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6JF-Ku-h2O" userLabel="MessageView">
-                                <rect key="frame" x="20" y="132" width="335" height="85.666666666666686"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qjW-X7-LPO">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From where" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucb-DN-Ir0">
-                                        <rect key="frame" x="107" y="0.0" width="121.66666666666669" height="28.666666666666668"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="an image?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GJ-DZ-Uiz">
-                                        <rect key="frame" x="114.66666666666666" y="56.333333333333336" width="106.33333333333334" height="28.666666666666664"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zN-2r-18A">
-                                        <rect key="frame" x="135.33333333333334" y="28.333333333333343" width="64.666666666666657" height="28.666666666666671"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6JF-Ku-h2O" userLabel="MessageView">
+                                        <rect key="frame" x="20" y="20" width="335" height="85.666666666666671"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From where" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucb-DN-Ir0">
+                                                <rect key="frame" x="107" y="0.0" width="121.66666666666669" height="28.666666666666668"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="an image?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GJ-DZ-Uiz">
+                                                <rect key="frame" x="114.66666666666666" y="56.333333333333336" width="106.33333333333334" height="28.666666666666664"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zN-2r-18A">
+                                                <rect key="frame" x="135.33333333333334" y="28.333333333333343" width="64.666666666666657" height="28.666666666666671"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="7GJ-DZ-Uiz" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="4Pa-qn-KDe"/>
+                                            <constraint firstItem="8zN-2r-18A" firstAttribute="centerY" secondItem="6JF-Ku-h2O" secondAttribute="centerY" id="6fM-6r-oZ7"/>
+                                            <constraint firstItem="8zN-2r-18A" firstAttribute="top" secondItem="ucb-DN-Ir0" secondAttribute="bottom" id="9IR-d5-toy"/>
+                                            <constraint firstItem="8zN-2r-18A" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="F4i-ms-duJ"/>
+                                            <constraint firstItem="ucb-DN-Ir0" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="top" id="fIH-HZ-1Ji"/>
+                                            <constraint firstItem="ucb-DN-Ir0" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="gdz-al-qn7"/>
+                                            <constraint firstItem="7GJ-DZ-Uiz" firstAttribute="top" secondItem="8zN-2r-18A" secondAttribute="bottom" id="kw5-ZA-88g"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wkO-08-6Jk">
+                                        <rect key="frame" x="20" y="113.66666666666666" width="335" height="169.99999999999997"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v05-pf-2Un" userLabel="Flickr">
+                                                <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="170"/>
+                                                <state key="normal" image="flickr"/>
+                                                <connections>
+                                                    <action selector="selectImageFromFlickr:" destination="MNA-BA-R45" eventType="touchUpInside" id="0SM-fY-N3Y"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCg-AL-bPF" userLabel="SelectFromDevice">
+                                                <rect key="frame" x="171.66666666666663" y="0.0" width="163.33333333333337" height="170"/>
+                                                <state key="normal" image="smartphone"/>
+                                                <connections>
+                                                    <action selector="selectImageFromDevice:" destination="MNA-BA-R45" eventType="touchUpInside" id="ZNo-VD-ANl"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="7GJ-DZ-Uiz" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="4Pa-qn-KDe"/>
-                                    <constraint firstItem="8zN-2r-18A" firstAttribute="centerY" secondItem="6JF-Ku-h2O" secondAttribute="centerY" id="6fM-6r-oZ7"/>
-                                    <constraint firstItem="8zN-2r-18A" firstAttribute="top" secondItem="ucb-DN-Ir0" secondAttribute="bottom" id="9IR-d5-toy"/>
-                                    <constraint firstItem="8zN-2r-18A" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="F4i-ms-duJ"/>
-                                    <constraint firstItem="ucb-DN-Ir0" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="top" id="fIH-HZ-1Ji"/>
-                                    <constraint firstItem="ucb-DN-Ir0" firstAttribute="centerX" secondItem="6JF-Ku-h2O" secondAttribute="centerX" id="gdz-al-qn7"/>
-                                    <constraint firstItem="7GJ-DZ-Uiz" firstAttribute="top" secondItem="8zN-2r-18A" secondAttribute="bottom" id="kw5-ZA-88g"/>
+                                    <constraint firstItem="6JF-Ku-h2O" firstAttribute="top" secondItem="qjW-X7-LPO" secondAttribute="top" constant="20" symbolic="YES" id="3j7-Eg-7cF"/>
+                                    <constraint firstAttribute="trailing" secondItem="6JF-Ku-h2O" secondAttribute="trailing" constant="20" symbolic="YES" id="641-bA-GzS"/>
+                                    <constraint firstItem="6JF-Ku-h2O" firstAttribute="leading" secondItem="qjW-X7-LPO" secondAttribute="leading" constant="20" symbolic="YES" id="7qw-YB-XPy"/>
+                                    <constraint firstItem="wkO-08-6Jk" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="bottom" constant="8" symbolic="YES" id="Cp6-Jm-WbT"/>
+                                    <constraint firstAttribute="bottom" secondItem="wkO-08-6Jk" secondAttribute="bottom" constant="20" symbolic="YES" id="Frc-tk-ryn"/>
+                                    <constraint firstItem="wkO-08-6Jk" firstAttribute="leading" secondItem="qjW-X7-LPO" secondAttribute="leading" constant="20" symbolic="YES" id="NYa-wN-F5O"/>
+                                    <constraint firstItem="6JF-Ku-h2O" firstAttribute="centerX" secondItem="qjW-X7-LPO" secondAttribute="centerX" id="UCq-qH-CCq"/>
+                                    <constraint firstAttribute="trailing" secondItem="wkO-08-6Jk" secondAttribute="trailing" constant="20" symbolic="YES" id="g7d-ej-0gR"/>
                                 </constraints>
-                            </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wkO-08-6Jk">
-                                <rect key="frame" x="0.0" y="261.66666666666669" width="375" height="170"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v05-pf-2Un" userLabel="Flickr">
-                                        <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="170"/>
-                                        <state key="normal" image="flickr"/>
-                                        <connections>
-                                            <action selector="selectImageFromFlickr:" destination="MNA-BA-R45" eventType="touchUpInside" id="0SM-fY-N3Y"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCg-AL-bPF" userLabel="SelectFromDevice">
-                                        <rect key="frame" x="187.66666666666663" y="0.0" width="187.33333333333337" height="170"/>
-                                        <state key="normal" image="smartphone"/>
-                                        <connections>
-                                            <action selector="selectImageFromDevice:" destination="MNA-BA-R45" eventType="touchUpInside" id="ZNo-VD-ANl"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="6JF-Ku-h2O" secondAttribute="trailing" constant="20" symbolic="YES" id="AQt-Ib-3vF"/>
-                            <constraint firstItem="wkO-08-6Jk" firstAttribute="top" secondItem="6JF-Ku-h2O" secondAttribute="bottom" constant="44" id="Bg6-Hs-k2D"/>
-                            <constraint firstAttribute="trailing" secondItem="wkO-08-6Jk" secondAttribute="trailing" id="IuE-zM-Cac"/>
-                            <constraint firstItem="6JF-Ku-h2O" firstAttribute="top" secondItem="uiA-7M-vav" secondAttribute="bottom" constant="44" id="JHa-VQ-Cav"/>
-                            <constraint firstItem="6JF-Ku-h2O" firstAttribute="leading" secondItem="3rk-JE-1js" secondAttribute="leading" constant="20" symbolic="YES" id="er7-t0-cYL"/>
-                            <constraint firstItem="6JF-Ku-h2O" firstAttribute="centerX" secondItem="3rk-JE-1js" secondAttribute="centerX" id="hB5-7R-Y5q"/>
-                            <constraint firstItem="wkO-08-6Jk" firstAttribute="leading" secondItem="3rk-JE-1js" secondAttribute="leading" id="jX5-KW-q3f"/>
+                            <constraint firstItem="qjW-X7-LPO" firstAttribute="leading" secondItem="3rk-JE-1js" secondAttribute="leading" id="4wE-V9-gH7"/>
+                            <constraint firstItem="UEQ-be-JQB" firstAttribute="top" secondItem="qjW-X7-LPO" secondAttribute="bottom" id="EfU-Sd-VuT"/>
+                            <constraint firstItem="qjW-X7-LPO" firstAttribute="top" secondItem="uiA-7M-vav" secondAttribute="bottom" id="lsp-9J-n8W"/>
+                            <constraint firstAttribute="trailing" secondItem="qjW-X7-LPO" secondAttribute="trailing" id="sZR-jp-drh"/>
                         </constraints>
+                        <connections>
+                            <outlet property="messageView" destination="6JF-Ku-h2O" id="W8b-IQ-NED"/>
+                            <outlet property="messageViewTopConstraint" destination="3j7-Eg-7cF" id="35r-XK-XnA"/>
+                            <outlet property="scrollView" destination="qjW-X7-LPO" id="5kV-H8-qFr"/>
+                            <outlet property="stackView" destination="wkO-08-6Jk" id="Akn-V9-yGH"/>
+                            <outlet property="stackViewTopConstraint" destination="Cp6-Jm-WbT" id="7jy-FY-qmM"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Tagging" id="Uky-fl-4pf"/>
                     <connections>
