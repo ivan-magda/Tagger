@@ -51,10 +51,22 @@ final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
         super.viewDidLoad()
         assert(flickr != nil && persistenceCentral != nil)
 
+        rootView.scrollView.alwaysBounceVertical = true
+
         for view in rootView.stackView.subviews {
             guard let button = view as? UIButton else { continue }
             button.imageView?.contentMode = .scaleAspectFit
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.showLargeTitles(true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.showLargeTitles(false)
     }
 
     override func viewDidLayoutSubviews() {

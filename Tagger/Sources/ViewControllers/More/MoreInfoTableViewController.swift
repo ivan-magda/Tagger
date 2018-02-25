@@ -46,6 +46,16 @@ final class MoreInfoTableViewController: UITableViewController {
         assert(flickr != nil && persistenceCentral != nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.showLargeTitles(true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.showLargeTitles(false)
+    }
+
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

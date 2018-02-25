@@ -77,14 +77,14 @@ final class DiscoverTagsViewController: UICollectionViewController, Alertable {
         setup()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupNavigationController()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.showLargeTitles(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        setNavigationBarHidden(false)
+        navigationController?.showLargeTitles(false)
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
@@ -124,10 +124,6 @@ extension DiscoverTagsViewController {
         collectionView!.reloadData()
     }
 
-    @objc private func hideBarGesture(_ recognizer: UIPanGestureRecognizer) {
-        updateNavigationBarBackgroundColor(hidden: navigationController!.isNavigationBarHidden)
-    }
-
 }
 
 // MARK: - DiscoverTagsViewController (UI)  -
@@ -144,24 +140,6 @@ extension DiscoverTagsViewController {
     
     private func updateTitleColor(for cell: TagCollectionViewCell) {
         cell.title.textColor = cell.imageView.image != nil ? .white : .black
-    }
-    
-    // MARK: UINavigationController
-    
-    private func setupNavigationController() {
-        navigationController?.hidesBarsOnSwipe = true
-        navigationController?.barHideOnSwipeGestureRecognizer.addTarget(self, action: #selector(hideBarGesture))
-    }
-    
-    private func setNavigationBarHidden(_ hidden: Bool, animated: Bool = false) {
-        navigationController?.setNavigationBarHidden(hidden, animated: animated)
-        navigationController?.hidesBarsOnSwipe = hidden
-        updateNavigationBarBackgroundColor(hidden: hidden)
-    }
-
-    private func updateNavigationBarBackgroundColor(hidden: Bool) {
-        let color = hidden ? UIColor.white : UIColor.clear
-        UIUtils.setStatusBarBackgroundColor(color)
     }
     
 }
