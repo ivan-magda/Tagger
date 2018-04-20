@@ -51,7 +51,7 @@ struct ImaggaTag {
     // MARK: - Static
     
     static func sanitezedTags(_ json: [JSONDictionary]) -> [ImaggaTag] {
-        return json.flatMap { self.init(json: $0) }
+        return json.compactMap { self.init(json: $0) }
     }
     
 }

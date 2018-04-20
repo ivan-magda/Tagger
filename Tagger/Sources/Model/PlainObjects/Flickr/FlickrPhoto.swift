@@ -64,7 +64,7 @@ struct FlickrPhoto {
     // MARK: Static
     
     static func sanitezedPhotos(_ json: [JSONDictionary]) -> [FlickrPhoto] {
-        return json.flatMap { self.init(json: $0) }
+        return json.compactMap { self.init(json: $0) }
     }
     
 }

@@ -113,7 +113,7 @@ class TagListViewController: UIViewController, Alertable {
 
     private func reloadData() {
         tagsTextView.updateOnNew(
-            tags.enumerated().flatMap { selectedIndexes.contains($0) ? $1.name : nil }
+            tags.enumerated().compactMap { selectedIndexes.contains($0) ? $1.name : nil }
         )
 
         tableView.reloadSections(

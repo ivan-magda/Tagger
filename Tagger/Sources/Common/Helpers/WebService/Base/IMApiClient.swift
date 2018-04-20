@@ -65,7 +65,7 @@ extension IMApiClient {
                                           success: @escaping ([T]) -> Void,
                                           failure: @escaping IMFailureCompletionHandler) {
         getCollection(for: request, rootKeys: rootKeys, parse: { (json) -> [T]? in
-            return json.flatMap { T.decode($0) }
+            return json.compactMap { T.decode($0) }
         }, success: success, failure: failure)
     }
 
