@@ -76,16 +76,6 @@ final class DiscoverTagsViewController: UICollectionViewController, Alertable {
         assert(flickr != nil && persistenceCentral != nil)
         setup()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.showLargeTitles(true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.showLargeTitles(false)
-    }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)

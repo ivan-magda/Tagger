@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75057A6F2089E0370067082D /* UIViewController+LargeTitleHidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75057A6E2089E0370067082D /* UIViewController+LargeTitleHidable.swift */; };
 		750A9D1A1D20E64D008501EF /* HashtagsTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750A9D191D20E64D008501EF /* HashtagsTextView.swift */; };
 		750A9D1C1D20E8F8008501EF /* UIViewController+TabBarHidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */; };
 		750DF2F51D0ECE8A002A95B6 /* ImaggaTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */; };
@@ -111,6 +112,7 @@
 /* Begin PBXFileReference section */
 		439B858E84410900C822A0DA /* Pods_Tagger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tagger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65A7249A7666A9DB189642BB /* Pods-Tagger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tagger.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tagger/Pods-Tagger.release.xcconfig"; sourceTree = "<group>"; };
+		75057A6E2089E0370067082D /* UIViewController+LargeTitleHidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+LargeTitleHidable.swift"; sourceTree = "<group>"; };
 		750A9D191D20E64D008501EF /* HashtagsTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagsTextView.swift; sourceTree = "<group>"; };
 		750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+TabBarHidable.swift"; sourceTree = "<group>"; };
 		750DF2F41D0ECE8A002A95B6 /* ImaggaTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImaggaTag.swift; sourceTree = "<group>"; };
@@ -648,6 +650,7 @@
 			isa = PBXGroup;
 			children = (
 				750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */,
+				75057A6E2089E0370067082D /* UIViewController+LargeTitleHidable.swift */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -1093,6 +1096,7 @@
 				754F1B0E1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift in Sources */,
 				7584F34B1D0DABD0008FE98C /* ImaggaApiClient.swift in Sources */,
 				7571F38F1D23965400402518 /* Category.swift in Sources */,
+				75057A6F2089E0370067082D /* UIViewController+LargeTitleHidable.swift in Sources */,
 				7524C0431D251E000004D6CE /* CategoriesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

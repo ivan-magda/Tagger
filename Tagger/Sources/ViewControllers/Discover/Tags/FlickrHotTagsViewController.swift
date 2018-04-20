@@ -102,6 +102,8 @@ extension FlickrHotTagsViewController {
     }
 
     private func configureUI() {
+        hideLargeTitle()
+        
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
         

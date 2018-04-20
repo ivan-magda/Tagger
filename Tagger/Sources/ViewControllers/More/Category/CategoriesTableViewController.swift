@@ -103,6 +103,7 @@ extension CategoriesTableViewController {
 extension CategoriesTableViewController {
 
     private func setup() {
+        hideLargeTitle()
         navigationItem.rightBarButtonItem = editButtonItem
 
         NotificationCenter.default

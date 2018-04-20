@@ -92,6 +92,7 @@ extension FlickrRelatedTagsViewController {
 
     private func setup() {
         configureUI()
+
         if tags.count == 0 {
             fetchData()
         }
@@ -99,6 +100,8 @@ extension FlickrRelatedTagsViewController {
 
     private func configureUI() {
         title = category!.name.capitalized
+        hideLargeTitle()
+
         refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
         tableView.addSubview(refreshControl)
     }

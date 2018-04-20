@@ -59,16 +59,6 @@ final class ImageTaggerDataSourceViewController: UIViewController, Alertable {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.showLargeTitles(true)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.showLargeTitles(false)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateConstraints()
