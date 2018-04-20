@@ -27,7 +27,7 @@ Content like photos and videos with tags can be much easier to be searched and r
 
 ## Requirements
 - Swift 4.1
-- Xcode 9.2
+- Xcode 9.3
 
 ## Installation
 - Open `Tagger.xcworkspace` and build.
