@@ -812,7 +812,6 @@
 				7552DF881D013A740032ECFA /* Resources */,
 				752520641D1ECF710047AB57 /* ShellScript */,
 				3068D2F4895C57A181E86B8D /* [CP] Embed Pods Frameworks */,
-				56CD2C8FD6EE3DFC56BA7029 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -971,21 +970,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tagger/Pods-Tagger-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		56CD2C8FD6EE3DFC56BA7029 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tagger/Pods-Tagger-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		752520641D1ECF710047AB57 /* ShellScript */ = {
