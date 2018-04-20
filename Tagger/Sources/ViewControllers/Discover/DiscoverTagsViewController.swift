@@ -193,10 +193,6 @@ extension DiscoverTagsViewController {
             ) as! SectionHeaderCollectionReusableView
             configureSectionHeaderView(headerView, at: indexPath)
 
-            if #available(iOS 11.0, *) {
-                let insets = collectionView.safeAreaInsets
-            }
-
             return headerView
         default:
             fatalError("Unexpected element kind")
