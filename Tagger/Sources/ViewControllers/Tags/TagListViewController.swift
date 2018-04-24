@@ -154,7 +154,16 @@ extension TagListViewController {
             message: "Now paste the tags into your Instagram/Flickr picture comments or caption",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        alert.addAction(
+            UIAlertAction(
+                title: URLSchemeUtils.hasAtLeastOneScheme
+                    ? NSLocalizedString("Cancel", comment: "")
+                    : NSLocalizedString("OK", comment: ""),
+                style: .cancel,
+                handler: nil
+            )
+        )
 
         if URLSchemeUtils.canOpenInstagram() {
             alert.addAction(

@@ -38,6 +38,12 @@ final class URLSchemeUtils {
     private init() {
     }
 
+    // MARK: Public API
+
+    static var hasAtLeastOneScheme: Bool {
+        return canOpenInstagram() || canOpenFlickr()
+    }
+
 }
 
 // MARK: - URLSchemeUtils (Instagram) -
