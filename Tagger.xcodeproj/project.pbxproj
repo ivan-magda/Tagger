@@ -428,6 +428,7 @@
 		75F8DFC4203F514000B7EC6A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				75F8DFCB203F52A900B7EC6A /* Tags */,
 				75F8DFCA203F528500B7EC6A /* Discover */,
 				75F8DFD1203F54A400B7EC6A /* Tagging */,
 				75F8DFCE203F53EB00B7EC6A /* More */,
@@ -438,7 +439,6 @@
 		75F8DFCA203F528500B7EC6A /* Discover */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFCB203F52A900B7EC6A /* Tags */,
 				75F8DFCC203F52F900B7EC6A /* CountPicker */,
 				7552DFC11D0159F00032ECFA /* DiscoverTagsViewController.swift */,
 			);
