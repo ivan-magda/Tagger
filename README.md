@@ -26,8 +26,8 @@ Content like photos and videos with tags can be much easier to be searched and r
 - Unlimited number of tag categories
 
 ## Requirements
-- Swift 4.1
-- Xcode 9.3
+- Swift 4.2
+- Xcode 10.0
 
 ## Installation
 - Open `Tagger.xcworkspace` and build.
