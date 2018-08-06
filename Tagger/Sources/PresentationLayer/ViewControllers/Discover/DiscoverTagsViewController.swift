@@ -78,7 +78,7 @@ final class DiscoverTagsViewController: UICollectionViewController, Alertable {
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
+        numberOfColumns += (toInterfaceOrientation.isLandscape ? 1 : -1)
 
         if numberOfColumns > maxNumberOfColumns {
             numberOfColumns = maxNumberOfColumns
@@ -175,7 +175,7 @@ extension DiscoverTagsViewController {
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
-        case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: SectionHeaderCollectionReusableView.reuseIdentifier,

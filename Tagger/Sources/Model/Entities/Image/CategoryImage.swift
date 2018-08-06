@@ -61,7 +61,7 @@ class CategoryImage: NSManagedObject {
     }
     
     convenience init(image: UIImage, context: NSManagedObjectContext) {
-        let data = UIImageJPEGRepresentation(image, 1.0)!
+        let data = image.jpegData(compressionQuality: 1.0)!
         self.init(data: data, context: context)
     }
     

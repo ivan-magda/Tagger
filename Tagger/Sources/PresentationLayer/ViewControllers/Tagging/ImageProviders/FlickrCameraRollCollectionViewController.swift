@@ -61,7 +61,7 @@ final class FlickrCameraRollCollectionViewController: UICollectionViewController
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        numberOfColumns += (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1 : -1)
+        numberOfColumns += (toInterfaceOrientation.isLandscape ? 1 : -1)
 
         if numberOfColumns > maxNumberOfColumns {
             numberOfColumns = maxNumberOfColumns

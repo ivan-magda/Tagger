@@ -44,8 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: UIApplicationDelegate
 
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setup()
 
         return true
@@ -58,13 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         persistenceCentral.coreDataStackManager.saveContext()
     }
-
 }
 
 // MARK: - AppDelegate (Setup) -
 
 extension AppDelegate {
-
     private func setup() {
         checkConstants()
         shareData()
@@ -101,15 +98,12 @@ extension AppDelegate {
         moreInfoTableViewController.flickr = flickr
         moreInfoTableViewController.persistenceCentral = persistenceCentral
     }
-
 }
 
 // MARK: - AppDelegate (UI) -
 
 extension AppDelegate {
-
     private func themeApplication() {
         window?.tintColor = UIColor(.primary)
     }
-
 }

@@ -61,7 +61,7 @@ extension ImaggaApiClient {
         let compression: CGFloat = (image.size.height > ImaggaApiClient.maxImageSize ||
             image.size.width > ImaggaApiClient.maxImageSize) ? 0.5 : 0.9
 
-        guard let data = UIImageJPEGRepresentation(image, compression) else {
+        guard let data = image.jpegData(compressionQuality: compression) else {
             onFailure(with: "Could not get JPEG representation of selected image.",
                       callback: failure)
             return

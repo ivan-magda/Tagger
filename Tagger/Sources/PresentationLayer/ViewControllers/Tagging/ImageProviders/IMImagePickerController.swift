@@ -74,9 +74,12 @@ extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigation
     // MARK: UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : Any]) {
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         onMain { [unowned self] in
-            guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            guard let pickedImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else {
                 let alertViewController = self.alert("An error occured",
                                                      message: "Failed to select an image. Please, try again.",
                                                      handler: nil)
@@ -127,4 +130,14 @@ extension IMImagePickerController: UIImagePickerControllerDelegate, UINavigation
         rootViewController.present(alert, animated: true, completion: nil)
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

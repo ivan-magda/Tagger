@@ -130,7 +130,7 @@ extension CountPickerViewController {
     }
     
     func dismissFromParentViewController() {
-        willMove(toParentViewController: nil)
+        willMove(toParent: nil)
 
         UIView.animate(withDuration: 0.3, animations: {
             self.containerView.frame.origin.y += self.view.bounds.height
@@ -138,14 +138,14 @@ extension CountPickerViewController {
         }, completion: { finished in
             guard finished == true else { return }
             self.view.removeFromSuperview()
-            self.removeFromParentViewController()
+            self.removeFromParent()
         }) 
     }
     
     func presentInParentViewController(_ parentViewController: UIViewController) {
         view.frame = parentViewController.view.bounds
         
-        parentViewController.addChildViewController(self)
+        parentViewController.addChild(self)
         parentViewController.view.addSubview(view)
         
         view.alpha = 0.0

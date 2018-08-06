@@ -44,7 +44,7 @@ final class FlickrUserAccountViewController: UIViewController, Alertable {
     var flickr: IMFlickr!
     
     private let activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.hidesWhenStopped = true
 
         return activityIndicator

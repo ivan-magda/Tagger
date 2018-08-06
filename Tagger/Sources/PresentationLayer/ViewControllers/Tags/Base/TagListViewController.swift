@@ -253,8 +253,8 @@ extension TagListViewController {
         }))
         
         messageBarButtonItem.setTitleTextAttributes(
-            [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)],
-            for: UIControlState()
+            [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)],
+            for: UIControl.State()
         )
         setUIState(.default)
     }

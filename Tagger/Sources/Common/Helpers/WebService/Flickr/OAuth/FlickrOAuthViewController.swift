@@ -80,7 +80,7 @@ class FlickrOAuthViewController: UIViewController {
 
 extension FlickrOAuthViewController: UIWebViewDelegate {
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         guard let url = request.url else {
             return false
         }
@@ -140,7 +140,7 @@ extension FlickrOAuthViewController {
         webView.frame = view.bounds
         webView.backgroundColor = .white
         webView.scalesPageToFit = true
-        webView.autoresizingMask = UIViewAutoresizing(arrayLiteral: .flexibleWidth, .flexibleHeight)
+        webView.autoresizingMask = UIView.AutoresizingMask(arrayLiteral: .flexibleWidth, .flexibleHeight)
         view.addSubview(webView)
 
         let request = URLRequest(url: authorizationURL)

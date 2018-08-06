@@ -230,6 +230,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C29DC8C2118918500EFB679 /* ApplicationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				7552DF8D1D013A740032ECFA /* AppDelegate.swift */,
+			);
+			path = ApplicationLayer;
+			sourceTree = "<group>";
+		};
+		2C29DC8D2118919300EFB679 /* PresentationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				2C29DC902118930400EFB679 /* ViewControllers */,
+				75F8DFBE203F4E0900B7EC6A /* Views */,
+			);
+			path = PresentationLayer;
+			sourceTree = "<group>";
+		};
+		2C29DC8E2118920000EFB679 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				754532341D063F4000AEC34C /* TagListViewController.swift */,
+				75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */,
+				7545323F1D0669D700AEC34C /* TagListViewController.xib */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2C29DC8F2118929600EFB679 /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				754F1AF51D024B9400410CA0 /* HttpMethod.swift */,
+				754F1AF41D024B9400410CA0 /* HttpApiClient.swift */,
+				75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */,
+				7584F3521D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift */,
+			);
+			name = HTTP;
+			sourceTree = "<group>";
+		};
+		2C29DC902118930400EFB679 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				75F8DFCA203F528500B7EC6A /* Discover */,
+				75F8DFCE203F53EB00B7EC6A /* More */,
+				75F8DFD1203F54A400B7EC6A /* Tagging */,
+				75F8DFCB203F52A900B7EC6A /* Tags */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		3B21027FF4D9B0C585A49547 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,10 +291,10 @@
 		750587F8203F150B00A0935B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				7552DF8D1D013A740032ECFA /* AppDelegate.swift */,
-				75F8DFBD203F4DF500B7EC6A /* Common */,
-				75F8DFC4203F514000B7EC6A /* ViewControllers */,
+				2C29DC8C2118918500EFB679 /* ApplicationLayer */,
+				2C29DC8D2118919300EFB679 /* PresentationLayer */,
 				75F8DFE8203F5AE400B7EC6A /* Model */,
+				75F8DFBD203F4DF500B7EC6A /* Common */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -364,9 +413,8 @@
 		75F8DFBD203F4DF500B7EC6A /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFD3203F561D00B7EC6A /* Helpers */,
-				75F8DFBE203F4E0900B7EC6A /* Views */,
 				75F8DFE0203F58CF00B7EC6A /* Extensions */,
+				75F8DFD3203F561D00B7EC6A /* Helpers */,
 				75F8DFE6203F598000B7EC6A /* Protocols */,
 			);
 			path = Common;
@@ -375,12 +423,12 @@
 		75F8DFBE203F4E0900B7EC6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFBF203F504E00B7EC6A /* TagCollectionViewCell */,
-				75F8DFC0203F505A00B7EC6A /* SectionHeaderCollectionReusableView */,
 				75F8DFC1203F506600B7EC6A /* FlickrCameraRollCollectionViewCell */,
 				75F8DFC2203F506E00B7EC6A /* HashtagsTextView */,
-				75F8DFC3203F507D00B7EC6A /* ProfileImageView */,
 				75145CD92042BFDB000109F1 /* ImageTaggerDataSourceView */,
+				75F8DFC3203F507D00B7EC6A /* ProfileImageView */,
+				75F8DFC0203F505A00B7EC6A /* SectionHeaderCollectionReusableView */,
+				75F8DFBF203F504E00B7EC6A /* TagCollectionViewCell */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -425,17 +473,6 @@
 			path = ProfileImageView;
 			sourceTree = "<group>";
 		};
-		75F8DFC4203F514000B7EC6A /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				75F8DFCB203F52A900B7EC6A /* Tags */,
-				75F8DFCA203F528500B7EC6A /* Discover */,
-				75F8DFD1203F54A400B7EC6A /* Tagging */,
-				75F8DFCE203F53EB00B7EC6A /* More */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
 		75F8DFCA203F528500B7EC6A /* Discover */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,7 +485,7 @@
 		75F8DFCB203F52A900B7EC6A /* Tags */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFCD203F538500B7EC6A /* Base */,
+				2C29DC8E2118920000EFB679 /* Base */,
 				754532421D066EBE00AEC34C /* FlickrHotTagsViewController.swift */,
 				75E0573C1D100D5300B3A258 /* FlickrRelatedTagsViewController.swift */,
 			);
@@ -462,16 +499,6 @@
 				75523B551D0717BB00EBB0FC /* CountPickerViewController.xib */,
 			);
 			path = CountPicker;
-			sourceTree = "<group>";
-		};
-		75F8DFCD203F538500B7EC6A /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				754532341D063F4000AEC34C /* TagListViewController.swift */,
-				75FBA1FC1D21316E006EC31D /* TagListViewControllerUIState.swift */,
-				7545323F1D0669D700AEC34C /* TagListViewController.xib */,
-			);
-			name = Base;
 			sourceTree = "<group>";
 		};
 		75F8DFCE203F53EB00B7EC6A /* More */ = {
@@ -542,10 +569,10 @@
 		75F8DFD5203F568400B7EC6A /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFDB203F574100B7EC6A /* HTTP */,
+				2C29DC8F2118929600EFB679 /* HTTP */,
 				75F8DFF3203F5F9700B7EC6A /* JSON */,
-				7514BDEB1D03B56A004A2E20 /* IMApiClient.swift */,
 				754F1AEF1D024B9400410CA0 /* ApiClientResult.swift */,
+				7514BDEB1D03B56A004A2E20 /* IMApiClient.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -553,9 +580,9 @@
 		75F8DFD6203F56A400B7EC6A /* Flickr */ = {
 			isa = PBXGroup;
 			children = (
-				757262DE1D1E2261006DE902 /* IMFlickr.swift */,
 				75F8DFD7203F56B300B7EC6A /* API */,
 				75F8DFD8203F56C800B7EC6A /* OAuth */,
+				757262DE1D1E2261006DE902 /* IMFlickr.swift */,
 			);
 			path = Flickr;
 			sourceTree = "<group>";
@@ -564,8 +591,8 @@
 			isa = PBXGroup;
 			children = (
 				754F1AF11D024B9400410CA0 /* FlickrApiClient.swift */,
-				754F1B0D1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift */,
 				754F1AF21D024B9400410CA0 /* FlickrApiClient+Constants.swift */,
+				754F1B0D1D025A0C00410CA0 /* FlickrApiClient+Endpoints.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -574,8 +601,8 @@
 			isa = PBXGroup;
 			children = (
 				75755C931D112BDD007DE8B8 /* FlickrOAuth.swift */,
-				75755C951D1130F5007DE8B8 /* FlickrOAuthViewController.swift */,
 				758EDB4D1D12CC2B00AE6A2B /* FlickrOAuthResult.swift */,
+				75755C951D1130F5007DE8B8 /* FlickrOAuthViewController.swift */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -590,22 +617,11 @@
 			path = Imagga;
 			sourceTree = "<group>";
 		};
-		75F8DFDB203F574100B7EC6A /* HTTP */ = {
-			isa = PBXGroup;
-			children = (
-				754F1AF51D024B9400410CA0 /* HttpMethod.swift */,
-				754F1AF41D024B9400410CA0 /* HttpApiClient.swift */,
-				75A190A11D09B1BD00D34D0B /* HttpApiClient+Convenience.swift */,
-				7584F3521D0DCCFA008FE98C /* HttpApiClient+MultipartFormData.swift */,
-			);
-			name = HTTP;
-			sourceTree = "<group>";
-		};
 		75F8DFE0203F58CF00B7EC6A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFE1203F58E500B7EC6A /* UIKit */,
 				75F8DFE2203F58EB00B7EC6A /* Foundation */,
+				75F8DFE1203F58E500B7EC6A /* UIKit */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -613,8 +629,8 @@
 		75F8DFE1203F58E500B7EC6A /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				75CB678820436E6F004522EC /* UINavigationController */,
 				75131CF22042F4E700FA29E3 /* UIColor */,
+				75CB678820436E6F004522EC /* UINavigationController */,
 				75F8DFE5203F594200B7EC6A /* UIViewController */,
 			);
 			path = UIKit;
@@ -623,8 +639,8 @@
 		75F8DFE2203F58EB00B7EC6A /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFE4203F592300B7EC6A /* String */,
 				75F8DFE3203F591600B7EC6A /* Data */,
+				75F8DFE4203F592300B7EC6A /* String */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -649,8 +665,8 @@
 		75F8DFE5203F594200B7EC6A /* UIViewController */ = {
 			isa = PBXGroup;
 			children = (
-				750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */,
 				75057A6E2089E0370067082D /* UIViewController+LargeTitleHidable.swift */,
+				750A9D1B1D20E8F8008501EF /* UIViewController+TabBarHidable.swift */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -658,9 +674,9 @@
 		75F8DFE6203F598000B7EC6A /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				754C20441D041F3D00CA4B34 /* CellReuseIdentifierable.swift */,
-				754C20461D0424AD00CA4B34 /* CaseCountable.swift */,
 				754532441D0675E200AEC34C /* Alertable.swift */,
+				754C20461D0424AD00CA4B34 /* CaseCountable.swift */,
+				754C20441D041F3D00CA4B34 /* CellReuseIdentifierable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -668,12 +684,12 @@
 		75F8DFE7203F59E000B7EC6A /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				754F1AF91D024B9400410CA0 /* UIUtils.swift */,
-				755E38C41D0939580052BA48 /* RandomUtils.swift */,
 				754F1AF31D024B9400410CA0 /* GCDUtils.swift */,
 				75AA9CD21D2217E500DEB55D /* PasteboardUtils.swift */,
-				75AA9CD41D22220600DEB55D /* URLSchemeUtils.swift */,
 				7571F37D1D23950100402518 /* PathUtils.swift */,
+				755E38C41D0939580052BA48 /* RandomUtils.swift */,
+				754F1AF91D024B9400410CA0 /* UIUtils.swift */,
+				75AA9CD41D22220600DEB55D /* URLSchemeUtils.swift */,
 				7571F37F1D23950100402518 /* UUIDUtils.swift */,
 			);
 			path = Utility;
@@ -682,9 +698,9 @@
 		75F8DFE8203F5AE400B7EC6A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFEE203F5BB400B7EC6A /* PlainObjects */,
 				75F8DFEA203F5B3200B7EC6A /* Entities */,
 				75F8DFE9203F5B0E00B7EC6A /* Helpers */,
+				75F8DFEE203F5BB400B7EC6A /* PlainObjects */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -692,8 +708,8 @@
 		75F8DFE9203F5B0E00B7EC6A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				75F8DFF1203F5C1700B7EC6A /* JSON */,
 				75F8DFF2203F5C2400B7EC6A /* CoreData */,
+				75F8DFF1203F5C1700B7EC6A /* JSON */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -747,11 +763,11 @@
 		75F8DFEF203F5BE100B7EC6A /* Flickr */ = {
 			isa = PBXGroup;
 			children = (
-				7514BDE91D03AB46004A2E20 /* FlickrTag.swift */,
 				75D40D161D083DC100E3AB1F /* FlickrAlbum.swift */,
-				75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */,
-				758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */,
 				75388C9E1D22BB5400618D85 /* FlickrPersonInfo.swift */,
+				75D40D181D083DF900E3AB1F /* FlickrPhoto.swift */,
+				7514BDE91D03AB46004A2E20 /* FlickrTag.swift */,
+				758EDB4B1D12CB8B00AE6A2B /* FlickrUser.swift */,
 			);
 			path = Flickr;
 			sourceTree = "<group>";
@@ -776,9 +792,9 @@
 		75F8DFF2203F5C2400B7EC6A /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				7571F37E1D23950100402518 /* PersistenceCentral.swift */,
 				7571F37C1D23950100402518 /* CoreDataStackManager.swift */,
 				7524C0461D2576010004D6CE /* EntityType.swift */,
+				7571F37E1D23950100402518 /* PersistenceCentral.swift */,
 				7571F3851D23953B00402518 /* Tagger.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -874,17 +890,17 @@
 					7552DF891D013A740032ECFA = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 6UNHY8UY6E;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 					};
 					7552DF9D1D013A750032ECFA = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						TestTargetID = 7552DF891D013A740032ECFA;
 					};
 					7552DFA81D013A750032ECFA = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						TestTargetID = 7552DF891D013A740032ECFA;
 					};
 				};
@@ -1275,7 +1291,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = TaggerDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Resources/Config/Tagger-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1297,7 +1313,7 @@
 				PROVISIONING_PROFILE = "1b3d5c64-ed0a-4993-848a-d2d9b00e7180";
 				PROVISIONING_PROFILE_SPECIFIER = TaggerDistribution;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Resources/Config/Tagger-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1309,7 +1325,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tagger.app/Tagger";
 			};
 			name = Debug;
@@ -1322,7 +1338,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tagger.app/Tagger";
 			};
 			name = Release;
@@ -1334,7 +1350,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Tagger;
 			};
 			name = Debug;
@@ -1346,7 +1362,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Tagger;
 			};
 			name = Release;
