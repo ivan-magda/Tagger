@@ -30,7 +30,7 @@ extension ImaggaApiClient {
     
     struct Constants {
 
-        static let baseURL = "https://api.imagga.com/v1"
+        static let baseURL = "https://api.imagga.com/v2"
         
         // MARK: - Params
 
@@ -40,7 +40,7 @@ extension ImaggaApiClient {
 
             struct Keys {
                 static let content = "content"
-                static let imageFile = "imagefile"
+                static let imageFile = "image"
             }
         }
         
@@ -56,6 +56,7 @@ extension ImaggaApiClient {
                 static let uploaded = "uploaded"
                 static let id = "id"
                 static let results = "results"
+                static let result = "result"
                 static let tag = "tag"
                 static let tags = "tags"
                 static let confidence = "confidence"

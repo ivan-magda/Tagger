@@ -53,7 +53,7 @@ extension FlickrApiClient {
         params[Constants.Params.Keys.count] = count
 
         let keys = [Constants.Response.Keys.hotTags, Constants.Response.Keys.tag]
-        let request = URLRequest(url: url(from: params))
+        let request = URLRequest(url: buildURL(parameters: params))
 
         getCollection(for: request, rootKeys: keys, success: success, failure: failure)
     }
@@ -65,7 +65,7 @@ extension FlickrApiClient {
         param[Constants.Params.Keys.tag] = tag
 
         let keys = [Constants.Response.Keys.tags, Constants.Response.Keys.tag]
-        let request = URLRequest(url: url(from: param))
+        let request = URLRequest(url: buildURL(parameters: param))
 
         getCollection(for: request, rootKeys: keys, success: success, failure: failure)
     }
@@ -142,7 +142,7 @@ extension FlickrApiClient {
     private func searchPhotos(with params: HttpMethodParams,
                               success: @escaping FlickrPhotosSearchSuccessCompletionHandler,
                               failure: @escaping FlickrFailureCompletionHandler) {
-        getResource(for: URLRequest(url: url(from: params)),
+        getResource(for: URLRequest(url: buildURL(parameters: params)),
                     success: success,
                     failure: failure)
     }
@@ -151,7 +151,7 @@ extension FlickrApiClient {
     private func countPages(with param: HttpMethodParams,
                             success: @escaping FlickrNumericSuccessCompletionHandler,
                             failure: @escaping FlickrFailureCompletionHandler) {
-        let request = URLRequest(url: url(from: param))
+        let request = URLRequest(url: buildURL(parameters: param))
         fetchJson(for: request) { result in
             func returnError(_ error: String) {
                 self.log("Error: \(error)")
@@ -191,7 +191,7 @@ extension FlickrApiClient {
         var parameters = getBaseMethodParams(Constants.Params.Values.peopleGetInfo)
         parameters[Constants.Params.Keys.userId] = userID
 
-        getResource(for: URLRequest(url: url(from: parameters)),
+        getResource(for: URLRequest(url: buildURL(parameters: parameters)),
                     success: success,
                     failure: failure)
     }

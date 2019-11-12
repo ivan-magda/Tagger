@@ -170,16 +170,15 @@ extension HttpApiClient {
 // MARK: - HttpApiClient (Build URL) -
 
 extension HttpApiClient {
-
-    func url(from parameters: HttpMethodParams?,
-             withPathExtension pathExtension: String = "") -> URL {
+    func buildURL(parameters: HttpMethodParams?, withPathExtension pathExtension: String = "") -> URL {
         var components = URLComponents(string: baseURL)!
         components.path = components.path + pathExtension
-        components.queryItems = [URLQueryItem]()
 
         guard let parameters = parameters else {
             return components.url!
         }
+
+        components.queryItems = [URLQueryItem]()
 
         parameters.forEach {
             components.queryItems!.append(

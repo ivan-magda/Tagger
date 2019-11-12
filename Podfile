@@ -4,5 +4,6 @@ inhibit_all_warnings!
 use_frameworks!
  
 target 'Tagger' do
-  pod 'KeychainSwift', '~> 11.0.0'
+  pod 'KeychainSwift', '18.0.0'
+  pod 'Alamofire', '4.9.1'
 end

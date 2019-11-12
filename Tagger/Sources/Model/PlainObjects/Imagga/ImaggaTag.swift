@@ -41,11 +41,12 @@ struct ImaggaTag {
     
     init?(json: JSONDictionary) {
         guard let confidence = JSON.double(json, key: ImaggaApiClient.Constants.Response.Keys.confidence),
-            let tag = JSON.string(json, key: ImaggaApiClient.Constants.Response.Keys.tag) else {
-                return nil
+              let tagJSON = json[ImaggaApiClient.Constants.Response.Keys.tag] as? JSONDictionary,
+              let tagString = tagJSON.values.first as? String else {
+            return nil
         }
 
-        self.init(confidence: confidence, tag: tag)
+        self.init(confidence: confidence, tag: tagString)
     }
     
     // MARK: - Static
@@ -53,20 +54,17 @@ struct ImaggaTag {
     static func sanitezedTags(_ json: [JSONDictionary]) -> [ImaggaTag] {
         return json.compactMap { self.init(json: $0) }
     }
-    
 }
 
 // MARK: - ImaggaTag (CoreData) -
 
 extension ImaggaTag {
-
     func toTag(in context: NSManagedObjectContext) -> Tag {
         return Tag(name: tag, context: context)
     }
 
-    @discardableResult static func map(on tags: [ImaggaTag],
-                                       with category: Category? = nil,
-                                       in context: NSManagedObjectContext) -> [Tag] {
+    @discardableResult
+    static func map(on tags: [ImaggaTag], with category: Category? = nil, in context: NSManagedObjectContext) -> [Tag] {
         return tags.map {
             let tag = $0.toTag(in: context)
 
@@ -77,15 +75,12 @@ extension ImaggaTag {
             return tag
         }
     }
-
 }
 
 // MARK: - ImaggaTag: JSONParselable -
 
 extension ImaggaTag: JSONParselable {
-    
     static func decode(_ input: JSONDictionary) -> ImaggaTag? {
         return ImaggaTag.init(json: input)
     }
-    
 }
