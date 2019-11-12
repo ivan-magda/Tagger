@@ -1290,7 +1290,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Tagger/Resources/Config/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Resources/Config/Tagger-Bridging-Header.h";
@@ -1312,7 +1312,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Tagger/Resources/Config/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.Tagger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tagger/Resources/Config/Tagger-Bridging-Header.h";
@@ -1326,7 +1326,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = TaggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.TaggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tagger.app/Tagger";
@@ -1339,7 +1339,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = TaggerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.TaggerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tagger.app/Tagger";
@@ -1351,7 +1351,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = TaggerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.TaggerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Tagger;
@@ -1363,7 +1363,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = TaggerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ivanmagda.TaggerUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.im.TaggerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Tagger;
