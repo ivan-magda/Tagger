@@ -33,6 +33,7 @@ final class ImageTaggerViewController: UIViewController, Alertable {
         case idle
         case fetching
         case fetched
+        case error
     }
     
     // MARK: - Instance Variables
@@ -60,28 +61,30 @@ final class ImageTaggerViewController: UIViewController, Alertable {
 
     private var state: State = .idle {
         didSet {
-            switch state {
-            case .idle:
-                imageView.image = taggingImage
+            switch self.state {
+            case .idle, .error:
+                UIUtils.hideNetworkActivityIndicator()
+                self.activityIndicator.stopAnimating()
+                self.imageView.image = self.taggingImage
 
-                generateBarButtonItem.isEnabled = true
-                resultsBarButtonItem.isEnabled = false
-                saveResultsBarButtonItem.isEnabled = false
+                self.generateBarButtonItem.isEnabled = true
+                self.resultsBarButtonItem.isEnabled = false
+                self.saveResultsBarButtonItem.isEnabled = false
             case .fetching:
                 UIUtils.showNetworkActivityIndicator()
-                activityIndicator.startAnimating()
+                self.activityIndicator.startAnimating()
 
-                resultsBarButtonItem.isEnabled = false
-                generateBarButtonItem.isEnabled = false
-                saveResultsBarButtonItem.isEnabled = false
+                self.resultsBarButtonItem.isEnabled = false
+                self.generateBarButtonItem.isEnabled = false
+                self.saveResultsBarButtonItem.isEnabled = false
             case .fetched:
                 UIUtils.hideNetworkActivityIndicator()
-                activityIndicator.stopAnimating()
+                self.activityIndicator.stopAnimating()
 
-                let enabled = generatedTags != nil && generatedTags!.count > 0
-                resultsBarButtonItem.isEnabled = enabled
-                saveResultsBarButtonItem.isEnabled = enabled
-                generateBarButtonItem.isEnabled = false
+                let isEnabled = generatedTags != nil && generatedTags!.count > 0
+                self.resultsBarButtonItem.isEnabled = isEnabled
+                self.saveResultsBarButtonItem.isEnabled = isEnabled
+                self.generateBarButtonItem.isEnabled = false
             }
         }
     }
@@ -99,52 +102,66 @@ final class ImageTaggerViewController: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(taggingImage != nil && persistenceCentral != nil)
-        configureUI()
+
+        assert(self.taggingImage != nil && self.persistenceCentral != nil)
+
+        self.configureUI()
     }
-    
 }
 
 // MARK: - ImageTaggerViewController (Data) -
 
 extension ImageTaggerViewController {
-
     private func handleGeneratedTags(_ tags: [ImaggaTag]) {
-        generatedTags = tags
-        state = .fetched
+        self.generatedTags = tags
+        self.state = .fetched
 
         let alert = UIAlertController(
             title: NSLocalizedString("Success", comment: "ImageTaggerViewController"),
             message: NSLocalizedString("Tags successfully generated. Do you want save or see them?", comment: ""),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"),
-                                      style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "ImageTaggerViewController"), style: .default) { [weak self]  _ in
-            guard let strongSelf = self else { return }
-            strongSelf.saveResults(strongSelf)
-        })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("See Results", comment: "ImageTaggerViewController"), style: .default) { [weak self]  _ in
-            guard let strongSelf = self else { return }
-            strongSelf.showResults(strongSelf)
-        })
 
-        present(alert, animated: true, completion: nil)
+        alert.addAction(
+            UIAlertAction(title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"), style: .cancel)
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Save", comment: "ImageTaggerViewController"),
+                style: .default
+            ) { [weak self]  _ in
+                if let strongSelf = self {
+                    strongSelf.saveResults(strongSelf)
+                }
+            }
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("See Results", comment: "ImageTaggerViewController"),
+                style: .default
+            ) { [weak self]  _ in
+                if let strongSelf = self {
+                    strongSelf.showResults(strongSelf)
+                }
+            }
+        )
+
+        self.present(alert, animated: true)
     }
 
     private func createCategory(with name: String) {
         let name = name.trimmingCharacters(in: .whitespaces)
-        let manager = persistenceCentral.coreDataStackManager
+        let manager = self.persistenceCentral.coreDataStackManager
         let context = manager.managedObjectContext
 
         let category = Category(name: name, context: context)
-        ImaggaTag.map(on: generatedTags!, with: category, in: context)
+        ImaggaTag.map(on: self.generatedTags!, with: category, in: context)
         manager.saveContext()
 
-        createdCategory = category
+        self.createdCategory = category
 
-        saveResultsBarButtonItem.isEnabled = false
-        showResults(self)
+        self.saveResultsBarButtonItem.isEnabled = false
+        self.showResults(self)
     }
 
 }
@@ -152,43 +169,48 @@ extension ImageTaggerViewController {
 // MARK: - ImageTaggerViewController (Actions) -
 
 extension ImageTaggerViewController {
-
     @IBAction func cancelDidPressed(_ sender: AnyObject) {
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true)
     }
 
     @IBAction func generateTags(_ sender: AnyObject) {
-        state = .fetching
+        self.state = .fetching
 
-        imaggaApiClient.taggingImage(taggingImage, success: { [weak self] tags in
-            self?.handleGeneratedTags(tags)
-        }) { [weak self] error in
-            guard let strongSelf = self else { return }
+        self.imaggaApiClient.taggingImage(
+            self.taggingImage,
+            success: { [weak self] tags in
+                self?.handleGeneratedTags(tags)
+            },
+            failure: { [weak self] error in
+                guard let strongSelf = self else {
+                    return
+                }
 
-            strongSelf.generatedTags = nil
-            strongSelf.state = .fetched
+                strongSelf.generatedTags = nil
+                strongSelf.state = .fetched
 
-            let alert = strongSelf.alert(
-                NSLocalizedString("Error", comment: "ImageTaggerViewController"),
-                message: error.localizedDescription,
-                handler: nil
-            )
-            strongSelf.present(alert, animated: true, completion: nil)
-        }
+                let alert = strongSelf.alert(
+                    NSLocalizedString("Error", comment: "ImageTaggerViewController"),
+                    message: error.localizedDescription,
+                    handler: nil
+                )
+
+                strongSelf.present(alert, animated: true, completion: nil)
+            }
+        )
     }
 
     @IBAction func showResults(_ sender: AnyObject) {
         let tagListViewController = TagListViewController(persistenceCentral: persistenceCentral)
 
-        if let createdCategory = createdCategory {
+        if let createdCategory = self.createdCategory {
             tagListViewController.category = createdCategory
         } else {
             tagListViewController.title = NSLocalizedString("Results", comment: "ImageTaggerViewController")
-            tagListViewController.tags = ImaggaTag.map(on: generatedTags!,
-                                                       in: temporaryContext)
+            tagListViewController.tags = ImaggaTag.map(on: self.generatedTags!, in: self.temporaryContext)
         }
 
-        navigationController?.pushViewController(tagListViewController, animated: true)
+        self.navigationController?.pushViewController(tagListViewController, animated: true)
     }
 
     @IBAction func saveResults(_ sender: AnyObject) {
@@ -201,7 +223,7 @@ extension ImageTaggerViewController {
                 }
             )
 
-            present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
 
         var categoryNameTextField: UITextField?
@@ -212,45 +234,50 @@ extension ImageTaggerViewController {
             preferredStyle: .alert
         )
 
-        alert.addAction(UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"),
-            style: .cancel,
-            handler: nil)
+        alert.addAction(
+            UIAlertAction(title: NSLocalizedString("Cancel", comment: "ImageTaggerViewController"), style: .cancel)
         )
 
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "ImageTaggerViewController"), style: .default, handler: { [unowned self] _ in
-            guard let name = categoryNameTextField?.text, !name.isEmpty else {
-                showAlert()
-                return
-            }
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Save", comment: "ImageTaggerViewController"),
+                style: .default,
+                handler: { [weak self] _ in
+                    guard let strongSelf = self,
+                          let name = categoryNameTextField?.text,
+                          !name.isEmpty else {
+                        return showAlert()
+                    }
 
-            self.createCategory(with: name)
-        }))
+                    strongSelf.createCategory(with: name)
+                }
+            )
+        )
 
         alert.addTextField { textField in
             categoryNameTextField = textField
-            categoryNameTextField?.placeholder = NSLocalizedString("Enter category name", comment: "ImageTaggerViewController")
+            categoryNameTextField?.placeholder = NSLocalizedString(
+                "Enter category name",
+                comment: "ImageTaggerViewController"
+            )
         }
 
-        present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true)
     }
-
 }
 
 // MARK: - ImageTaggerViewController (UI) -
 
 extension ImageTaggerViewController {
-    
     private func configureUI() {
-        state = .idle
+        self.state = .idle
 
-        navigationController?.view.backgroundColor = .white
-        navigationItem.backBarButtonItem = UIBarButtonItem(
+        self.navigationController?.view.backgroundColor = .white
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Back", comment: "ImageTaggerViewController"),
             style: .plain,
             target: nil,
             action: nil
         )
     }
-    
 }
