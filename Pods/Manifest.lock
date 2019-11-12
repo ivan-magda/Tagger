@@ -1,21 +1,20 @@
 PODS:
   - Alamofire (4.9.1)
-  - KeychainSwift (11.0.0)
+  - KeychainSwift (18.0.0)
 
 DEPENDENCIES:
   - Alamofire (= 4.9.1)
-  - KeychainSwift (= 11.0.0)
+  - KeychainSwift (= 18.0.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - KeychainSwift
   trunk:
     - Alamofire
+    - KeychainSwift
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
+  KeychainSwift: c46e1438d121e47459fb304ac88c5e058a2a91ed
 
-PODFILE CHECKSUM: 52cda7ec8545d03a0f20fd97a108252c2b788b95
+PODFILE CHECKSUM: 08784420d8ac745d0c53ccec0440f38583e9a779
 
 COCOAPODS: 1.8.4
